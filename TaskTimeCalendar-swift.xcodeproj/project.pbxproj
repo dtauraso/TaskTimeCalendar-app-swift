@@ -1,0 +1,588 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		631057041DD07AF1004922DF /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631057031DD07AF1004922DF /* JSON.swift */; };
+		631057061DD07B95004922DF /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631057051DD07B95004922DF /* Task.swift */; };
+		63236C7A21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
+		63236C7B21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
+		63236C7C21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
+		63236C8221C93B6F00DE6C1A /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8121C93B6F00DE6C1A /* Point.swift */; };
+		63236C8321C93B6F00DE6C1A /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8121C93B6F00DE6C1A /* Point.swift */; };
+		63236C8421C93B6F00DE6C1A /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8121C93B6F00DE6C1A /* Point.swift */; };
+		63236C8621C93BD000DE6C1A /* SparseMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8521C93BD000DE6C1A /* SparseMatrix.swift */; };
+		63236C8721C93BD000DE6C1A /* SparseMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8521C93BD000DE6C1A /* SparseMatrix.swift */; };
+		63236C8821C93BD000DE6C1A /* SparseMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8521C93BD000DE6C1A /* SparseMatrix.swift */; };
+		63236C8A21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
+		63236C8B21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
+		63236C8C21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
+		63DADC9A1CC976E400621FD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADC991CC976E400621FD7 /* AppDelegate.swift */; };
+		63DADC9C1CC976E400621FD7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADC9B1CC976E400621FD7 /* ViewController.swift */; };
+		63DADC9F1CC976E400621FD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63DADC9D1CC976E400621FD7 /* Main.storyboard */; };
+		63DADCA11CC976E400621FD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63DADCA01CC976E400621FD7 /* Assets.xcassets */; };
+		63DADCA41CC976E400621FD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63DADCA21CC976E400621FD7 /* LaunchScreen.storyboard */; };
+		63DADCAF1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADCAE1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift */; };
+		63DADCBA1CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADCB91CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift */; };
+		63DB51271CE60B340007E969 /* Column.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DB51261CE60B340007E969 /* Column.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		63DADCAB1CC976E400621FD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63DADC8E1CC976E400621FD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63DADC951CC976E400621FD7;
+			remoteInfo = "TaskTimeCalendar-swift";
+		};
+		63DADCB61CC976E400621FD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63DADC8E1CC976E400621FD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63DADC951CC976E400621FD7;
+			remoteInfo = "TaskTimeCalendar-swift";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		631057031DD07AF1004922DF /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		631057051DD07B95004922DF /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		631057071DD23D3E004922DF /* other_functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = other_functions.swift; sourceTree = "<group>"; };
+		63236C7921C83E0300DE6C1A /* ContextState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextState.swift; sourceTree = "<group>"; };
+		63236C8121C93B6F00DE6C1A /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		63236C8521C93BD000DE6C1A /* SparseMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparseMatrix.swift; sourceTree = "<group>"; };
+		63236C8921C93D6B00DE6C1A /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		63DADC961CC976E400621FD7 /* TaskTimeCalendar-swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TaskTimeCalendar-swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		63DADC991CC976E400621FD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		63DADC9B1CC976E400621FD7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		63DADC9E1CC976E400621FD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		63DADCA01CC976E400621FD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		63DADCA31CC976E400621FD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		63DADCA51CC976E400621FD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63DADCAA1CC976E400621FD7 /* TaskTimeCalendar-swiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TaskTimeCalendar-swiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		63DADCAE1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTimeCalendar_swiftTests.swift; sourceTree = "<group>"; };
+		63DADCB01CC976E400621FD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63DADCB51CC976E400621FD7 /* TaskTimeCalendar-swiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TaskTimeCalendar-swiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		63DADCB91CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTimeCalendar_swiftUITests.swift; sourceTree = "<group>"; };
+		63DADCBB1CC976E400621FD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63DB51261CE60B340007E969 /* Column.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Column.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		63DADC931CC976E400621FD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCA71CC976E400621FD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCB21CC976E400621FD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		63DADC8D1CC976E400621FD7 = {
+			isa = PBXGroup;
+			children = (
+				63236C8121C93B6F00DE6C1A /* Point.swift */,
+				63236C8521C93BD000DE6C1A /* SparseMatrix.swift */,
+				63236C7921C83E0300DE6C1A /* ContextState.swift */,
+				631057071DD23D3E004922DF /* other_functions.swift */,
+				631057051DD07B95004922DF /* Task.swift */,
+				63236C8921C93D6B00DE6C1A /* Visit.swift */,
+				63DADC981CC976E400621FD7 /* TaskTimeCalendar-swift */,
+				63DADCAD1CC976E400621FD7 /* TaskTimeCalendar-swiftTests */,
+				63DADCB81CC976E400621FD7 /* TaskTimeCalendar-swiftUITests */,
+				63DADC971CC976E400621FD7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		63DADC971CC976E400621FD7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				63DADC961CC976E400621FD7 /* TaskTimeCalendar-swift.app */,
+				63DADCAA1CC976E400621FD7 /* TaskTimeCalendar-swiftTests.xctest */,
+				63DADCB51CC976E400621FD7 /* TaskTimeCalendar-swiftUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		63DADC981CC976E400621FD7 /* TaskTimeCalendar-swift */ = {
+			isa = PBXGroup;
+			children = (
+				63DB51261CE60B340007E969 /* Column.swift */,
+				63DADC991CC976E400621FD7 /* AppDelegate.swift */,
+				63DADC9B1CC976E400621FD7 /* ViewController.swift */,
+				631057031DD07AF1004922DF /* JSON.swift */,
+				63DADC9D1CC976E400621FD7 /* Main.storyboard */,
+				63DADCA01CC976E400621FD7 /* Assets.xcassets */,
+				63DADCA21CC976E400621FD7 /* LaunchScreen.storyboard */,
+				63DADCA51CC976E400621FD7 /* Info.plist */,
+			);
+			path = "TaskTimeCalendar-swift";
+			sourceTree = "<group>";
+		};
+		63DADCAD1CC976E400621FD7 /* TaskTimeCalendar-swiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				63DADCAE1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift */,
+				63DADCB01CC976E400621FD7 /* Info.plist */,
+			);
+			path = "TaskTimeCalendar-swiftTests";
+			sourceTree = "<group>";
+		};
+		63DADCB81CC976E400621FD7 /* TaskTimeCalendar-swiftUITests */ = {
+			isa = PBXGroup;
+			children = (
+				63DADCB91CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift */,
+				63DADCBB1CC976E400621FD7 /* Info.plist */,
+			);
+			path = "TaskTimeCalendar-swiftUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63DADC951CC976E400621FD7 /* TaskTimeCalendar-swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63DADCBE1CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swift" */;
+			buildPhases = (
+				63DADC921CC976E400621FD7 /* Sources */,
+				63DADC931CC976E400621FD7 /* Frameworks */,
+				63DADC941CC976E400621FD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TaskTimeCalendar-swift";
+			productName = "TaskTimeCalendar-swift";
+			productReference = 63DADC961CC976E400621FD7 /* TaskTimeCalendar-swift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		63DADCA91CC976E400621FD7 /* TaskTimeCalendar-swiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63DADCC11CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swiftTests" */;
+			buildPhases = (
+				63DADCA61CC976E400621FD7 /* Sources */,
+				63DADCA71CC976E400621FD7 /* Frameworks */,
+				63DADCA81CC976E400621FD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63DADCAC1CC976E400621FD7 /* PBXTargetDependency */,
+			);
+			name = "TaskTimeCalendar-swiftTests";
+			productName = "TaskTimeCalendar-swiftTests";
+			productReference = 63DADCAA1CC976E400621FD7 /* TaskTimeCalendar-swiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		63DADCB41CC976E400621FD7 /* TaskTimeCalendar-swiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63DADCC41CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swiftUITests" */;
+			buildPhases = (
+				63DADCB11CC976E400621FD7 /* Sources */,
+				63DADCB21CC976E400621FD7 /* Frameworks */,
+				63DADCB31CC976E400621FD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63DADCB71CC976E400621FD7 /* PBXTargetDependency */,
+			);
+			name = "TaskTimeCalendar-swiftUITests";
+			productName = "TaskTimeCalendar-swiftUITests";
+			productReference = 63DADCB51CC976E400621FD7 /* TaskTimeCalendar-swiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		63DADC8E1CC976E400621FD7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = David;
+				TargetAttributes = {
+					63DADC951CC976E400621FD7 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 722LTMS92P;
+						LastSwiftMigration = 0800;
+					};
+					63DADCA91CC976E400621FD7 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 722LTMS92P;
+						LastSwiftMigration = 0800;
+						TestTargetID = 63DADC951CC976E400621FD7;
+					};
+					63DADCB41CC976E400621FD7 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 722LTMS92P;
+						LastSwiftMigration = 0800;
+						TestTargetID = 63DADC951CC976E400621FD7;
+					};
+				};
+			};
+			buildConfigurationList = 63DADC911CC976E400621FD7 /* Build configuration list for PBXProject "TaskTimeCalendar-swift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 63DADC8D1CC976E400621FD7;
+			productRefGroup = 63DADC971CC976E400621FD7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				63DADC951CC976E400621FD7 /* TaskTimeCalendar-swift */,
+				63DADCA91CC976E400621FD7 /* TaskTimeCalendar-swiftTests */,
+				63DADCB41CC976E400621FD7 /* TaskTimeCalendar-swiftUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		63DADC941CC976E400621FD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63DADCA41CC976E400621FD7 /* LaunchScreen.storyboard in Resources */,
+				63DADCA11CC976E400621FD7 /* Assets.xcassets in Resources */,
+				63DADC9F1CC976E400621FD7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCA81CC976E400621FD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCB31CC976E400621FD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		63DADC921CC976E400621FD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63236C8621C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
+				63236C8221C93B6F00DE6C1A /* Point.swift in Sources */,
+				63DADC9C1CC976E400621FD7 /* ViewController.swift in Sources */,
+				63DADC9A1CC976E400621FD7 /* AppDelegate.swift in Sources */,
+				631057061DD07B95004922DF /* Task.swift in Sources */,
+				63DB51271CE60B340007E969 /* Column.swift in Sources */,
+				631057041DD07AF1004922DF /* JSON.swift in Sources */,
+				63236C7A21C83E0300DE6C1A /* ContextState.swift in Sources */,
+				63236C8A21C93D6B00DE6C1A /* Visit.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCA61CC976E400621FD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63236C8721C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
+				63DADCAF1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift in Sources */,
+				63236C7B21C83E0300DE6C1A /* ContextState.swift in Sources */,
+				63236C8B21C93D6B00DE6C1A /* Visit.swift in Sources */,
+				63236C8321C93B6F00DE6C1A /* Point.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63DADCB11CC976E400621FD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63236C8821C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
+				63DADCBA1CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift in Sources */,
+				63236C7C21C83E0300DE6C1A /* ContextState.swift in Sources */,
+				63236C8C21C93D6B00DE6C1A /* Visit.swift in Sources */,
+				63236C8421C93B6F00DE6C1A /* Point.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		63DADCAC1CC976E400621FD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63DADC951CC976E400621FD7 /* TaskTimeCalendar-swift */;
+			targetProxy = 63DADCAB1CC976E400621FD7 /* PBXContainerItemProxy */;
+		};
+		63DADCB71CC976E400621FD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63DADC951CC976E400621FD7 /* TaskTimeCalendar-swift */;
+			targetProxy = 63DADCB61CC976E400621FD7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		63DADC9D1CC976E400621FD7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63DADC9E1CC976E400621FD7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		63DADCA21CC976E400621FD7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63DADCA31CC976E400621FD7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		63DADCBC1CC976E400621FD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		63DADCBD1CC976E400621FD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		63DADCBF1CC976E400621FD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "TaskTimeCalendar-swift/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		63DADCC01CC976E400621FD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "TaskTimeCalendar-swift/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		63DADCC21CC976E400621FD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "TaskTimeCalendar-swiftTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swiftTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskTimeCalendar-swift.app/TaskTimeCalendar-swift";
+			};
+			name = Debug;
+		};
+		63DADCC31CC976E400621FD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "TaskTimeCalendar-swiftTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swiftTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskTimeCalendar-swift.app/TaskTimeCalendar-swift";
+			};
+			name = Release;
+		};
+		63DADCC51CC976E400621FD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "TaskTimeCalendar-swiftUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swiftUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "TaskTimeCalendar-swift";
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		63DADCC61CC976E400621FD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "TaskTimeCalendar-swiftUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.TaskTimeCalendar-swiftUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "TaskTimeCalendar-swift";
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		63DADC911CC976E400621FD7 /* Build configuration list for PBXProject "TaskTimeCalendar-swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63DADCBC1CC976E400621FD7 /* Debug */,
+				63DADCBD1CC976E400621FD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63DADCBE1CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63DADCBF1CC976E400621FD7 /* Debug */,
+				63DADCC01CC976E400621FD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63DADCC11CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63DADCC21CC976E400621FD7 /* Debug */,
+				63DADCC31CC976E400621FD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63DADCC41CC976E400621FD7 /* Build configuration list for PBXNativeTarget "TaskTimeCalendar-swiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63DADCC51CC976E400621FD7 /* Debug */,
+				63DADCC61CC976E400621FD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 63DADC8E1CC976E400621FD7 /* Project object */;
+}

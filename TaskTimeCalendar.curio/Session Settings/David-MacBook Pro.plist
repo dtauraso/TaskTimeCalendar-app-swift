@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>4C83E40D-4D25-483F-B8B0-B09C4A3339D6</key>
+	<dict>
+		<key>Visible Rect</key>
+		<string>{{8284.5360824742093, 86.082474226804152}, {663.91752577084662, 798.96907216492355}}</string>
+		<key>Zoom Factor</key>
+		<real>0.96999999999999997</real>
+	</dict>
+	<key>Bottombar Visible</key>
+	<false/>
+	<key>Expanded Ideaspaces</key>
+	<array/>
+	<key>Expanded Ideaspaces For Section 8C3EE82B-52E2-4E89-B7C7-835C95F3B1DC</key>
+	<array/>
+	<key>Expanded Sections</key>
+	<array/>
+	<key>InspectorBar RBSplitView Layout</key>
+	<string>2 27 573</string>
+	<key>Last Viewed Ideaspaces</key>
+	<array>
+		<string>4C83E40D-4D25-483F-B8B0-B09C4A3339D6</string>
+	</array>
+	<key>Last Viewed Ideaspaces For Section 8C3EE82B-52E2-4E89-B7C7-835C95F3B1DC</key>
+	<array>
+		<string>4C83E40D-4D25-483F-B8B0-B09C4A3339D6</string>
+	</array>
+	<key>Last Viewed Section</key>
+	<array>
+		<string>8C3EE82B-52E2-4E89-B7C7-835C95F3B1DC</string>
+	</array>
+	<key>Library RBSplitView Layout</key>
+	<string>2 573 -253.886H</string>
+	<key>LibraryPanel.Settings</key>
+	<dict>
+		<key>LibraryPanel.HiddenColumns</key>
+		<array/>
+		<key>LibraryPanel.SelectedFilter</key>
+		<integer>0</integer>
+		<key>LibraryPanel.SortDescending</key>
+		<false/>
+		<key>LibraryPanel.SortKey</key>
+		<string>CCAsset Title</string>
+		<key>LibraryPanel.TableSettings</key>
+		<dict>
+			<key>CCAsset Creation Date</key>
+			<array>
+				<real>85</real>
+				<integer>6</integer>
+			</array>
+			<key>CCAsset Date Added</key>
+			<array>
+				<real>83</real>
+				<integer>7</integer>
+			</array>
+			<key>CCAsset File Size</key>
+			<array>
+				<real>45</real>
+				<integer>4</integer>
+			</array>
+			<key>CCAsset Has Note</key>
+			<array>
+				<real>20</real>
+				<integer>1</integer>
+			</array>
+			<key>CCAsset Instance Count</key>
+			<array>
+				<real>35</real>
+				<integer>3</integer>
+			</array>
+			<key>CCAsset Is File Alias</key>
+			<array>
+				<real>20</real>
+				<integer>0</integer>
+			</array>
+			<key>CCAsset Kind</key>
+			<array>
+				<real>28</real>
+				<integer>8</integer>
+			</array>
+			<key>CCAsset Last Modified Date</key>
+			<array>
+				<real>85</real>
+				<integer>5</integer>
+			</array>
+			<key>CCAsset Title</key>
+			<array>
+				<real>200</real>
+				<integer>2</integer>
+			</array>
+		</dict>
+	</dict>
+	<key>Main RBSplitView Layout</key>
+	<string>3 213H 919.098 280</string>
+	<key>Normal Window Layout</key>
+	<string>{{653, -24}, {815, 873}}</string>
+	<key>Organizer RBSplitView Layout</key>
+	<string>2 102H 296</string>
+	<key>Organizer Visible</key>
+	<true/>
+	<key>Organizer Width</key>
+	<integer>170</integer>
+	<key>Primary Asset UUID Last Viewed</key>
+	<string>4C83E40D-4D25-483F-B8B0-B09C4A3339D6</string>
+	<key>Projects RBSplitView Layout</key>
+	<string>2 318.911 252.089</string>
+	<key>Scroll Position For Section 8C3EE82B-52E2-4E89-B7C7-835C95F3B1DC</key>
+	<string>{0, 0}</string>
+	<key>Secondary View Vertical</key>
+	<true/>
+	<key>Secondary View Visible</key>
+	<false/>
+	<key>Sections Visible</key>
+	<false/>
+	<key>Toolbar Visible</key>
+	<true/>
+</dict>
+</plist>
