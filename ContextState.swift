@@ -79,27 +79,40 @@ class ContextState {
         return self.data[key] as! Int
     }
 }
-// can't use Equatable nor Hashable to find the data var in a search
 
-extension ContextState: Equatable {
-    static func == (lhs: ContextState, rhs: ContextState) -> Bool {
-        return lhs.name == rhs.name &&
-               lhs.start_children == rhs.start_children &&
-               lhs.parents == rhs.parents &&
-               lhs.children == rhs.children &&
-               lhs.nexts == rhs.nexts &&
-               lhs.function_name == rhs.function_name
-
-        }
+// there should only be 1 value in [String: Any] per state
+func getString(dict: [String: Any]) -> String
+{
+    if(dict["String"] as? String != nil)
+    {
+        return dict["String"] as! String
     }
+    else
+    {
+        return "no String type is here"
+    }
+}
 
-extension ContextState: Hashable {
-  var hashValue: Int {
-    return name.hashValue ^
-           start_children.hashValue ^
-           parents.hashValue ^
-           children.hashValue ^
-           nexts.hashValue ^
-           function_name.hashValue
-  }
+func setString( dict: inout [String: Any], value: String, type: String)
+{
+    dict[type] = value
+}
+
+
+func getInt(dict: [String: Any]) -> Int
+{
+    if(dict["Int"] as? Int != nil)
+    {
+        return dict["Int"] as! Int
+    }
+    else
+    {
+        // "data not found", like webpage not found
+        return 404
+    }
+}
+
+func setInt( dict: inout [String: Any], value: Int, type: String)
+{
+    dict[type] = value
 }
