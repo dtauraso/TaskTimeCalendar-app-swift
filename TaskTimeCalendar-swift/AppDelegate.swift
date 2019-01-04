@@ -441,18 +441,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func myFunction() {
         logFunctionName() // Prints "myFunction()".
         }
-        func testing(levels: [Point: ContextState], current_state_name: [String]) -> Bool
+        func testing(current_state_name: [String]) -> Bool
         {
             // if parsing the input then call this only
             // make into a macro
             logFunctionName()
             return true
         }
-        func returnTrue(levels: [Point: ContextState], current_state_name: [String]) -> Bool
+        func returnTrue(current_state_name: [String]) -> Bool
         {
             return true
         }
-        func returnFalse(levels: [Point: ContextState], current_state_name: [String]) -> Bool
+        func returnFalse(current_state_name: [String]) -> Bool
         {
             return false
         }
@@ -503,20 +503,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             nest_flag = false
             let new_context: ContextState = ContextState.init(name: ["ss"],
                                                               start_children: [["ss"]],
-                                                              parents: [["ss"]],
-                                                              children: [["ss"]],
                                                               nexts: [["ss"]],
                                                               function: testing,
                                                               function_name: "test",
-                                                              data: [:])
+                                                              data: Data.init(new_data: [:]),
+                                                              parents: [["ss"]])
             print(new_context.getName(),
                   new_context.getStartChildren(),
                   new_context.getParents(),
-                  new_context.getChildren(),
                   new_context.getNexts(),
                   new_context.getFunctionName())
             //debugLog(functionName: #testing)
-            testing(levels: [:], current_state_name: [])
+            testing(current_state_name: [])
             print(self.function_name.count)
         
 
@@ -532,10 +530,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 */
             let parser: Parser = Parser.init()
-            parser.testing(levels: parser.levels,
+            /*parser.testing(levels: parser.levels,
                            state_point_table: parser.state_point_table,
                            current_state_name: ["input"])
-
+            */
             parser.runParser()
             
                 //print(new_context.callFunction(a: 1, b: 2))

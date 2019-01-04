@@ -12,24 +12,16 @@ class ChildParent {
 
     var child: [String]
     
-    // so the NFA can be hierarchical
-    // we can go into the subtree on a true state, and continue running true states when we come back from the subtree
-    var remaining_start_children: [[String]]
     var parent: ChildParent?
     
-    init(child: [String], remaining_start_children: [[String]],  parent: ChildParent?)
+    init(child: [String], parent: ChildParent?)
     {
         self.child = child
-        self.remaining_start_children = remaining_start_children
         self.parent = parent
     }
     func getChild() -> [String]
     {
         return self.child
-    }
-    func getRemainingStartChildren() -> [[String]]
-    {
-        return self.remaining_start_children
     }
     func getParent() -> ChildParent?
     {
@@ -43,10 +35,6 @@ class ChildParent {
     {
         self.child = new_child
     }
-    func setRemainingStartChildren(new_remaining_start_children: [[String]])
-    {
-        self.remaining_start_children = new_remaining_start_children
-    }
     func setParent(new_parent: ChildParent?)
     {
         self.parent = new_parent
@@ -54,14 +42,12 @@ class ChildParent {
     func equal(object1: ChildParent?, object2: ChildParent?) -> Bool
     {
         return object1?.child == object2?.child &&
-                object1?.remaining_start_children == object2?.remaining_start_children &&
                 object1?.parent == object2?.parent
     }
 }
 extension ChildParent: Equatable {
     static func == (lhs: ChildParent, rhs: ChildParent) -> Bool {
         return lhs.child == rhs.child &&
-               lhs.remaining_start_children == rhs.remaining_start_children &&
                lhs.parent == rhs.parent
         }
     }
@@ -86,10 +72,6 @@ class NextStatePackage {
     {
         self.bottom_of_shortened_stack = bottom_of_shortened_stack
     }
-    /*func getNextStates() -> [[String]]
-    {
-        
-    }*/
     func setNextStates(next_states: [[String]])
     {
         self.next_states = next_states
@@ -148,14 +130,7 @@ class Visit {
         // goes up the stack and finds the next set of next states
         // will erase the progress of any bottom up branches connected to the node popped
         // only pop if the current path is the only path
-        // if there is more than 1 path, reset where the ith bottom tracker is
-        
-                        // first get any remaining start children
-                // else get next states
-        /*
-        push:
-        name, remaining_start_children, up
-        */
+        // if there is more than 1 path, reset where the bottom tracker is
         var indents2: Int = indents
         let return_package: NextStatePackage = NextStatePackage.init(bottom_of_shortened_stack: bottom,
                                                                      next_states:               next_states,
@@ -177,16 +152,7 @@ class Visit {
             }
             
             let state_location: Point = state_point_table[state]!
-            // continue the NFA start children where we left off
-            if(return_package.getBottomOfShortenedStack().getRemainingStartChildren().count > 0)
-            {
-                return_package.setNextStates(next_states: return_package.getBottomOfShortenedStack().getRemainingStartChildren())
-            }
-            else
-            {
-                return_package.setNextStates(next_states: (levels[state_location]?.getNexts())!)
-
-            }
+            return_package.setNextStates(next_states: (levels[state_location]?.getNexts())!)
             //printStack2(bottom_tracker: return_package.getBottomOfShortenedStack())
         }
         //print("end of stack shrink")
@@ -230,7 +196,7 @@ class Visit {
         
         while(!(bottom_tracker2.getParent() == nil))
         {
-            print(bottom_tracker2.getChild(), bottom_tracker2.getRemainingStartChildren())
+            print(bottom_tracker2.getChild())
             //print("|")
             bottom_tracker2 = bottom_tracker2.getParent()!
         }
@@ -250,7 +216,8 @@ class Visit {
         self.current_state_name = start_state.getName()
         self.end_state_name = end_state.getName()
         // https://useyourloaf.com/blog/swift-hashable/
-        let end_states_nexts = end_state.getNexts()
+        // when the end state is checked in the loop guard, end state machine
+        let end_states_nexts = [self.end_state_name]//end_state.getNexts()
         //print(end_state.getNexts())
         //exit(1)
         self.bottom_tracker = self.bottom
@@ -258,27 +225,21 @@ class Visit {
         
         while(self.next_states != end_states_nexts)
         {
-            if(ii == 30)
+            print("at", self.ii)
+            if(ii == 15)
             {
                 print("too many states run\n")
                 exit(1)
             }
             var state_changed: Bool = false
             var j: Int = Int()
-            print("current state")
-            print(self.current_state_name)
-            print()
+            //print("current state")
+            //print(self.next_states[0])
+            //print()
             //print(self.next_states)
             // map each self.current_state_name to a bool result
             // save all true results
             // run the hasParent... on the set of true results
-            // k bottom trackers
-            // k state -> function call result
-            // assume entire subtree must be finished before the next subtree is run
-            
-            // for NFA
-            var number_of_passing_states: Int = Int()
-            var next_set_of_states: [[String]] = [[String]]()
             while(j < self.next_states.count)
             {
                 // how to let it run multiple true states?
@@ -289,106 +250,66 @@ class Visit {
                 let point: Point = self.state_point_table[self.current_state_name]!
                 
                 let maybe_parent: Int = (levels[point]?.getStartChildren().count)!
-                
-                let did_function_pass: Bool = (levels[point]?.callFunction(levels:             self.levels,
-                                                                           current_state_name: self.current_state_name))!
+                //print("running", levels[point]?.function_name)
+                let did_function_pass: Bool = (levels[point]?.callFunction(current_state_name: self.current_state_name))!
                 if(did_function_pass)
                 {
-                    number_of_passing_states += 1
                     if(hasParent(levels: self.levels, point: point))
                     {
-                        let bottom_state: [String] = bottom_tracker.getChild()
-                        let parents: [[String]] = (levels[point]?.getParents())!
+                        let bottom_state: [String] = self.bottom_tracker.getChild()
+                        let parents: [[String]] = (self.levels[point]?.getParents())!
                         if(isBottomAtTheParentOfCurrentState(parents:       parents,
                                                              bottom_state:  bottom_state))
                         {
-                            let remaing_start_child_states = self.next_states.suffix(self.next_states.count - 1 - j)
-                            var remaing_start_children = [[String]]()
-                            remaing_start_children = remaing_start_child_states.map({$0})
-                            //print("rest of start children")
-                            //print(remaing_start_children)
-                            //print(self.next_states.count - 1 - j)
-                            //print("start children")
-                            //print(self.next_states)
-                            //print("j =", j)
-                            //print()
-                           /* for x in remaing_start_child_states
-                            {
-                                remaing_start_children.append(x)
-                            }*/
                             let new_parent: ChildParent = ChildParent.init(child: self.current_state_name,
-                                                                           remaining_start_children: remaing_start_children,
                                                                            parent: self.bottom_tracker)
                             self.bottom_tracker = new_parent
                             self.indents += 1
-                            
-                            //print(self.current_state_name)
                         }
                     }
-                    // what if there are a bunch of true ones with no start children?
                     if(isParent(maybe_parent: maybe_parent))
                     {
                         self.bottom_tracker.setChild(new_child: self.current_state_name)
                         let start_children: [[String]] = (self.levels[point]?.getStartChildren())!
-                        //self.next_states = []
-                        // children must be instered at the front so they get higher priority
-                        // the at j part is so they are inserted in the order they are to be run in
-                        //print(j, start_children)
-                        let initial_size = next_set_of_states.count
-                        var k = 0
-                        // what if the first state has no children?
+                        self.next_states = []
                         for start_child in start_children
                         {
-                            next_set_of_states.insert(start_child, at: k)
-                            k += 1
+                            self.next_states.append(start_child)
                         }
-                        // being used as input to the next iteration of the loop
                     }
                     else
                     {
                         let nexts:[[String]] = (self.levels[point]?.getNexts())!
-                        //self.next_states = []
+                        self.next_states = []
                         for next_state in nexts
                         {
-                            next_set_of_states.append(next_state)
+                            self.next_states.append(next_state)
                         }
                         self.bottom_tracker.setChild(new_child: self.current_state_name)
                     }
                     state_changed = true
-                    //break
-                }
-                // end loop after all true states have been run
-                else if(number_of_passing_states > 0)
-                {
-                    self.next_states = next_set_of_states
                     break
                 }
                 j += 1
             }
-            // when there is only 1 true state, else if(number_of_passing_states > 0) is not run
-            self.next_states = next_set_of_states
-            
             //print("state changed?", state_changed)
            // print("stack")
-            printStack2(bottom_tracker: self.bottom_tracker)
+            //print("winning state1 ", self.current_state_name)
             //print("next states")
             //print(self.next_states)
-            //print("end condition")
-            //print(end_states_nexts)
-            //print("winning state")
-            //print(self.current_state_name)
+            printStack2(bottom_tracker: self.bottom_tracker)
+            
             
             if(self.next_states.count == 0)
             {
             
             
                 //print("time to shorten stack\n")
-
-                let tracker_continuing_next_states_indents: NextStatePackage = getNextStates(bottom:            self.bottom_tracker,
-                                                                                             next_states:       self.next_states,
-                                                                                             indents:           self.indents,
+                let tracker_continuing_next_states_indents: NextStatePackage = getNextStates(bottom: self.bottom_tracker,
+                                                                                             next_states: self.next_states,
+                                                                                             indents: self.indents,
                                                                                              state_point_table: self.state_point_table,
-                                                                                             levels:            self.levels)
+                                                                                             levels: self.levels)
                 self.next_states = tracker_continuing_next_states_indents.next_states
                 self.indents = tracker_continuing_next_states_indents.indents
                 self.bottom = tracker_continuing_next_states_indents.bottom_of_shortened_stack
@@ -415,7 +336,13 @@ class Visit {
 
                 */
             }
-            ii += 1
+            //print("winning state2", self.current_state_name)
+            //print("next states")
+            //print(self.next_states)
+            //print("end condition")
+            //print(end_states_nexts)
+            
+            self.ii += 1
         }
         print("state machine is done\n")
         exit(1)
