@@ -222,13 +222,27 @@ class Visit {
         //exit(1)
         self.bottom_tracker = self.bottom
         self.state_point_table[self.dummy_node.name] = Point.init(l: -1, s: -1)
-        
+        var end_of_input: Bool = false
         while(self.next_states != end_states_nexts)
         {
+            
+            // get the index and the input
+            // if index == input.count
+                // exit machine
+            
             print("at", self.ii)
-            if(ii == 15)
+            if(ii == 320)
             {
                 print("too many states run\n")
+                /*
+                let matrix = levels[state_point_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+                let points = matrix.keys
+                var index = points.startIndex
+                for i in (0..<points.count)
+                {
+                    matrix[index].value.Print(indent_level: 0)
+                    index = points.index(index, offsetBy: 1)
+                }*/
                 exit(1)
             }
             var state_changed: Bool = false
@@ -242,6 +256,15 @@ class Visit {
             // run the hasParent... on the set of true results
             while(j < self.next_states.count)
             {
+                // assume these points already exist
+                let i: Int = (self.levels[Point.init(l: 0, s: 12)]?.getData().getInt())!
+                let length: Int = (self.levels[Point.init(l: 0, s: 16)]?.getData().getInt())!
+                if(i == length)
+                {
+                    print("end of input")
+                    break
+                }
+                
                 // how to let it run multiple true states?
                 self.current_state_name = self.next_states[j]
                 //print("trying state")
@@ -249,11 +272,13 @@ class Visit {
                 // there should always be an entry in the table that is gettin indexed
                 let point: Point = self.state_point_table[self.current_state_name]!
                 
-                let maybe_parent: Int = (levels[point]?.getStartChildren().count)!
+                let maybe_parent: Int = (self.levels[point]?.getStartChildren().count)!
                 //print("running", levels[point]?.function_name)
-                let did_function_pass: Bool = (levels[point]?.callFunction(current_state_name: self.current_state_name))!
+                let did_function_pass: Bool = (self.levels[point]?.callFunction(current_state_name: self.current_state_name))!
+                
                 if(did_function_pass)
                 {
+                    levels[point]?.advanceIterationNumber()
                     if(hasParent(levels: self.levels, point: point))
                     {
                         let bottom_state: [String] = self.bottom_tracker.getChild()
@@ -290,6 +315,31 @@ class Visit {
                     state_changed = true
                     break
                 }
+                else
+                {
+                    let i: Int = (self.levels[Point.init(l: 0, s: 12)]?.getData().getInt())!
+                    let length: Int = (self.levels[Point.init(l: 0, s: 16)]?.getData().getInt())!
+                    print(i, length)
+                    if(i == -1)
+                    {
+                        print("end of input")
+                        self.next_states = end_states_nexts
+                        let matrix = levels[state_point_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+                        let points = matrix.keys
+                        var index = points.startIndex
+                        // all states but the end state were here
+                        // It was replased
+                        for i in (0..<points.count)
+                        {
+                            matrix[index].value.Print(indent_level: 0)
+                            index = points.index(index, offsetBy: 1)
+                            print()
+                            print()
+                        }
+                        end_of_input = true
+                        break
+                    }
+                }
                 j += 1
             }
             //print("state changed?", state_changed)
@@ -298,7 +348,6 @@ class Visit {
             //print("next states")
             //print(self.next_states)
             printStack2(bottom_tracker: self.bottom_tracker)
-            
             
             if(self.next_states.count == 0)
             {
@@ -318,7 +367,7 @@ class Visit {
                 //printStack2(bottom_tracker: self.bottom_tracker)
                 //print(self.next_states)
             }
-            if(!state_changed && self.next_states.count > 0)
+            if(!state_changed && self.next_states.count > 0 && end_of_input == false)
             {
                 print("error at ")
                 print(self.next_states)
@@ -336,9 +385,11 @@ class Visit {
 
                 */
             }
-            //print("winning state2", self.current_state_name)
-            //print("next states")
-            //print(self.next_states)
+            // when machine's stack is folded and done this echos the last state run from before the folding
+            let point: Point = self.state_point_table[self.current_state_name]!
+
+            print("winning state", self.current_state_name, "f=",(self.levels[point]?.function_name)!)
+            print("next states", self.next_states)
             //print("end condition")
             //print(end_states_nexts)
             

@@ -18,6 +18,11 @@ class Point {
         self.level_id = l
         self.state_id = s
     }
+    func Print()
+    {
+        print(self.level_id)
+        print(self.state_id)
+    }
     func getLevelId() -> Int
     {
         return self.level_id

@@ -502,8 +502,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //print("blablabla")
             nest_flag = false
             let new_context: ContextState = ContextState.init(name: ["ss"],
-                                                              start_children: [["ss"]],
                                                               nexts: [["ss"]],
+                                                              start_children: [["ss"]],
                                                               function: testing,
                                                               function_name: "test",
                                                               data: Data.init(new_data: [:]),

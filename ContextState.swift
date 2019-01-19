@@ -78,7 +78,11 @@ class Data {
         var entry = self.data["[[String]: Point]"] as? [[String]: Point]
         if(entry != nil)
         {
-            return entry![key]!
+            if(entry![key] != nil)
+            {
+                return entry![key]!
+
+            }
         }
         return Point.init(l: -1, s: -1)
     }
@@ -87,7 +91,11 @@ class Data {
         var entry = self.data["[Point: ContextState]"] as? [Point: ContextState]
         if(entry != nil)
         {
-            return entry![key]!
+            if(entry![key] != nil)
+            {
+                return entry![key]!
+
+            }
         }
         return ContextState.init(name: ["nil"], function: returnTrue(current_state_name:))
     }
@@ -150,7 +158,7 @@ class ContextState {
     var name:           [String]
     
     var start_children: [[String]]
-    
+    var children:       [[String]]
     var parents:        [[String]]
     
     
@@ -162,33 +170,64 @@ class ContextState {
     
     // this should only have 1 entry as each state also can stand in as a single variable(digit, string, array, custom class)
     var data:           Data
+    
+    var iteration_number: Int
 
     init(name:                  [String],
-         start_children:        [[String]],
          nexts:                 [[String]],
+         start_children:        [[String]],
          function: @escaping    ([String]) -> Bool,
          function_name:         String,
          data:                  Data,
          parents:               [[String]])
     {
         self.name           =   name
-        self.start_children =   start_children
         self.nexts          =   nexts
+        self.start_children =   start_children
+        self.children       =   []
         self.function       =   function
         self.function_name  =   function_name
         self.data           =   data
         self.parents        =   parents
+        self.iteration_number = Int()
 
     }
     init(name: [String], function: @escaping ([String]) -> Bool)
     {
         self.name = name
-        self.start_children =   []
         self.nexts          =   []
+        self.start_children =   []
+        self.children       =   []
         self.function       =   function
         self.function_name  =   ""
         self.data           =   Data.init(new_data: [:])
         self.parents        =   []
+        self.iteration_number = Int()
+    }
+    func appendStartChild(start_child: [String]) -> Bool
+    {
+        self.start_children.append(start_child)
+        return true
+    }
+    func appendChild(child: [String]) -> Bool
+    {
+        self.children.append(child)
+        return true
+    }
+    func setParents(parents: [[String]]) -> Bool
+    {
+        self.parents = parents
+        return true
+    }
+    func appendNextChild(next_child: [String]) -> Bool
+    {
+        self.nexts.append(next_child)
+        return true
+    }
+    func setFunctionName(function_name: String) -> Bool
+    {
+        self.function_name = function_name
+        return true
     }
     func makeIndentString(indent_level: Int) -> String
     {
@@ -205,12 +244,29 @@ class ContextState {
     {
         let indent_string = makeIndentString(indent_level: indent_level)
         
+        print(indent_string, "name:")
         print(indent_string, self.name)
-        print(indent_string, self.start_children)
+        print(indent_string, "nexts:")
         print(indent_string, self.nexts)
-        print(indent_string, self.function_name)
-        print(indent_string, self.data)
+        print(indent_string, "start children:")
+        print(indent_string, self.start_children)
+        print(indent_string, "children:")
+        print(indent_string, self.children)
+        
+        print(indent_string, "parents:")
         print(indent_string, self.parents)
+
+        print(indent_string, "function name:")
+        print(indent_string, self.function_name)
+        print(indent_string, "data:")
+        print(indent_string, self.data)
+
+        print(indent_string, "iteration number:")
+        print(indent_string, self.iteration_number)
+    }
+    func getIterationNumber() -> Int
+    {
+        return self.iteration_number
     }
     func getName() -> [String]
     {
@@ -239,6 +295,10 @@ class ContextState {
     func getData() -> Data
     {
         return self.data
+    }
+    func advanceIterationNumber()
+    {
+        self.iteration_number += 1
     }
     
 }
