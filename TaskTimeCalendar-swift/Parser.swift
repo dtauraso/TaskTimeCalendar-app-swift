@@ -10,25 +10,24 @@ import Foundation
 
 class Parser {
     
-    var levels: [Point: ContextState] = [Point: ContextState]()
-    var state_point_table: [[String]: Point] = [[String]: Point]()
-    func getPointFromStringListToPointEntry(key: [String]) -> Point
+    var name_state_table: [[String]: ContextState] = [[String]: ContextState]()
+    func getContextStateFromStringListToContextStateEntry(key: [String]) -> ContextState
     {
-        let entry = self.state_point_table[key]
+        let entry = self.name_state_table[key]
         if(entry != nil)
         {
             return entry!
         }
-        return Point.init(l: -1, s: -1)
+        return ContextState.init(name: [], function: returnTrue)
     }
     func getState(current_state_name: [String]) -> ContextState
     {
-        if(state_point_table[current_state_name] != nil)
+        if(name_state_table[current_state_name] != nil)
         {
-            return levels[state_point_table[current_state_name]!]!
+            return name_state_table[current_state_name]!
 
         }
-        print("no state by ", current_state_name, "is in state_point_table")
+        print("no state by ", current_state_name, "is in name_state_table")
         //exit(0)
         return ContextState.init(name: ["state does not exist"], function: returnTrue(current_state_name: ))
     }
@@ -535,14 +534,14 @@ class Parser {
         //var max_stack_index = getState(current_state_name: ["max_stack_index"]).getData().getInt() // 0
         //var start_index_in_level_for_stack_indexes = 30//getState(current_state_name: ["start_index_in_level_for_stack_indexes"]).getData().getInt()
         
-        let level_number_i_point: Point = state_point_table[["level_number", String(max_stack_index)]]!
-        let level_number_i_state_id = level_number_i_point.getStateId() // 30
+        //let level_number_i_state_id = name_state_table[["level_number", String(max_stack_index)]]!
+        //let level_number_i_state_id = level_number_i_point.getStateId() // 30
         
-        let state_number_i_point: Point = state_point_table[["state_number", String(max_stack_index)]]!
-        let state_number_i_state_id = state_number_i_point.getStateId() // 31
+        //let state_number_i_state_id = name_state_table[["state_number", String(max_stack_index)]]!
+        //let state_number_i_state_id = state_number_i_point.getStateId() // 31
         
-        let indent_number_i_point: Point = state_point_table[["indent_number", String(max_stack_index)]]!
-        let indent_number_i_state_id = indent_number_i_point.getStateId() // 32
+        //let indent_number_i_state_id: Point = name_state_table[["indent_number", String(max_stack_index)]]!
+        //let indent_number_i_state_id = indent_number_i_point.getStateId() // 32
         
         /*
         
@@ -560,42 +559,42 @@ class Parser {
         //let new_point: Point = Point.init(l: 0, s: level_number_i_state_id + 30)
         // 1 * 2 + 32 = 34
         // 2 * 2 + 34
-        let point: Point =  self.getPointFromStringListToPointEntry(key: ["state_number", String(max_stack_index + 1)])
+        let state: ContextState =  self.getContextStateFromStringListToContextStateEntry(key: ["state_number", String(max_stack_index + 1)])
         print("push to stack: current_level, current_state, current_indent max_stack_index")
         print(current_level, current_state, prev_indent, String(max_stack_index))
         // push
-        if(point == Point.init(l: -1, s: -1))
+        if(state == ContextState.init(name: [], function: returnTrue))
         {
             max_stack_index += 1
-            let level_number_point: Point = Point.init(l: 0, s: level_number_i_state_id + 3)
-            self.levels[level_number_point] = ContextState.init(name: ["level_number", String(max_stack_index)],
-                                                                nexts: [],
-                                                                start_children: [],
-                                                                function: returnTrue(current_state_name:),
-                                                                function_name: "returnTrue",
-                                                                data: Data.init(new_data: ["Int": current_level + 1]),
-                                                                parents: [])
-            self.state_point_table[(self.levels[level_number_point]?.getName())!] = level_number_point
+            //let level_number_point: Point = Point.init(l: 0, s: level_number_i_state_id + 3)
+            self.name_state_table[["level_number", String(max_stack_index)]] = ContextState.init(name: ["level_number", String(max_stack_index)],
+                                                                                                 nexts: [],
+                                                                                                 start_children: [],
+                                                                                                 function: returnTrue(current_state_name:),
+                                                                                                 function_name: "returnTrue",
+                                                                                                 data: Data.init(new_data: ["Int": current_level + 1]),
+                                                                                                 parents: [])
+            //self.name_state_table[(self.levels[level_number_point]?.getName())!] = level_number_point
 
-            let state_number_point: Point = Point.init(l: 0, s: state_number_i_state_id + 3 )
-            self.levels[state_number_point] = ContextState.init(name: ["state_number", String(max_stack_index)],
-                                                                nexts: [],
-                                                                start_children: [],
-                                                                function: returnTrue(current_state_name:),
-                                                                function_name: "returnTrue",
-                                                                data: Data.init(new_data: ["Int": 0]),
-                                                                parents: [])
-            self.state_point_table[(self.levels[state_number_point]?.getName())!] = state_number_point
+            //let state_number_point: Point = Point.init(l: 0, s: state_number_i_state_id + 3 )
+            self.name_state_table[["state_number", String(max_stack_index)]] = ContextState.init(name: ["state_number", String(max_stack_index)],
+                                                                                                 nexts: [],
+                                                                                                 start_children: [],
+                                                                                                 function: returnTrue(current_state_name:),
+                                                                                                 function_name: "returnTrue",
+                                                                                                 data: Data.init(new_data: ["Int": 0]),
+                                                                                                 parents: [])
+            //self.name_state_table[(self.levels[state_number_point]?.getName())!] = state_number_point
 
-            let indent_number_point: Point = Point.init(l: 0, s: indent_number_i_state_id + 3)
-            self.levels[indent_number_point] = ContextState.init(name: ["indent_number", String(max_stack_index)],
-                                                                 nexts: [],
-                                                                 start_children: [],
-                                                                 function: returnTrue(current_state_name:),
-                                                                 function_name: "returnTrue",
-                                                                 data: Data.init(new_data: ["Int": prev_indent]),
-                                                                 parents: [])
-            self.state_point_table[(self.levels[indent_number_point]?.getName())!] = indent_number_point
+            //let indent_number_point: Point = Point.init(l: 0, s: indent_number_i_state_id + 3)
+            self.name_state_table[["indent_number", String(max_stack_index)]] = ContextState.init(name: ["indent_number", String(max_stack_index)],
+                                                                                                  nexts: [],
+                                                                                                  start_children: [],
+                                                                                                  function: returnTrue(current_state_name:),
+                                                                                                  function_name: "returnTrue",
+                                                                                                  data: Data.init(new_data: ["Int": prev_indent]),
+                                                                                                  parents: [])
+            //self.name_state_table[(self.levels[indent_number_point]?.getName())!] = indent_number_point
             
             // going down
             //getState(current_state_name: ["level_id"]).getData().setInt(value: current_level + 1)
@@ -615,10 +614,14 @@ class Parser {
         // copy over
         else
         {
-            //var hidden_stack_item: ContextState = self.levels[point]!
+            //var hidden_stack_item: ContextState = self.na[point]!
             //let nth_level_pth_state = hidden_stack_item.getData().getInt()
             //hidden_stack_item.getData().setInt(value: nth_level_pth_state + 1)
             getState(current_state_name: ["max_stack_index"]).getData().setInt(value: max_stack_index + 1)
+            let last_value = getState(current_state_name: ["state_number", String(max_stack_index + 1)]).getData().getInt()
+            
+            // increment state_number[max_stack_index + 1]
+            getState(current_state_name: ["state_number", String(max_stack_index + 1)]).getData().setInt(value: last_value + 1)
 
             max_stack_index += 1
             print("copied stack")
@@ -658,9 +661,9 @@ class Parser {
         //getState(current_state_name: ["level_number", String(max_stack_index)]).getData().setInt(value: prev_level)
         /*
         print("second level")
-        //print(state_point_table[["level_number", "1"]]!.getStateId())
-        //print(state_point_table[["state_number", "1"]]!.getStateId())
-        //print(state_point_table[["indent_number", "1"]]!.getStateId())
+        //print(name_state_table[["level_number", "1"]]!.getStateId())
+        //print(name_state_table[["state_number", "1"]]!.getStateId())
+        //print(name_state_table[["indent_number", "1"]]!.getStateId())
 
         //print()
         print(getState(current_state_name: ["level_number", "1"]).getData().getInt())
@@ -770,7 +773,7 @@ class Parser {
     }
     func testing(current_state_name: [String]) -> Bool
     {
-        var test: String = self.levels[self.state_point_table[current_state_name]!]!.getData().getString()
+        var test: String = self.name_state_table[current_state_name]!.getData().getString()
         print(test)
         return true
     }
@@ -879,14 +882,13 @@ class Parser {
         
 
         */
-        self.levels[Point.init(l: 0, s: 0)] = ContextState.init(name: ["states", "state"],
+        self.name_state_table[["states", "state"]] = ContextState.init(name: ["states", "state"],
                                                                nexts: [],
                                                                start_children:[["names", "0"]],
                                                                function: returnTrue(current_state_name:),
                                                                function_name: "returnTrue",
                                                                data: Data.init(new_data: [:]),
                                                                parents: [["root", "0"]])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 0)]?.getName())!] = Point.init(l: 0, s: 0)
     
         // variables
         ////////
@@ -905,62 +907,56 @@ class Parser {
         */
         ///delete
         //////////
-        self.levels[Point.init(l: 0, s: 1)] = ContextState.init(name: ["level_id"],
+        self.name_state_table[["level_id"]] = ContextState.init(name: ["level_id"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [] )
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 1)]?.getName())!] = Point.init(l: 0, s: 1)
     
-        self.levels[Point.init(l: 0, s: 2)] = ContextState.init(name: ["state_id"],
+        self.name_state_table[["state_id"]] = ContextState.init(name: ["state_id"],
                                                                nexts: [],
                                                                start_children: [],
                                                                function: returnTrue(current_state_name:),
                                                                function_name: "returnTrue",
                                                                data: Data.init(new_data: ["Int": 0]),
                                                                parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 2)]?.getName())!] = Point.init(l: 0, s: 2)
         ///////////
         
-        self.levels[Point.init(l: 0, s: 3)] = ContextState.init(name: ["prev_indent"],
+        self.name_state_table[["prev_indent"]] = ContextState.init(name: ["prev_indent"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 3)]?.getName())!] = Point.init(l: 0, s: 3)
     
     
-        self.levels[Point.init(l: 0, s: 4)] = ContextState.init(name: ["prev_word"],
+        self.name_state_table[["prev_word"]] = ContextState.init(name: ["prev_word"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["String": "root"]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 4)]?.getName())!] = Point.init(l: 0, s: 4)
     
     
-        self.levels[Point.init(l: 0, s: 5)] = ContextState.init(name: ["current_word"],
+        self.name_state_table[["current_word"]] = ContextState.init(name: ["current_word"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["String": ""]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 5)]?.getName())!] = Point.init(l: 0, s: 5)
 
-        self.levels[Point.init(l: 0, s: 6)] = ContextState.init(name: ["next_indent"],
+        self.name_state_table[["next_indent"]] = ContextState.init(name: ["next_indent"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 6)]?.getName())!] = Point.init(l: 0, s: 6)
 
 
         /*
@@ -975,7 +971,7 @@ class Parser {
          
         */
 
-        self.levels[Point.init(l: 0, s: 7)] = ContextState.init(name: ["level_indent_stack"],
+        self.name_state_table[["level_indent_stack"]] = ContextState.init(name: ["level_indent_stack"],
                                                            nexts: [],
                                                            start_children: [["level_number", "0"],
                                                                             ["state_number", "0"],
@@ -985,18 +981,8 @@ class Parser {
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 7)]?.getName())!] = Point.init(l: 0, s: 7)
 
-        self.levels[Point.init(l: 0, s: 30)] = ContextState.init(name: ["level_number", "0"],
-                                                           nexts: [],
-                                                           start_children: [],
-                                                           function: returnTrue(current_state_name:),
-                                                           function_name: "returnTrue",
-                                                           data: Data.init(new_data: ["Int": 0]),
-                                                           parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 30)]?.getName())!] = Point.init(l: 0, s: 30)
-        
-        self.levels[Point.init(l: 0, s: 31)] = ContextState.init(name: ["state_number", "0"],
+        self.name_state_table[["level_number", "0"]] = ContextState.init(name: ["level_number", "0"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
@@ -1004,27 +990,32 @@ class Parser {
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
         
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 31)]?.getName())!] = Point.init(l: 0, s: 31)
+        self.name_state_table[["state_number", "0"]] = ContextState.init(name: ["state_number", "0"],
+                                                           nexts: [],
+                                                           start_children: [],
+                                                           function: returnTrue(current_state_name:),
+                                                           function_name: "returnTrue",
+                                                           data: Data.init(new_data: ["Int": 0]),
+                                                           parents: [])
+        
 
 
         
-        self.levels[Point.init(l: 0, s: 32)] = ContextState.init(name: ["indent_number", "0"],
+        self.name_state_table[["indent_number", "0"]] = ContextState.init(name: ["indent_number", "0"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 32)]?.getName())!] = Point.init(l: 0, s: 32)
         
-        self.levels[Point.init(l: 0, s: 10)] = ContextState.init(name: ["max_stack_index"],
+        self.name_state_table[["max_stack_index"]] = ContextState.init(name: ["max_stack_index"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 10)]?.getName())!] = Point.init(l: 0, s: 10)
  
 
         
@@ -1038,104 +1029,94 @@ class Parser {
         // variables
         //////
 
-        self.levels[Point.init(l: 0, s: 12)] = ContextState.init(name: ["i"],
+        self.name_state_table[["i"]] = ContextState.init(name: ["i"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["Int": 0]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 12)]?.getName())!] = Point.init(l: 0, s: 12)
 
 
-        self.levels[Point.init(l: 0, s: 13)] = ContextState.init(name: ["what_is_current_word_to_pre_word"],
+        self.name_state_table[["what_is_current_word_to_pre_word"]] = ContextState.init(name: ["what_is_current_word_to_pre_word"],
                                                            nexts: [],
                                                            start_children: [["child"], ["sibling"], ["new_parent"]],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 13)]?.getName())!] = Point.init(l: 0, s: 13)
         
             // child
-                self.levels[Point.init(l: 1, s: 0)] = ContextState.init(name: ["child"],
+                self.name_state_table[["child"]] = ContextState.init(name: ["child"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 1, s: 0)]?.getName())!] = Point.init(l: 1, s: 0)
 
             // sibling
-                self.levels[Point.init(l: 1, s: 1)] = ContextState.init(name: ["sibling"],
+                self.name_state_table[["sibling"]] = ContextState.init(name: ["sibling"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 1, s: 1)]?.getName())!] = Point.init(l: 1, s: 1)
 
             // parent
-                self.levels[Point.init(l: 1, s: 2)] = ContextState.init(name: ["new_parent"],
+                self.name_state_table[["new_parent"]] = ContextState.init(name: ["new_parent"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 1, s: 2)]?.getName())!] = Point.init(l: 1, s: 2)
         ///////
         
-        self.levels[Point.init(l: 0, s: 14)] = ContextState.init(name: ["advance", "init"],
+        self.name_state_table[["advance", "init"]] = ContextState.init(name: ["advance", "init"],
                                                            nexts: [["name", "0"]],
                                                            start_children: [],
                                                            function: advanceInit(current_state_name:),
                                                            function_name: "advanceInit",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [["names", "0"]])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 14)]?.getName())!] = Point.init(l: 0, s: 14)
 
         // advance
             // advance states
                 // have the child, sibling, parent states
                 // have a ssubmachine called advance that gets the next word and sets all this state variables
-        self.levels[Point.init(l: 0, s: 15)] = ContextState.init(name: ["sparse_matrix"],
+        self.name_state_table[["sparse_matrix"]] = ContextState.init(name: ["sparse_matrix"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["[Point: ContextState]": [:]]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 15)]?.getName())!] = Point.init(l: 0, s: 15)
     
         
     
-        self.levels[Point.init(l: 0, s: 16)] = ContextState.init(name: ["input"],
+        self.name_state_table[["input"]] = ContextState.init(name: ["input"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["String": readFile(file: "input.txt")]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 16)]?.getName())!] = Point.init(l: 0, s: 16)
         
-        self.levels[Point.init(l: 0, s: 17)] = ContextState.init(name: ["point_table"],
+        self.name_state_table[["point_table"]] = ContextState.init(name: ["point_table"],
                                                            nexts: [],
                                                            start_children: [],
                                                            function: returnTrue(current_state_name:),
                                                            function_name: "returnTrue",
                                                            data: Data.init(new_data: ["[[String]: Point]": [:]]),
                                                            parents: [])
-        self.state_point_table[(self.levels[Point.init(l: 0, s: 17)]?.getName())!] = Point.init(l: 0, s: 17)
 
         ///////////
         
         //print("\n\n")
             // "advance to names at 0"
-        //print((self.levels[Point.init(l: 0, s: 8)]?.getString())!)
-            self.levels[Point.init(l: 1, s: 3)] = ContextState.init(name: ["names", "0"],
+            self.name_state_table[["names", "0"]] = ContextState.init(name: ["names", "0"],
                                                                nexts: [],
                                                                start_children: [["advance", "init"]],
                                                                function: returnTrue(current_state_name:),
@@ -1143,7 +1124,6 @@ class Parser {
                                                                data: Data.init(new_data: [:]),
                                                                parents: [["states", "state"]])
         
-            self.state_point_table[(self.levels[Point.init(l: 1, s: 3)]?.getName())!] = Point.init(l: 1, s: 3)
     
             //print("\n\n")
     
@@ -1407,62 +1387,57 @@ class Parser {
                         none
          
         */
-                self.levels[Point.init(l: 2, s: 0)] = ContextState.init(name: ["name", "0"],
+                self.name_state_table[["name", "0"]] = ContextState.init(name: ["name", "0"],
                                                                    nexts: [["is_dead_state"], ["advance", "loop"]],
                                                                    start_children: [],
                                                                    function: collectName(current_state_name:),
                                                                    function_name: "collectName",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [["names", "0"]])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 0)]?.getName())!] = Point.init(l: 2, s: 0)
         
         
         
                 //print("\n\n")
                 // "name", "state_name"
-                self.levels[Point.init(l: 2, s: 1)] = ContextState.init(name: ["name", "state_name"],
+                self.name_state_table[["name", "state_name"]] = ContextState.init(name: ["name", "state_name"],
                                                                    nexts: [],
                                                                    start_children: [],
                                                                    function: returnTrue(current_state_name:),
                                                                    function_name: "returnTrue",
                                                                    data: Data.init(new_data: ["[String]":[]]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 1)]?.getName())!] = Point.init(l: 2, s: 1)
 
     
-                self.levels[Point.init(l: 2, s: 2)] = ContextState.init(name: ["indent_increase", "0"],
+                self.name_state_table[["indent_increase", "0"]] = ContextState.init(name: ["indent_increase", "0"],
                                                            nexts: [["name", "0"], ["\"Start Children\"", "0"]],
                                                            start_children: [],
                                                            function: returnFalse(current_state_name:),
                                                            function_name: "returnFalse",
                                                            data: Data.init(new_data: [:]),
                                                            parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 2)]?.getName())!] = Point.init(l: 2, s: 2)
                 //print("\n\n")
     
-                self.levels[Point.init(l: 2, s: 3)] = ContextState.init(name: ["indent_increase", "1"],
+                self.name_state_table[["indent_increase", "1"]] = ContextState.init(name: ["indent_increase", "1"],
                                                                    nexts: [["states", "substates"]],
                                                                    start_children: [],
                                                                    function: returnTrue(current_state_name:),
                                                                    function_name: "returnTrue",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 3)]?.getName())!] = Point.init(l: 2, s: 3)
                 //print("\n\n")
 
 
                 // the recursion will be detected by the positive level difference between the current state and the Start Children State
-                self.levels[Point.init(l: 2, s: 4)] = ContextState.init(name: ["indent_increase", "2"],
+                self.name_state_table[["indent_increase", "2"]] = ContextState.init(name: ["indent_increase", "2"],
                                                                    nexts: [["indent_decrease", "1"]],
                                                                    start_children: [["names", "0"]],
                                                                    function: returnTrue(current_state_name:),
                                                                    function_name: "returnTrue",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 4)]?.getName())!] = Point.init(l: 2, s: 4)
                 //print("\n\n")
 
-                self.levels[Point.init(l: 2, s: 5)] = ContextState.init(name: ["\"Start Children\"", "0"],
+                self.name_state_table[["\"Start Children\"", "0"]] = ContextState.init(name: ["\"Start Children\"", "0"],
                                                                    nexts: [],
                                                                    start_children: [],
                                                                    function: returnTrue(current_state_name:),
@@ -1471,56 +1446,58 @@ class Parser {
                                                                    parents: [])
                 // has no neighbors the stack should shrink after this state runs
 
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 5)]?.getName())!] = Point.init(l: 2, s: 5)
                 //print("\n\n")
     
-                self.levels[Point.init(l: 2, s: 6)] = ContextState.init(name: ["indent_decrease", "0"],
+                self.name_state_table[["indent_decrease", "0"]] = ContextState.init(name: ["indent_decrease", "0"],
                                                                    nexts: [],
                                                                    start_children: [],
                                                                    function: returnTrue(current_state_name:),
                                                                    function_name: "returnTrue",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 6)]?.getName())!] = Point.init(l: 2, s: 6)
                 //print("\n\n")
     
-                self.levels[Point.init(l: 2, s: 7)] = ContextState.init(name: ["indent_decrease", "1"],
+                self.name_state_table[["indent_decrease", "1"]] = ContextState.init(name: ["indent_decrease", "1"],
                                                                    nexts: [],
                                                                    start_children: [],
                                                                    function: returnFalse(current_state_name:),
                                                                    function_name: "returnFalse",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 7)]?.getName())!] = Point.init(l: 2, s: 7)
                 //print("\n\n")
-                self.levels[Point.init(l: 2, s: 26)] = ContextState.init(name: ["is_dead_state"],
+                self.name_state_table[["is_dead_state"]] = ContextState.init(name: ["is_dead_state"],
                                                                    nexts: [["save dead state"]],
                                                                    start_children: [],
                                                                    function: isDeadState(current_state_name:),
                                                                    function_name: "isDeadState",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 26)]?.getName())!] = Point.init(l: 2, s: 26)
 
                 // save dead state -> advance to next state ->  name, 0
-                self.levels[Point.init(l: 2, s: 27)] = ContextState.init(name: ["save dead state"],
-                                                                   nexts: [["advance to next state"]],
+                self.name_state_table[["save dead state"]] = ContextState.init(name: ["save dead state"],
+                                                                   nexts: [["increment state_id for the current level", "dead state"]],
                                                                    start_children: [],
                                                                    function: saveNewState(current_state_name:),
                                                                    function_name: "saveNewState",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 27)]?.getName())!] = Point.init(l: 2, s: 27)
 
 
-                self.levels[Point.init(l: 2, s: 28)] = ContextState.init(name: ["advance to next state"],
+                self.name_state_table[["increment state_id for the current level", "dead state"]] = ContextState.init(name: ["increment state_id for the current level", "dead state"],
+                                                                   nexts: [["advance to next state"]],
+                                                                   start_children: [],
+                                                                   function: incrementTheStateId(current_state_name:),
+                                                                   function_name: "incrementTheStateId",
+                                                                   data: Data.init(new_data: [:]),
+                                                                   parents: [])
+
+                self.name_state_table[["advance to next state"]] = ContextState.init(name: ["advance to next state"],
                                                                    nexts: [["name", "0"]],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 28)]?.getName())!] = Point.init(l: 2, s: 28)
 
                 /*
                                 save dead state
@@ -1536,7 +1513,7 @@ class Parser {
                 */
         
 
-                self.levels[Point.init(l: 2, s: 8)] = ContextState.init(name: ["advance", "loop"],
+                self.name_state_table[["advance", "loop"]] = ContextState.init(name: ["advance", "loop"],
                                                                    nexts: [["is_children"], ["is_next"], /* is the next name a child name or a sibling name*/["name", "0"]],
                                                                    start_children: [],
                                                                    // is_children is asking if the current_word is "Children", same idea as with is_next
@@ -1544,143 +1521,128 @@ class Parser {
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 8)]?.getName())!] = Point.init(l: 2, s: 8)
 
 
         
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 26)]?.getName())!] = Point.init(l: 2, s: 26)
         
-                self.levels[Point.init(l: 2, s: 9)] = ContextState.init(name: ["is_children"],
+                self.name_state_table[["is_children"]] = ContextState.init(name: ["is_children"],
                                                                    nexts: [["save new state", "from before children"]],
                                                                    start_children: [],
                                                                    function: isChildren(current_state_name:),
                                                                    function_name: "isChildren",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 9)]?.getName())!] = Point.init(l: 2, s: 9)
         
         
-                self.levels[Point.init(l: 2, s: 10)] = ContextState.init(name: ["is_next"],
+                self.name_state_table[["is_next"]] = ContextState.init(name: ["is_next"],
                                                                    nexts: [["save new state", "from before next"]],
                                                                    start_children: [],
                                                                    function: isNext(current_state_name:),
                                                                    function_name: "isNext",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 10)]?.getName())!] = Point.init(l: 2, s: 10)
 
 
 
         
-                self.levels[Point.init(l: 2, s: 11)] = ContextState.init(name: ["save new state", "from before children"],
+                self.name_state_table[["save new state", "from before children"]] = ContextState.init(name: ["save new state", "from before children"],
                                                                    nexts: [["advance", "past children"]],
                                                                    start_children: [],
                                                                    function: saveNewState(current_state_name:),
                                                                    function_name: "saveNewState",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 11)]?.getName())!] = Point.init(l: 2, s: 11)
 
-                self.levels[Point.init(l: 2, s: 12)] = ContextState.init(name: ["save new state", "from before next"],
+                self.name_state_table[["save new state", "from before next"]] = ContextState.init(name: ["save new state", "from before next"],
                                                                    nexts: [["advance", "to next state link"]],
                                                                    start_children: [],
                                                                    function: saveNewState(current_state_name:),
                                                                    function_name: "saveNewState",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 12)]?.getName())!] = Point.init(l: 2, s: 12)
 
 
     
-                self.levels[Point.init(l: 2, s: 13)] = ContextState.init(name: ["advance level"],
+                self.name_state_table[["advance level"]] = ContextState.init(name: ["advance level"],
                                                                    nexts: [["name", "0"]],
                                                                    start_children: [],
                                                                    function: advanceLevel(current_state_name:),
                                                                    function_name: "advanceLevel",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 13)]?.getName())!] = Point.init(l: 2, s: 13)
         
         
-                self.levels[Point.init(l: 2, s: 14)] = ContextState.init(name: ["advance", "past children"],
+                self.name_state_table[["advance", "past children"]] = ContextState.init(name: ["advance", "past children"],
                                                                    nexts: [["advance level"]],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 14)]?.getName())!] = Point.init(l: 2, s: 14)
         
         
         
-                self.levels[Point.init(l: 2, s: 15)] = ContextState.init(name: ["advance", "to next state link"],
+                self.name_state_table[["advance", "to next state link"]] = ContextState.init(name: ["advance", "to next state link"],
                                                                    nexts: [["save", "next state link"]],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 15)]?.getName())!] = Point.init(l: 2, s: 15)
 
         
-                self.levels[Point.init(l: 2, s: 16)] = ContextState.init(name: ["save", "next state link"],
+                self.name_state_table[["save", "next state link"]] = ContextState.init(name: ["save", "next state link"],
                                                                    nexts: [["advance", "to maybe next state link"]],
                                                                    start_children: [],
                                                                    function: saveNextStateLink(current_state_name:),
                                                                    function_name: "saveNextStateLink",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 16)]?.getName())!] = Point.init(l: 2, s: 16)
         
-                self.levels[Point.init(l: 2, s: 17)] = ContextState.init(name: ["advance", "to maybe next state link"],
+                self.name_state_table[["advance", "to maybe next state link"]] = ContextState.init(name: ["advance", "to maybe next state link"],
                                                                    nexts: [["is current word a sibling of prev word"], ["advance past", "Function"]],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 17)]?.getName())!] = Point.init(l: 2, s: 17)
 
-                self.levels[Point.init(l: 2, s: 18)] = ContextState.init(name: ["is current word a sibling of prev word"],
+                self.name_state_table[["is current word a sibling of prev word"]] = ContextState.init(name: ["is current word a sibling of prev word"],
                                                                    nexts: [["save", "next state link"]],
                                                                    start_children: [],
                                                                    function: isCurrentWordASiblingOfPrevWord(current_state_name:),
                                                                    function_name: "isCurrentWordASiblingOfPrevWord",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 18)]?.getName())!] = Point.init(l: 2, s: 18)
 
                 // save next state link, advance to maybe next state link, is current word a sibling of prev word?, yes: save next state link,
                 // no: move on
         
-                self.levels[Point.init(l: 2, s: 19)] = ContextState.init(name: ["advance past", "Function"],
+                self.name_state_table[["advance past", "Function"]] = ContextState.init(name: ["advance past", "Function"],
                                                                    nexts: [["save function name"]],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 19)]?.getName())!] = Point.init(l: 2, s: 19)
 
 
-                self.levels[Point.init(l: 2, s: 20)] = ContextState.init(name: ["save function name"],
+                self.name_state_table[["save function name"]] = ContextState.init(name: ["save function name"],
                                                                    nexts: [["advance", "again"]],
                                                                    start_children: [],
                                                                    function: saveFunctionName(current_state_name:),
                                                                    function_name: "saveFunctionName",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 20)]?.getName())!] = Point.init(l: 2, s: 20)
 
 
-                self.levels[Point.init(l: 2, s: 21)] = ContextState.init(name: ["advance", "again"],
+                self.name_state_table[["advance", "again"]] = ContextState.init(name: ["advance", "again"],
                                                                    nexts: [["is current word a different parent of prev word"],],
                                                                    start_children: [],
                                                                    function: advanceLoop(current_state_name:),
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 21)]?.getName())!] = Point.init(l: 2, s: 21)
 
 
                 /*
@@ -1701,68 +1663,61 @@ class Parser {
                                     Function
                                         decrememntMaxStackIndex
                 */
-                self.levels[Point.init(l: 2, s: 22)] = ContextState.init(name: ["is current word a different parent of prev word"],
+                self.name_state_table[["is current word a different parent of prev word"]] = ContextState.init(name: ["is current word a different parent of prev word"],
                                                                    nexts: [["is current word a state name"], ["is current word \"Function\""]],
                                                                    start_children: [],
                                                                    function: isCurrentwordADifferentParentOfPrevWord(current_state_name:),
                                                                    function_name: "isCurrentwordADifferentParentOfPrevWord",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 22)]?.getName())!] = Point.init(l: 2, s: 22)
 
 
 
-                // start at 29
         
-                self.levels[Point.init(l: 2, s: 29)] = ContextState.init(name: ["is current word \"Function\""],
+                self.name_state_table[["is current word \"Function\""]] = ContextState.init(name: ["is current word \"Function\""],
                                                                    nexts: [["decrease max stack index"]],
                                                                    start_children: [],
                                                                    function: isCurrentWordFunction(current_state_name:),
                                                                    function_name: "isCurrentWordFunction",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 29)]?.getName())!] = Point.init(l: 2, s: 29)
         
         
-                self.levels[Point.init(l: 2, s: 30)] = ContextState.init(name: ["decrease max stack index"],
+                self.name_state_table[["decrease max stack index"]] = ContextState.init(name: ["decrease max stack index"],
                                                                    nexts: [["advance past", "Function"]],
                                                                    start_children: [],
                                                                    function: decreaseMaxStackIndex(current_state_name:),
                                                                    function_name: "decreaseMaxStackIndex",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 30)]?.getName())!] = Point.init(l: 2, s: 30)
 
 
         
-                self.levels[Point.init(l: 2, s: 23)] = ContextState.init(name: ["is current word a state name"],
+                self.name_state_table[["is current word a state name"]] = ContextState.init(name: ["is current word a state name"],
                                                                    nexts: [["is current indent == indent for level"]],
                                                                    start_children: [],
                                                                    function: isAStateName(current_state_name:),
                                                                    function_name: "isAStateName",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 23)]?.getName())!] = Point.init(l: 2, s: 23)
 
 
-                self.levels[Point.init(l: 2, s: 24)] = ContextState.init(name: ["is current indent == indent for level"],
+                self.name_state_table[["is current indent == indent for level"]] = ContextState.init(name: ["is current indent == indent for level"],
                                                                    nexts: [["increment state_id for the current level"]],
                                                                    start_children: [],
                                                                    function: isCurrentIndentSameAsIndentForLevel(current_state_name:),
                                                                    function_name: "isCurrentIndentSameAsIndentForLevel",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 24)]?.getName())!] = Point.init(l: 2, s: 24)
 
 
-                self.levels[Point.init(l: 2, s: 25)] = ContextState.init(name: ["increment state_id for the current level"],/* in the tracker and the stack[tracker]"],*/
+                self.name_state_table[["increment state_id for the current level"]] = ContextState.init(name: ["increment state_id for the current level"],/* in the tracker and the stack[tracker]"],*/
                                                                    nexts: [["name", "0"]],
                                                                    start_children: [],
                                                                    function: incrementTheStateId(current_state_name: ),
                                                                    function_name: "incrementTheStateId",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-                self.state_point_table[(self.levels[Point.init(l: 2, s: 25)]?.getName())!] = Point.init(l: 2, s: 25)
 
         
 
@@ -1782,21 +1737,20 @@ class Parser {
          
                 */
 
-            self.levels[Point.init(l: 1, s: 4)] = ContextState.init(name: ["start_children", "0"],
+            self.name_state_table[["start_children", "0"]] = ContextState.init(name: ["start_children", "0"],
                                                                nexts: [],
                                                                start_children: [["\"Start Children\"", "0"]],
                                                                function: returnTrue(current_state_name:),
                                                                function_name: "returnTrue",
                                                                data: Data.init(new_data: [:]),
                                                                parents: [])
-            self.state_point_table[(self.levels[Point.init(l: 1, s: 4)]?.getName())!] = Point.init(l: 1, s: 4)
             
     }
     func runParser()
     {
     
-            var visitor_class: Visit = Visit.init(next_states: [(self.levels[Point.init(l: 0, s: 0)]!.getName())],
-                                                  current_state_name:    (self.levels[Point.init(l: 0, s: 0)]?.getName())!,
+            var visitor_class: Visit = Visit.init(next_states: [["states", "state"]],
+                                                  current_state_name:    ["states", "state"],
                                                   bottom:                ChildParent.init(child: ["root", "0"],
                                                                                           parent: nil),
                                                   dummy_node:            ContextState.init(name:["root", "0"],
@@ -1806,9 +1760,8 @@ class Parser {
                                                                                            function_name: "returnTrue",
                                                                                            data: Data.init(new_data: [:]),
                                                                                            parents: []),
-                                                  state_point_table:     self.state_point_table,
-                                                  levels:                self.levels)
-            visitor_class.visitStates(start_state: self.levels[Point.init(l: 0, s: 0)]!,
-                                      end_state: self.levels[Point.init(l: 2, s: 4)]!)
+                                                  name_state_table:     self.name_state_table)
+            // visitStatesParser(start_state:)
+        visitor_class.visitStates(start_state: self.name_state_table[["states", "state"]]!)
     }
 }

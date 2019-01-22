@@ -92,9 +92,8 @@ class Visit {
     
     var dummy_node:         ContextState
     
-    var state_point_table:  [[String]: Point]
+    var name_state_table:  [[String]: ContextState]
     
-    var levels:             [Point: ContextState]
     
     var ii:                 Int
     var indents:            Int
@@ -103,8 +102,7 @@ class Visit {
          current_state_name:    [String],
          bottom:                ChildParent,
          dummy_node:            ContextState,
-         state_point_table:     [[String]: Point],
-         levels:                [Point: ContextState])
+         name_state_table:     [[String]: ContextState])
     {
     
         self.next_states        =   next_states
@@ -112,8 +110,7 @@ class Visit {
         self.bottom             =   bottom
         self.bottom_tracker     =   bottom
         self.dummy_node         =   dummy_node
-        self.state_point_table  =   state_point_table
-        self.levels             =   levels
+        self.name_state_table  =   name_state_table
         self.ii                 =   Int()
         self.indents            =   Int()
         self.end_state_name     =   [String]()
@@ -122,8 +119,7 @@ class Visit {
     func getNextStates(bottom:              ChildParent,
                        next_states:         [[String]],
                        indents:             Int,
-                       state_point_table:   [[String]: Point],
-                       levels:              [Point: ContextState]) -> NextStatePackage
+                       name_state_table:   [[String]: ContextState]) -> NextStatePackage
     {
         //print("in stack shrink")
         // the stack is a reversed linked list
@@ -151,8 +147,8 @@ class Visit {
                 return return_package
             }
             
-            let state_location: Point = state_point_table[state]!
-            return_package.setNextStates(next_states: (levels[state_location]?.getNexts())!)
+            //let state_location: ContextState = name_state_table[state]!
+            return_package.setNextStates(next_states: (name_state_table[state]!.getNexts()))
             //printStack2(bottom_tracker: return_package.getBottomOfShortenedStack())
         }
         //print("end of stack shrink")
@@ -171,20 +167,20 @@ class Visit {
         // assume that each state can have multiple parents, but only 1 of those parents is in use from the child's perspective
         for parent in parents
         {
-            let ith_parent_point: Point = self.state_point_table[parent]!
-            let bottom_state_point: Point = self.state_point_table[bottom_state]!
+            //let ith_parent_point: ContextState = self.name_state_table[parent]!
             
-            if(ith_parent_point.getLevelId() == bottom_state_point.getLevelId() &&
-               ith_parent_point.getStateId() == bottom_state_point.getStateId())
+            //let bottom_state_point: ContextState = self.name_state_table[bottom_state]!
+            
+            if(self.name_state_table[parent]! == self.name_state_table[bottom_state]!)
             {
                 return true
             }
         }
         return false
     }
-    func hasParent(levels: [Point: ContextState], point: Point) -> Bool
+    func hasParent(name_state_table: [[String]: ContextState], state_name: [String]) -> Bool
     {
-        return (levels[point]?.getParents().count)! > 0
+        return (name_state_table[state_name]?.getParents().count)! > 0
     }
     func printStack2(bottom_tracker: ChildParent?)
     {
@@ -206,24 +202,27 @@ class Visit {
         print("\n")
         
     }
-
-    func visitStates(start_state: ContextState, end_state: ContextState)
+    func returnTrue(current_state_name: [String]) -> Bool
+    {
+        return true
+    }
+    func visitStates(start_state: ContextState/*, end_state: ContextState*/)
     {
         // the user will have to make a map from state to function
         // set current state to start_state
         // keep going untill an end state is reached (error), or end_state is reached (success)
         
         self.current_state_name = start_state.getName()
-        self.end_state_name = end_state.getName()
+        //self.end_state_name = end_state.getName()
         // https://useyourloaf.com/blog/swift-hashable/
         // when the end state is checked in the loop guard, end state machine
-        let end_states_nexts = [self.end_state_name]//end_state.getNexts()
+        //let end_states_nexts = [self.end_state_name]//end_state.getNexts()
         //print(end_state.getNexts())
         //exit(1)
         self.bottom_tracker = self.bottom
-        self.state_point_table[self.dummy_node.name] = Point.init(l: -1, s: -1)
+        self.name_state_table[self.dummy_node.name] = ContextState.init(name: [], function: returnTrue)
         var end_of_input: Bool = false
-        while(self.next_states != end_states_nexts)
+        while(self.next_states != [])//(self.next_states != end_states_nexts)
         {
             
             // get the index and the input
@@ -235,7 +234,7 @@ class Visit {
             {
                 print("too many states run\n")
                 /*
-                let matrix = levels[state_point_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+                let matrix = levels[name_state_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
                 let points = matrix.keys
                 var index = points.startIndex
                 for i in (0..<points.count)
@@ -257,8 +256,8 @@ class Visit {
             while(j < self.next_states.count)
             {
                 // assume these points already exist
-                let i: Int = (self.levels[Point.init(l: 0, s: 12)]?.getData().getInt())!
-                let length: Int = (self.levels[Point.init(l: 0, s: 16)]?.getData().getInt())!
+                let i: Int = (self.name_state_table[["i"]]?.getData().getInt())!
+                let length: Int = (self.name_state_table[["input"]]?.getData().getInt())!
                 if(i == length)
                 {
                     print("end of input")
@@ -270,19 +269,19 @@ class Visit {
                 //print("trying state")
                 //print(self.current_state_name)
                 // there should always be an entry in the table that is gettin indexed
-                let point: Point = self.state_point_table[self.current_state_name]!
+                //let point: ContextState = self.name_state_table[self.current_state_name]!
                 
-                let maybe_parent: Int = (self.levels[point]?.getStartChildren().count)!
+                let maybe_parent: Int = (self.name_state_table[self.current_state_name]?.getStartChildren().count)!
                 //print("running", levels[point]?.function_name)
-                let did_function_pass: Bool = (self.levels[point]?.callFunction(current_state_name: self.current_state_name))!
+                let did_function_pass: Bool = (self.name_state_table[self.current_state_name]?.callFunction(current_state_name: self.current_state_name))!
                 
                 if(did_function_pass)
                 {
-                    levels[point]?.advanceIterationNumber()
-                    if(hasParent(levels: self.levels, point: point))
+                    self.name_state_table[self.current_state_name]?.advanceIterationNumber()
+                    if(hasParent(name_state_table: self.name_state_table, state_name: self.current_state_name))
                     {
                         let bottom_state: [String] = self.bottom_tracker.getChild()
-                        let parents: [[String]] = (self.levels[point]?.getParents())!
+                        let parents: [[String]] = (self.name_state_table[self.current_state_name]?.getParents())!
                         if(isBottomAtTheParentOfCurrentState(parents:       parents,
                                                              bottom_state:  bottom_state))
                         {
@@ -295,7 +294,7 @@ class Visit {
                     if(isParent(maybe_parent: maybe_parent))
                     {
                         self.bottom_tracker.setChild(new_child: self.current_state_name)
-                        let start_children: [[String]] = (self.levels[point]?.getStartChildren())!
+                        let start_children: [[String]] = (self.name_state_table[self.current_state_name]?.getStartChildren())!
                         self.next_states = []
                         for start_child in start_children
                         {
@@ -304,7 +303,7 @@ class Visit {
                     }
                     else
                     {
-                        let nexts:[[String]] = (self.levels[point]?.getNexts())!
+                        let nexts:[[String]] = (self.name_state_table[self.current_state_name]?.getNexts())!
                         self.next_states = []
                         for next_state in nexts
                         {
@@ -317,21 +316,23 @@ class Visit {
                 }
                 else
                 {
-                    let i: Int = (self.levels[Point.init(l: 0, s: 12)]?.getData().getInt())!
-                    let length: Int = (self.levels[Point.init(l: 0, s: 16)]?.getData().getInt())!
+                    let i: Int = (self.name_state_table[["i"]]?.getData().getInt())!
+                    let length: Int = (self.name_state_table[["input"]]?.getData().getInt())!
                     print(i, length)
                     if(i == -1)
                     {
                         print("end of input")
-                        self.next_states = end_states_nexts
-                        let matrix = levels[state_point_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+                        self.next_states = []//end_states_nexts for the A -> B visitor
+                        let matrix = name_state_table[["sparse_matrix"]]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
                         let points = matrix.keys
                         var index = points.startIndex
                         // all states but the end state were here
                         // It was replased
                         for i in (0..<points.count)
                         {
+
                             matrix[index].value.Print(indent_level: 0)
+                            //print(matrix[index].value.getName())
                             index = points.index(index, offsetBy: 1)
                             print()
                             print()
@@ -357,8 +358,7 @@ class Visit {
                 let tracker_continuing_next_states_indents: NextStatePackage = getNextStates(bottom: self.bottom_tracker,
                                                                                              next_states: self.next_states,
                                                                                              indents: self.indents,
-                                                                                             state_point_table: self.state_point_table,
-                                                                                             levels: self.levels)
+                                                                                             name_state_table: self.name_state_table)
                 self.next_states = tracker_continuing_next_states_indents.next_states
                 self.indents = tracker_continuing_next_states_indents.indents
                 self.bottom = tracker_continuing_next_states_indents.bottom_of_shortened_stack
@@ -386,9 +386,9 @@ class Visit {
                 */
             }
             // when machine's stack is folded and done this echos the last state run from before the folding
-            let point: Point = self.state_point_table[self.current_state_name]!
+            let point2: ContextState = self.name_state_table[self.current_state_name]!
 
-            print("winning state", self.current_state_name, "f=",(self.levels[point]?.function_name)!)
+            print("winning state", self.current_state_name, "f=", point2.function_name)
             print("next states", self.next_states)
             //print("end condition")
             //print(end_states_nexts)

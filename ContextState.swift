@@ -304,3 +304,16 @@ class ContextState {
 }
 
 
+extension ContextState: Equatable {
+  static func == (lhs: ContextState, rhs: ContextState) -> Bool {
+    return lhs.name == rhs.name &&
+      lhs.nexts == rhs.nexts &&
+      lhs.start_children == rhs.start_children &&
+      lhs.children == rhs.children &&
+      lhs.function_name == rhs.function_name &&
+      //lhs.data == rhs.data &&
+      lhs.parents == rhs.parents &&
+      lhs.iteration_number == rhs.iteration_number
+    
+    }
+}
