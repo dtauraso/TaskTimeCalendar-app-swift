@@ -99,56 +99,48 @@ class Data {
         }
         return ContextState.init(name: ["nil"], function: returnTrue(current_state_name:))
     }
-    func setBool(value: Bool) -> Bool
+    func setBool(value: Bool)
     {
         self.data["Bool"] = value
-        return true
     }
-    func setInt(value: Int) -> Bool
+    func setInt(value: Int)
     {
         self.data["Int"] = value
-        return true
     }
     
-    func setString(value: String) -> Bool
+    func setString(value: String)
     {
         self.data["String"] = value
-        return true
     }
-    func setStringList(value: [String]) -> Bool
+    func setStringList(value: [String])
     {
         self.data["[String]"] = value
-        return true
     }
     
-    func appendString(value: String) -> Bool
+    func appendString(value: String)
     {
         var string_list = self.data["[String]"] as! [String]
         //print(value)
         string_list.append(value)
         //print(string_list)
         self.data["[String]"] = string_list
-        return true
     }
-    func setPoint(value: Point) -> Bool
+    func setPoint(value: Point)
     {
         self.data["Point"] = value
-        return true
     }
     
-    func setStringListToPointEntry(key: [String], value: Point) -> Bool
+    func setStringListToPointEntry(key: [String], value: Point)
     {
         var dict = (self.data["[[String]: Point]"] as! [[String]: Point])
         dict[key] = value
         self.data["[[String]: Point]"] = dict
-        return true
     }
-    func setPointToContextState(key: Point, value: ContextState) -> Bool
+    func setPointToContextState(key: Point, value: ContextState)
     {
         var dict = (self.data["[Point: ContextState]"] as! [Point: ContextState])
         dict[key] = value
         self.data["[Point: ContextState]"] = dict
-        return true
 
     }
 }
@@ -192,6 +184,26 @@ class ContextState {
         self.iteration_number = Int()
 
     }
+    init(name:                  [String],
+         nexts:                 [[String]],
+         start_children:        [[String]],
+         children:              [[String]],
+         function: @escaping    ([String]) -> Bool,
+         function_name:         String,
+         data:                  Data,
+         parents:               [[String]])
+    {
+        self.name           =   name
+        self.nexts          =   nexts
+        self.start_children =   start_children
+        self.children       =   children
+        self.function       =   function
+        self.function_name  =   function_name
+        self.data           =   data
+        self.parents        =   parents
+        self.iteration_number = Int()
+
+    }
     init(name: [String], function: @escaping ([String]) -> Bool)
     {
         self.name = name
@@ -204,30 +216,25 @@ class ContextState {
         self.parents        =   []
         self.iteration_number = Int()
     }
-    func appendStartChild(start_child: [String]) -> Bool
+    func appendStartChild(start_child: [String])
     {
         self.start_children.append(start_child)
-        return true
     }
-    func appendChild(child: [String]) -> Bool
+    func appendChild(child: [String])
     {
         self.children.append(child)
-        return true
     }
-    func setParents(parents: [[String]]) -> Bool
+    func setParents(parents: [[String]])
     {
         self.parents = parents
-        return true
     }
-    func appendNextChild(next_child: [String]) -> Bool
+    func appendNextChild(next_child: [String])
     {
         self.nexts.append(next_child)
-        return true
     }
-    func setFunctionName(function_name: String) -> Bool
+    func setFunctionName(function_name: String)
     {
         self.function_name = function_name
-        return true
     }
     func makeIndentString(indent_level: Int) -> String
     {
@@ -296,6 +303,15 @@ class ContextState {
     {
         return self.data
     }
+    func setData(data: Int)
+    {
+        self.data.setInt(value: data)
+    }
+    func setData(data: String)
+    {
+        self.data.setString(value: data)
+    }
+    
     func advanceIterationNumber()
     {
         self.iteration_number += 1

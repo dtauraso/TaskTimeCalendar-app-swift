@@ -302,7 +302,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 exit(0)
             }
             var string = ""
-            for i in (0..<level)
+            for _ in (0..<level)
             {
                 string = string + delimiter
             }
@@ -346,8 +346,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             //print("next states", next_states)
             //print("fst")
-            var small_item = [String]()
-            var large_item = [String]()
+            _ = [String]()
+            _ = [String]()
             var intersection = [String]()
             print(next_states, options)
             // sort both
@@ -494,7 +494,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return text2
         }
     
-        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
             // Override point for customization after application launch.
             //
             // make non-ui classes here

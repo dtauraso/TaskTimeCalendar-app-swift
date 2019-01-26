@@ -1,3 +1,0 @@
-day view
-day label (can use table cells for this)
-bubbles for events(can use table cells for this)

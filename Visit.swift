@@ -230,18 +230,20 @@ class Visit {
                 // exit machine
             
             print("at", self.ii)
-            if(ii == 320)
+            if(ii == 330)
             {
                 print("too many states run\n")
-                /*
-                let matrix = levels[name_state_table[["sparse_matrix"]]!]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+                
+                let matrix = name_state_table[["sparse_matrix"]]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
                 let points = matrix.keys
                 var index = points.startIndex
                 for i in (0..<points.count)
                 {
                     matrix[index].value.Print(indent_level: 0)
                     index = points.index(index, offsetBy: 1)
-                }*/
+                    print()
+                    print()
+                }
                 exit(1)
             }
             var state_changed: Bool = false
@@ -328,7 +330,7 @@ class Visit {
                         var index = points.startIndex
                         // all states but the end state were here
                         // It was replased
-                        for i in (0..<points.count)
+                        for _ in (0..<points.count)
                         {
 
                             matrix[index].value.Print(indent_level: 0)

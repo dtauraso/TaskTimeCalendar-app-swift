@@ -237,7 +237,7 @@ struct OrderedDictionary<Tk: Hashable, Tv>
     var result = "{\n"
     for i in (0...(self.keys.count - 1)) {
         let key = self.keys[i]
-        result += "[\(i)]: \(key) => \(self[key])\n"
+        result += "[\(i)]: \(key) => \(String(describing: self[key]))\n"
     }
     result += "}"
     return result
@@ -345,7 +345,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     {
         var truth_var : Bool = false
 
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             my_delegate.printBreakInSequence(previous_state: previous_state)
             if previous_state == "view_did_load_regular"
@@ -427,7 +427,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 //print(my_delegate.task_nest)
                 // made a taskFST object
                     // put the taskFST nested items inside it
-                for i in (0..<my_delegate.task_nest)
+                for _ in (0..<my_delegate.task_nest)
                 {
                     // viewWillAppear() came from the last new added to stack?
                     // viewDidLoad() is run right after this line
@@ -583,12 +583,12 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     override func viewWillAppear(_ animated: Bool)
     {
         let function_name = "TasksFST viewWillAppear(_ animated: Bool)"
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             print(function_name, my_delegate.previous_state)
             
             // edges that api call has
-            var options = ["last_view_gone", "task_window", "view_did_load_nested"]
+            let options = ["last_view_gone", "task_window", "view_did_load_nested"]
             // check for previous state
             if (my_delegate.previous_state == "delete_nested_item_in_task_view" || my_delegate.previous_state == "view_did_load_for_nested")
             {
@@ -647,7 +647,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
      func tableView( _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
     
-        let function_name = "TasksFST tableView( _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell"
+        _ = "TasksFST tableView( _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell"
     
         /*var cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath);
         cell.textLabel?.text = "test"
@@ -664,7 +664,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         */
         var cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath);
 
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             //print(my_delegate.items.count, )
             if my_delegate.items.count > indexPath.row
@@ -749,7 +749,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 //cell.addGestureRecognizer(gestureRecognizer)
 
                 // all items have a more info button
-                cell.accessoryType = UITableViewCellAccessoryType.detailButton
+                cell.accessoryType = UITableViewCell.AccessoryType.detailButton
                 
                 if my_delegate.items[indexPath.row].is_note
                 {
@@ -796,13 +796,13 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
        
         
         let function_name = "TasksFST tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)"
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             print(function_name)
             print(my_delegate.previous_state)
             print(my_delegate.previous_state, " != task")
             //my_delegate.previous_state  = "task"
-            var options = ["task"]
+            let options = ["task"]
             //print("got here")
             my_delegate.test(previous_state: &my_delegate.previous_state, action: TasksFSTActions, found_in_api_call: function_name, options: options)
 
@@ -867,13 +867,13 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         
         
 
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
         
             
-            if self.isMovingFromParentViewController
+            if self.isMovingFromParent
             {
-                var options = ["delete_nested_item_in_task_view"]
+                let options = ["delete_nested_item_in_task_view"]
                 my_delegate.test(previous_state: &my_delegate.previous_state, action: TasksFSTActions, found_in_api_call: function_name, options: options)
             }
             
@@ -886,9 +886,9 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
         let function_name = "TasksFST cal(gestureRecognizer: UIGestureRecognizer)"
         // add_item_to_item_stack -> end_of_items_and_nested_items
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
-            var options = ["cal"]
+            let options = ["cal"]
             //var cal_state = "cal"
             //my_delegate.previous_state = "cal"
             //my_delegate.visitorForHierarchialStateMachine(previous_state: &my_delegate.previous_state, action: TasksFSTActions, found_in_api_call: function_name)
@@ -968,7 +968,7 @@ class EntryClass: UINavigationController//, UITableViewDelegate, UITableViewData
                     }
                     //print(array_of_chars)
                     let json_parser : JSONParser = JSONParser()
-                    items_from_file = json_parser.jsonArray(json_string: &array_of_chars)
+                    items_from_file = json_parser.jsonArray(json_string: &array_of_chars) as [Any]
                     
                     
                     my_delegate.items = items_from_file.map({createItem(task: $0)})
@@ -1040,7 +1040,7 @@ class EntryClass: UINavigationController//, UITableViewDelegate, UITableViewData
         // is happening first
     override func viewWillAppear(_ animated: Bool)
     {
-        let function_name = "EntryClass viewWillAppear"
+        _ = "EntryClass viewWillAppear"
     // went from transfer_entry_class to do_nothing after view_did_load_regular ended and before viewWillAppear started
         print("got here")
         /*if var my_delegate = UIApplication.shared.delegate as? AppDelegate
@@ -1061,10 +1061,10 @@ class EntryClass: UINavigationController//, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             print("nested", my_delegate.previous_state)
-            var options = ["start", "transfer_to_entry_class"]
+            let options = ["start", "transfer_to_entry_class"]
             /*if my_delegate.previous_state == "tasks"
             {
                 my_delegate.test(previous_state: &my_delegate.previous_state, action: EntryClassActions, found_in_api_call: function_name, options: options)
@@ -1161,7 +1161,7 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
         var truth_var = false
         //print("debug", previous_state)
 
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             my_delegate.printBreakInSequence(previous_state: previous_state)
 
@@ -1203,7 +1203,7 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 line.backgroundColor = UIColor.green
                 scrollView.addSubview(line)
                 
-                var timer : UILabel = UILabel()
+                let timer : UILabel = UILabel()
 
                 timer.frame = CGRect(x: 60, y: 60, width: 45, height: 10)
                 let cellHeight : CGFloat = 44.0
@@ -1249,7 +1249,7 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
 
         // entire stack of saved view controllers is erased
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
 
             print(my_delegate.previous_state)
@@ -1260,7 +1260,7 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
             //print(my_delegate.previous_state)
             // doesn't catch view_did_load_regular_2
             
-            var options = ["view_did_load_regular_2"]
+            let options = ["view_did_load_regular_2"]
             if my_delegate.previous_state == "cal"
             {
                 my_delegate.test(previous_state: &my_delegate.previous_state, action: CalendarFST_, found_in_api_call: function_name, options: options)
@@ -1280,7 +1280,7 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func tableView( _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
     
-        var cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath);
+        let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath);
         cell.textLabel?.text = "passes"
         
         return cell
@@ -1301,12 +1301,12 @@ class CalendarFST: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
         let function_name = " CalendarFST tasks(gestureRecognizer: UIGestureRecognizer)"
         //print("passes again")
-        if var my_delegate = UIApplication.shared.delegate as? AppDelegate
+        if let my_delegate = UIApplication.shared.delegate as? AppDelegate
         {
             
             //print("tasks", my_delegate.previous_state)
             //my_delegate.previous_state = "view_did_load_regular_2"
-            var options = ["tasks"]
+            let options = ["tasks"]
             // not transferring classes so must print out new line to distinquish the user interactions
             //print()
             // print out that the task was touched

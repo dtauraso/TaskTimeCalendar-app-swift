@@ -85,7 +85,7 @@ class JSONParser
     init(stream_in: String)
     {
         // convert from String to [Character]
-        for character in stream_in.characters
+        for character in String(stream_in)
         {
             stream.append(character)
         }

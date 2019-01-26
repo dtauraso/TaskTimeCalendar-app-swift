@@ -20,6 +20,13 @@ class Parser {
         }
         return ContextState.init(name: [], function: returnTrue)
     }
+    func setState(current_state: ContextState)
+    {
+        name_state_table[current_state.getName()] = current_state
+ 
+    }
+    //            getState(current_state_name: ["i"]).getData().setInt(value: -1)
+
     func getState(current_state_name: [String]) -> ContextState
     {
         if(name_state_table[current_state_name] != nil)
@@ -30,6 +37,14 @@ class Parser {
         print("no state by ", current_state_name, "is in name_state_table")
         //exit(0)
         return ContextState.init(name: ["state does not exist"], function: returnTrue(current_state_name: ))
+    }
+    func setData(current_state_name: [String], data: Int)
+    {
+        if(name_state_table[current_state_name] != nil)
+        {
+            
+            name_state_table[current_state_name]?.getData().setInt(value: data)
+        }
     }
     func returnTrue(current_state_name: [String]) -> Bool
     {
@@ -69,7 +84,7 @@ class Parser {
         //print(getState(current_state_name: ["level_number"]).getInt())
         //print(getState(current_state_name: ["i"]).getInt())
         var i: Int = getState(current_state_name: ["i"]).getData().getInt()
-        var input: String = getState(current_state_name: ["input"]).getData().getString()
+        let input: String = getState(current_state_name: ["input"]).getData().getString()
         var index = input.index(input.startIndex, offsetBy: 0)
     
         print(input)
@@ -96,8 +111,8 @@ class Parser {
         }
         //print(input[index])
         i = index.encodedOffset
+        //setData(current_state_name: ["i"], data: i)
         getState(current_state_name: ["i"]).getData().setInt(value: i)
-        
         getState(current_state_name: ["current_word"]).getData().setString(value: word)
 
         //print(indent_count)
@@ -125,7 +140,7 @@ class Parser {
         // i is pointing to the
         print("in advanceLoop")
         var i: Int = getState(current_state_name: ["i"]).getData().getInt()
-        var input: String = getState(current_state_name: ["input"]).getData().getString()
+        let input: String = getState(current_state_name: ["input"]).getData().getString()
         var next_indent = getState(current_state_name: ["next_indent"]).getData().getInt()
         var prev_indent = getState(current_state_name: ["prev_indent"]).getData().getInt()
         var current_word = getState(current_state_name: ["current_word"]).getData().getString()
@@ -213,7 +228,7 @@ class Parser {
         
         //print(i)
         //print(prev_indent, next_indent)
-        
+        //setData(current_state_name: ["i"], data: i)
         getState(current_state_name: ["i"]).getData().setInt(value: i)
         getState(current_state_name: ["prev_word"]).getData().setString(value: prev_word)
 
@@ -250,8 +265,8 @@ class Parser {
         let next_indent = getState(current_state_name: ["next_indent"]).getData().getInt()
         let prev_indent = getState(current_state_name: ["prev_indent"]).getData().getInt()
         print(next_indent == prev_indent)
-        var current_word = getState(current_state_name: ["current_word"]).getData().getString()
-        var prev_word = getState(current_state_name: ["prev_word"]).getData().getString()
+        let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+        let prev_word = getState(current_state_name: ["prev_word"]).getData().getString()
         print("prev word, current word")
         print(prev_word, current_word)
         return next_indent == prev_indent
@@ -303,7 +318,10 @@ class Parser {
         //print(getState(current_state_name: ["child"]).getData().getBool())
 
         let new_state = ContextState.init(name: collected_state_name2, function: returnTrue(current_state_name:))
-        //new_state.Print()
+        if(current_state_name == ["save dead state"])
+        {
+            new_state.setFunctionName(function_name: "returnTrue")
+        }
         // point_table "[[String]: Point]"
         getState(current_state_name: ["point_table"]).getData().setStringListToPointEntry(key: collected_state_name2,
                                                                                           value: Point.init(l: level, s: state))
@@ -313,46 +331,14 @@ class Parser {
         getState(current_state_name: ["sparse_matrix"]).getData().setPointToContextState(key: Point.init(l: level, s: state),
                                                                                          value: new_state)
         
-        /*
-        wrong point and doesn't appear in the printout at the bottom
-        point
-        3
-        8
-            name:
-            ["end"]
-            nexts:
-            []
-            start children:
-            []
-            children:
-            []
-            parents:
-            [["cell"]]
-            function name:
-         
-            data:
-            TaskTimeCalendar_swift.Data
-            iteration number:
-            0
-
-        stack
-
-        ["save dead state"]
-        ["names", "0"]
-        ["states", "state"]
-        ["root", "0"]
-
-
-        winning state ["save dead state"] f= saveNewState
-
-        */
+        
         if(level == 0 && state == 0)
         {
                 // if at first state(0, 0), have to set it's parent and root's start children
                 //print("here", collected_state_name)
                 let point: Point = Point.init(l: 0, s: 0)
 
-                var state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point)
+            let state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point)
                 //print("origin state", state.getName())
                 state.setParents(parents: [["root"]])
                 //state.Print(indent_level: 0)
@@ -361,48 +347,20 @@ class Parser {
             
 
         }
-        /*
-        else if(state == 0)
-        {
-            // assume there are at least 1 states saved in the sparse matrix
-            //set it's parent to the last state saved and the last state saved's(level - 1, stack's last state at level - 1) first children
-            // stack doesn't have a state number
-            //print("here again", collected_state_name)
-            let point: Point = Point.init(l: level - 1, s: state)
-            var parent_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point)
-            
-            parent_state.setStartChildren(start_children: [collected_state_name])
-            
-            //print("child location", level, state)
-            //print()
-            let location_of_child = Point.init(l: level, s: state)
-            var child_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: location_of_child)
-            //print(child_state.getName())
-            child_state.setParents(parents: [parent_state.getName()])
-            
-            //print("parent name", parent_state.getName())
-            //parent_state.Print(indent_level: 0)
-            
-            //print("child name", child_state.getName())
-            //child_state.Print(indent_level: 1)
-            
-            
-        }*/
         // for when same level is reentered later in the tree
         else// if (state >= 0)
         {
-            //print("havent't implemented state > 0 yet")
             
             
             let max_stack_index = getState(current_state_name: ["max_stack_index"]).getData().getInt()
-            var prev_level_state_number = getState(current_state_name: ["state_number", String(max_stack_index - 1)]).getData().getInt()
+            let prev_level_state_number = getState(current_state_name: ["state_number", String(max_stack_index - 1)]).getData().getInt()
             
-            var prev_level_level_number = getState(current_state_name: ["level_number", String(max_stack_index - 1)]).getData().getInt()
+            let prev_level_level_number = getState(current_state_name: ["level_number", String(max_stack_index - 1)]).getData().getInt()
             print("prev level things")
             print(prev_level_level_number, prev_level_state_number)
             let point: Point = Point.init(l: prev_level_level_number, s: prev_level_state_number)
             
-            var parent_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point)
+            let parent_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point)
             let start_index = collected_state_name[last_item].startIndex
             if(collected_state_name[last_item][start_index] == "-")
             {
@@ -411,11 +369,7 @@ class Parser {
             }
             else
             {
-                /*
-                didn't get rid of the "-" from the state name when saving the state
-                 name:
-                 ["-start"]
-                */
+                
                 parent_state.appendChild(child: collected_state_name)
             }
             //parent_state.setStartChildren(start_children: [collected_state_name])
@@ -430,7 +384,7 @@ class Parser {
             //print("child location", level, state)
             //print()
             let location_of_child = Point.init(l: level, s: state)
-            var child_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: location_of_child)
+            let child_state: ContextState = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: location_of_child)
             //print(child_state.getName())
             child_state.setParents(parents: [parent_state.getName()])
 
@@ -443,20 +397,11 @@ class Parser {
             print(max_stack_index, prev_level_state_number, prev_level_level_number)
 
             
-            //exit(0)
             // can't assume the state in the higher level is the same as this one
             // the second to top item in the stack is the state value for the higher level
         }
         
-        /*
-        let point2 = getState(current_state_name: ["point_table"]).getData().getPointFromStringListToPointEntry(key: ["entry class"])
-        //print(point)
-
-        let context_state2 = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point2)
-        //print(context_state)
-        context_state2.Print(indent_level: 0)
         
-        */
         
         // print saved state
         let point = getState(current_state_name: ["point_table"]).getData().getPointFromStringListToPointEntry(key: collected_state_name)
@@ -468,17 +413,15 @@ class Parser {
         context_state.Print(indent_level: level)
         print()
  
-        getState(current_state_name: ["name", "state_name"]).getData().setStringList(value: [])
-        //print("data from sparse_matrix")
-        
-        //let point1 = getState(current_state_name: ["point_table"]).getData().getPointFromStringListToPointEntry(key: ["entry class"])
-
-        //getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point1).Print(indent_level: 0)
-        
-        //let point2 = getState(current_state_name: ["point_table"]).getData().getPointFromStringListToPointEntry(key: ["start"])
-
-        //getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: point2).Print(indent_level: 1)
-        //exit(0)
+        //getState(current_state_name: ["name", "state_name"]).getData().setStringList(value: [])
+        var state_name = getState(current_state_name: ["name", "state_name"]).getData().getStringList()
+        let x = state_name.dropLast()
+        var new_state_name = [String]()
+        for i in x
+        {
+            new_state_name.append(i)
+        }
+        getState(current_state_name: ["name", "state_name"]).getData().setStringList(value: new_state_name)
         return true
     }
     func advanceLevel(current_state_name: [String]) -> Bool
@@ -697,7 +640,7 @@ class Parser {
         //print("state id")
         //print(current_state)
         
-        var state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state))
+        let state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state))
         state.appendNextChild(next_child: [current_word])
         //state.Print(indent_level: 1)
 
@@ -705,6 +648,32 @@ class Parser {
         
         getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state)).Print(indent_level: 1)
         return true
+    }
+    func charNotBackSlashNotWhiteSpace(current_state_name: [String]) -> Bool
+    {
+            let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+
+    }
+    func backSlash(current_state_name: [String]) -> Bool
+    {
+            let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+
+    }
+    func whiteSpace(current_state_name: [String]) -> Bool
+    {
+           let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+    }
+    func collectLastSpace(current_state_name: [String]) -> Bool
+    {
+           let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+    }
+    func forwardSlash(current_state_name: [String]) -> Bool
+    {
+           let current_word = getState(current_state_name: ["current_word"]).getData().getString()
+    }
+    func inputHasBeenReadIn(current_state_name: [String]) -> Bool
+    {
+           let current_word = getState(current_state_name: ["current_word"]).getData().getString()
     }
     func isCurrentWordASiblingOfPrevWord(current_state_name: [String]) -> Bool
     {
@@ -725,7 +694,7 @@ class Parser {
         //print("state id")
         //print(current_state)
         
-        var state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state))
+        let state = getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state))
         state.setFunctionName(function_name: current_word)
         getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state)).Print(indent_level: 1)
 
@@ -752,11 +721,43 @@ class Parser {
         print(prev_indent, current_level_indent_number)
         return prev_indent == current_level_indent_number
     }
+    func deleteCurrentStateName(current_state_name: [String]) -> Bool
+    {
+        getState(current_state_name: ["name", "state_name"]).getData().setStringList(value: [])
+        return true
+    }
+    func isCurrentIndentGreaterThanAsIndentForLevel(current_state_name: [String]) -> Bool
+    {
+        // already incremented to the state name, so the next indent is pointing to the Children word(the next indent is past the current word of consideration)
+        let prev_indent = getState(current_state_name: ["prev_indent"]).getData().getInt()
+        let max_stack_index = getState(current_state_name: ["max_stack_index"]).getData().getInt()
+        
+        let current_level_indent_number = getState(current_state_name: ["indent_number", String(max_stack_index)]).getData().getInt()
+        print(prev_indent, current_level_indent_number)
+        return prev_indent > current_level_indent_number
+    }
+    func deleteTheLastContext(current_state_name: [String]) -> Bool
+    {
+        var state_name = getState(current_state_name: ["name", "state_name"]).getData().getStringList()
+        //print(state_name)
+
+        let x = state_name.dropLast()
+        var new_state_name = [String]()
+        for i in x
+        {
+            new_state_name.append(i)
+        }
+        getState(current_state_name: ["name", "state_name"]).getData().setStringList(value: new_state_name)
+        //print(state_name)
+        //print(new_state_name)
+        return true
+    }
+    
     func incrementTheStateId(current_state_name: [String]) -> Bool
     {
         let max_stack_index = getState(current_state_name: ["max_stack_index"]).getData().getInt()
-        var current_level_state_number = getState(current_state_name: ["state_number", String(max_stack_index)]).getData().getInt()
-        var current_state = getState(current_state_name: ["state_id"]).getData().getInt()
+        let current_level_state_number = getState(current_state_name: ["state_number", String(max_stack_index)]).getData().getInt()
+        let current_state = getState(current_state_name: ["state_id"]).getData().getInt()
         
         getState(current_state_name: ["state_number", String(max_stack_index)]).getData().setInt(value: current_level_state_number + 1)
         getState(current_state_name: ["state_id"]).getData().setInt(value: current_state + 1)
@@ -773,7 +774,7 @@ class Parser {
     }
     func testing(current_state_name: [String]) -> Bool
     {
-        var test: String = self.name_state_table[current_state_name]!.getData().getString()
+        let test: String = self.name_state_table[current_state_name]!.getData().getString()
         print(test)
         return true
     }
@@ -810,6 +811,7 @@ class Parser {
     }
     init()
     {
+        // this contexual state chart is a deterministic machine
         // this process hasn't been tested on bad input
         // bad input will be tested later
         // current bugs for next version
@@ -1589,16 +1591,124 @@ class Parser {
                                                                    function_name: "advanceLoop",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-
+        
+        
         
                 self.name_state_table[["save", "next state link"]] = ContextState.init(name: ["save", "next state link"],
                                                                    nexts: [["advance", "to maybe next state link"]],
-                                                                   start_children: [],
+                                                                   start_children: [["get the next link"]],
                                                                    function: saveNextStateLink(current_state_name:),
                                                                    function_name: "saveNextStateLink",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
+                        self.name_state_table[["get the next link"]] = ContextState.init(name: ["get the next link"],
+                                                                                           nexts: [["add links to state"]],
+                                                                                           start_children: [["name_i"]],
+                                                                                           children: [["names", "next state links"], ["i"]],
+                                                                                           function: returnTrue(current_state_name:),
+                                                                                           function_name: "returnTrue",
+                                                                                           data: Data.init(new_data: [:]),
+                                                                                           parents: [])
         
+        
+                                self.name_state_table[["names", "next state links"]] = ContextState.init(name: ["names", "next state links"],
+                                                                                                   nexts: [],
+                                                                                                   start_children: [],
+                                                                                                   function: returnTrue(current_state_name:),
+                                                                                                   function_name: "returnTrue",
+                                                                                                   data: Data.init(new_data: ["[String]":[String]()]),
+                                                                                                   parents: [])
+                                self.name_state_table[["i"]] = ContextState.init(name: ["i"],
+                                                                                                   nexts: [],
+                                                                                                   start_children: [],
+                                                                                                   function: returnTrue(current_state_name:),
+                                                                                                   function_name: "returnTrue",
+                                                                                                   data: Data.init(new_data: ["Int":Int()]),
+                                                                                                   parents: [])
+        
+                                self.name_state_table[["name_i"]] = ContextState.init(name: ["name_i"],
+                                                                                                   nexts: [["name_i"], ["/"]],
+                                                                                                   start_children: [["char - \\-' '"]],
+                                                                                                   children: [["state name strings", "next states"]],
+                                                                                                   function: returnTrue(current_state_name:),
+                                                                                                   function_name: "returnTrue",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                        self.name_state_table[["state name strings", "next states"]] = ContextState.init(name: ["state name strings", "next states"],
+                                                                                                   nexts: [],
+                                                                                                   start_children: [],
+                                                                                                   function: returnTrue(current_state_name:),
+                                                                                                   function_name: "returnTrue",
+                                                                                                   data: Data.init(new_data: ["String":String()]),
+                                                                                                   parents: [])
+        
+                                        self.name_state_table[["char - \\-' '"]] = ContextState.init(name: ["char - \\-' '"],
+                                                                                                   nexts: [["char - \\-' '"], ["\\"], [" ", "0"], ["input empty"]],
+                                                                                                   start_children: [],
+                                                                                                   function: charNotBackSlashNotWhiteSpace(current_state_name:),
+                                                                                                   function_name: "charNotBackslashNotWhitespace",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                        self.name_state_table[["\\"]] = ContextState.init(name: ["\\"],
+                                                                                                   nexts: [["char - \\-' '"]],
+                                                                                                   start_children: [],
+                                                                                                   function: backSlash(current_state_name:),
+                                                                                                   function_name: "backSlash",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+        
+        
+        
+                                       self.name_state_table[[" ", "0"]] = ContextState.init(name: [" ", "0"],
+                                                                                                   nexts: [["char - \\-' '"], ["char - \\-' '", "1"], ["\\", "0"], ["\\"]],
+                                                                                                   start_children: [],
+                                                                                                   function: whiteSpace(current_state_name:),
+                                                                                                   function_name: "whiteSpace",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                        self.name_state_table[["char - \\-' '", "1"]] = ContextState.init(name: ["char - \\-' '", "1"],
+                                                                                                   nexts: [["char - \\-' '"]],
+                                                                                                   start_children: [],
+                                                                                                   function: collectLastSpace(current_state_name:),
+                                                                                                   function_name: "collectLastSpace",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                        self.name_state_table[["/", "0"]] = ContextState.init(name: ["/", "0"],
+                                                                                                   nexts: [],
+                                                                                                   start_children: [],
+                                                                                                   function: forwardSlash(current_state_name:),
+                                                                                                   function_name: "forwardSlash",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                        self.name_state_table[["input empty"]] = ContextState.init(name: ["input empty"],
+                                                                                                   nexts: [],
+                                                                                                   start_children: [],
+                                                                                                   function: inputHasBeenReadIn(current_state_name:),
+                                                                                                   function_name: "inputHasBeenReadIn",
+                                                                                                   data: Data.init(new_data: [:]),
+                                                                                                   parents: [])
+                                self.name_state_table[["/"]] = ContextState.init(name: ["/"],
+                                                                                           nexts: [[" ", "1"]],
+                                                                                           start_children: [],
+                                                                                           function: advanceLoop(current_state_name:),
+                                                                                           function_name: "advanceLoop",
+                                                                                           data: Data.init(new_data: [:]),
+                                                                                           parents: [])
+        
+                                self.name_state_table[[" ", "1"]] = ContextState.init(name: [" ", "1"],
+                                                                                           nexts: [["name_i"]],
+                                                                                           start_children: [],
+                                                                                           function: advanceLoop(current_state_name:),
+                                                                                           function_name: "advanceLoop",
+                                                                                           data: Data.init(new_data: [:]),
+                                                                                           parents: [])
+                        self.name_state_table[["add links to state"]] = ContextState.init(name: ["add links to state"],
+                                                                                           nexts: [],
+                                                                                           start_children: [],
+                                                                                           function: advanceLoop(current_state_name:),
+                                                                                           function_name: "advanceLoop",
+                                                                                           data: Data.init(new_data: [:]),
+                                                                                           parents: [])
                 self.name_state_table[["advance", "to maybe next state link"]] = ContextState.init(name: ["advance", "to maybe next state link"],
                                                                    nexts: [["is current word a sibling of prev word"], ["advance past", "Function"]],
                                                                    start_children: [],
@@ -1629,13 +1739,48 @@ class Parser {
 
                 self.name_state_table[["save function name"]] = ContextState.init(name: ["save function name"],
                                                                    nexts: [["advance", "again"]],
-                                                                   start_children: [],
+                                                                   start_children: [/*["get the function name"]*/],
                                                                    function: saveFunctionName(current_state_name:),
                                                                    function_name: "saveFunctionName",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
-
-
+                            ////  new subtree
+                            self.name_state_table[["get the function name"]] = ContextState.init(name: ["get the function name"],
+                                                                               nexts: [],
+                                                                               start_children: [["swift function signature"], ["swift_function_name"]],
+                                                                               function: saveFunctionName(current_state_name:),
+                                                                               function_name: "saveFunctionName",
+                                                                               data: Data.init(new_data: [:]),
+                                                                               parents: [])
+                                        self.name_state_table[["swift function signature"]] = ContextState.init(name: ["swift function signature"],
+                                                                                       nexts: [],
+                                                                                       start_children: [["letter"]],
+                                                                                       function: saveFunctionName(current_state_name:),
+                                                                                       function_name: "saveFunctionName",
+                                                                                       data: Data.init(new_data: [:]),
+                                                                                    parents: [])
+                                                self.name_state_table[["letter"]] = ContextState.init(name: ["letter"],
+                                                                                   nexts: [["letter"], ["letter_underscore_number"]],
+                                                                                   start_children: [],
+                                                                                   function: saveFunctionName(current_state_name:),
+                                                                                   function_name: "saveFunctionName",
+                                                                                   data: Data.init(new_data: [:]),
+                                                                                   parents: [])
+                                                self.name_state_table[["letter_underscore_number"]] = ContextState.init(name: ["letter_underscore_number"],
+                                                                                   nexts: [["letter_underscore_number"], ["("]],
+                                                                                   start_children: [],
+                                                                                   function: saveFunctionName(current_state_name:),
+                                                                                   function_name: "saveFunctionName",
+                                                                                   data: Data.init(new_data: [:]),
+                                                                                   parents: [])
+                                                self.name_state_table[["("]] = ContextState.init(name: ["("],
+                                                                                   nexts: [["letter", "1"]],
+                                                                                   start_children: [],
+                                                                                   function: saveFunctionName(current_state_name:),
+                                                                                   function_name: "saveFunctionName",
+                                                                                   data: Data.init(new_data: [:]),
+                                                                                   parents: [])
+        
                 self.name_state_table[["advance", "again"]] = ContextState.init(name: ["advance", "again"],
                                                                    nexts: [["is current word a different parent of prev word"],],
                                                                    start_children: [],
@@ -1694,7 +1839,7 @@ class Parser {
 
         
                 self.name_state_table[["is current word a state name"]] = ContextState.init(name: ["is current word a state name"],
-                                                                   nexts: [["is current indent == indent for level"]],
+                                                                   nexts: [["is current indent == indent for level"], ["is current indent > indent for level"]],
                                                                    start_children: [],
                                                                    function: isAStateName(current_state_name:),
                                                                    function_name: "isAStateName",
@@ -1703,14 +1848,39 @@ class Parser {
 
 
                 self.name_state_table[["is current indent == indent for level"]] = ContextState.init(name: ["is current indent == indent for level"],
-                                                                   nexts: [["increment state_id for the current level"]],
+                                                                   nexts: [["delete current state name"]],
                                                                    start_children: [],
                                                                    function: isCurrentIndentSameAsIndentForLevel(current_state_name:),
                                                                    function_name: "isCurrentIndentSameAsIndentForLevel",
                                                                    data: Data.init(new_data: [:]),
                                                                    parents: [])
+        
+        
+                self.name_state_table[["delete current state name"]] = ContextState.init(name: ["delete current state name"],
+                                                                   nexts: [["increment state_id for the current level"]],
+                                                                   start_children: [],
+                                                                   function: deleteCurrentStateName(current_state_name:),
+                                                                   function_name: "deleteCurrentStateName",
+                                                                   data: Data.init(new_data: [:]),
+                                                                   parents: [])
 
-
+        
+        
+        
+        
+                self.name_state_table[["is current indent > indent for level"]] = ContextState.init(name: ["is current indent > indent for level"],
+                                                                   nexts: [/*["delete the last context"]*/["increment state_id for the current level"]],
+                                                                   start_children: [],
+                                                                   function: isCurrentIndentGreaterThanAsIndentForLevel(current_state_name:),
+                                                                   function_name: "isCurrentIndentGreaterThanAsIndentForLevel",
+                                                                   data: Data.init(new_data: [:]),
+                                                                   parents: [])
+        
+        
+        
+        
+        
+        
                 self.name_state_table[["increment state_id for the current level"]] = ContextState.init(name: ["increment state_id for the current level"],/* in the tracker and the stack[tracker]"],*/
                                                                    nexts: [["name", "0"]],
                                                                    start_children: [],
@@ -1744,12 +1914,12 @@ class Parser {
                                                                function_name: "returnTrue",
                                                                data: Data.init(new_data: [:]),
                                                                parents: [])
-            
+        
     }
     func runParser()
     {
     
-            var visitor_class: Visit = Visit.init(next_states: [["states", "state"]],
+        let visitor_class: Visit = Visit.init(next_states: [["states", "state"]],
                                                   current_state_name:    ["states", "state"],
                                                   bottom:                ChildParent.init(child: ["root", "0"],
                                                                                           parent: nil),
