@@ -221,6 +221,7 @@ class Visit {
                       point_table: [[String]: Point]) -> String
     {
         var formated_string = String()
+        //formated_string.append(indents + "entered\n")
         formated_string.append(indents)
 
         var indents_for_name = indents
@@ -236,10 +237,11 @@ class Visit {
             }
             formated_string.append(contentsOf: name_part)
             formated_string.append(contentsOf: "\n")
+            var indents_x = indents_for_name
             if(name_part != node.getName()[node.getName().count - 1])
             {
-                indents_for_name += " "
-                formated_string.append(contentsOf: indents_for_name)
+                indents_x += " "
+                formated_string.append(contentsOf: indents_x)
 
             }
             //else
@@ -248,11 +250,11 @@ class Visit {
         //print("|" + indents_for_name + "|")
         if(node.getStartChildren().count + node.getChildren().count > 0)
         {
-            indents_for_name += "  "
+            //indents_for_name += "  "
             //print("before children")
             //print("|" + indents_for_name + "|")
 
-            formated_string.append(contentsOf: indents_for_name)
+            formated_string.append(contentsOf: indents_for_name + "  ")
             formated_string.append("Children\n")
             //print(formated_string)
             //indents_for_name += "    "
@@ -269,7 +271,7 @@ class Visit {
                 //print("|" + indents_for_name + "|")
 
                 formated_string.append(prettyFormat(node: child_node,
-                                                    indents: indents_for_name + "    ",
+                                                    indents: indents_for_name + "      ",
                                                     start_child: true,
                                                     matrix: matrix,
                                                     point_table: point_table))
@@ -285,7 +287,7 @@ class Visit {
                 let child_node = matrix[point]!
                 //print(child_node.getStartChildren().count > 0)
                 formated_string.append(prettyFormat(node: child_node,
-                                                    indents: indents_for_name + "    ",
+                                                    indents: indents_for_name + "      ",
                                                     start_child: false,
                                                     matrix: matrix,
                                                     point_table: point_table))
@@ -293,10 +295,11 @@ class Visit {
         }
         if(node.getNexts().count > 0)
         {
-            indents_for_name += "     "
-            formated_string.append(contentsOf: indents_for_name)
+            //indents_for_name += "     "
+            formated_string.append(contentsOf: indents_for_name + "  ")
             formated_string.append("Next\n")
-            
+                        //let x = indents_for_name + "  "
+
             //indents_for_name += "  "
             formated_string.append(contentsOf: indents_for_name + "    ")
             for next_state_link in node.getNexts()
@@ -327,7 +330,7 @@ class Visit {
         formated_string.append(contentsOf: "\n")
 
         //indents_for_name += "  "
-        formated_string.append(contentsOf: indents_for_name)
+        formated_string.append(contentsOf: indents_for_name + "  ")
         formated_string.append("Function\n")
 
         //indents_for_name += "     "
@@ -339,7 +342,7 @@ class Visit {
 
         if(node.getParents().count > 0)
         {
-            formated_string.append(contentsOf: indents_for_name)
+            formated_string.append(contentsOf: indents_for_name + "  ")
             formated_string.append("Parents\n")
             //indents_for_name += "     "
 
@@ -356,6 +359,7 @@ class Visit {
             }
             //formated_string.append(contentsOf: "\n")
         }
+        //formated_string.append(indents + "exit\n")
 
         return formated_string
         //if()
