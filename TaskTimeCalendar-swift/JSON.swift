@@ -219,7 +219,7 @@ class JSONParser
         var i = 0
         while true
         {
-            assert(50 != i, "i is out of bounds i = " + String(i))
+            //assert(50 != i, "i is out of bounds i = " + String(i))
             //print(json_string)
             //print()
             var state_changed = false
@@ -321,7 +321,7 @@ class JSONParser
         
         while true
         {
-            assert(i != 70, "loop_count is too far loop_count = " + String(i))
+            ///assert(i != 70, "loop_count is too far loop_count = " + String(i))
             
             
             //print(json_string)

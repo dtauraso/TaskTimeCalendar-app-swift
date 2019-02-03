@@ -7,7 +7,14 @@
 //
 
 import Foundation
-
+func returnTrue(current_state_name: [String], parser: inout Parser) -> Bool
+{
+    return true
+}
+func returnFalse(current_state_name: [String], parser: inout Parser) -> Bool
+{
+    return false
+}
 class ChildParent {
 
     var child: [String]
@@ -206,12 +213,161 @@ class Visit {
     {
         return true
     }
-    func visitStates(start_state: ContextState/*, end_state: ContextState*/)
+
+    func prettyFormat(node: ContextState,
+                      indents: String,
+                      start_child: Bool,
+                      matrix: [Point: ContextState],
+                      point_table: [[String]: Point]) -> String
+    {
+        var formated_string = String()
+        formated_string.append(indents)
+
+        var indents_for_name = indents
+        for name_part in node.getName()
+        {
+            if(name_part == node.getName()[node.getName().count - 1])
+            {
+                if(start_child)
+                {
+                    //formated_string.append(contentsOf: indents_for_name)
+                    formated_string.append(contentsOf: "-")
+                }
+            }
+            formated_string.append(contentsOf: name_part)
+            formated_string.append(contentsOf: "\n")
+            if(name_part != node.getName()[node.getName().count - 1])
+            {
+                indents_for_name += " "
+                formated_string.append(contentsOf: indents_for_name)
+
+            }
+            //else
+            
+        }
+        //print("|" + indents_for_name + "|")
+        if(node.getStartChildren().count + node.getChildren().count > 0)
+        {
+            indents_for_name += "  "
+            //print("before children")
+            //print("|" + indents_for_name + "|")
+
+            formated_string.append(contentsOf: indents_for_name)
+            formated_string.append("Children\n")
+            //print(formated_string)
+            //indents_for_name += "    "
+
+            //formated_string.append(contentsOf: indents)
+            //formated_string.append("    ")
+            //var indents_for_name = indents + "    " + "    "
+            
+            for start_child in node.getStartChildren()
+            {
+                let point = point_table[start_child]!
+                
+                let child_node = matrix[point]!
+                //print("|" + indents_for_name + "|")
+
+                formated_string.append(prettyFormat(node: child_node,
+                                                    indents: indents_for_name + "    ",
+                                                    start_child: true,
+                                                    matrix: matrix,
+                                                    point_table: point_table))
+
+
+            }
+            for name in node.getChildren()
+            {
+                //print(name)
+                //print(name_state_table.keys)
+                let point = point_table[name]!
+                
+                let child_node = matrix[point]!
+                //print(child_node.getStartChildren().count > 0)
+                formated_string.append(prettyFormat(node: child_node,
+                                                    indents: indents_for_name + "    ",
+                                                    start_child: false,
+                                                    matrix: matrix,
+                                                    point_table: point_table))
+            }
+        }
+        if(node.getNexts().count > 0)
+        {
+            indents_for_name += "     "
+            formated_string.append(contentsOf: indents_for_name)
+            formated_string.append("Next\n")
+            
+            //indents_for_name += "  "
+            formated_string.append(contentsOf: indents_for_name + "    ")
+            for next_state_link in node.getNexts()
+            {
+                for context in next_state_link
+                {
+                    formated_string.append(contentsOf: context)
+                    if(context != next_state_link[next_state_link.count - 1])
+                    {
+                        formated_string.append(contentsOf: " / ")
+
+                    }
+
+
+                }
+                if(next_state_link != node.getNexts()[node.getNexts().count - 1])
+                {
+                    formated_string.append(contentsOf: "\n")
+                    formated_string.append(contentsOf: indents_for_name + "    ")
+
+                }
+            }
+            //formated_string.append(contentsOf: "\n")
+
+
+            
+        }
+        formated_string.append(contentsOf: "\n")
+
+        //indents_for_name += "  "
+        formated_string.append(contentsOf: indents_for_name)
+        formated_string.append("Function\n")
+
+        //indents_for_name += "     "
+        formated_string.append(contentsOf: indents_for_name + "    ")
+        //formated_string.append(contentsOf: "\n")
+        //formated_string.append(contentsOf: indents_for_name)
+        formated_string.append(contentsOf: node.function_name)
+        formated_string.append(contentsOf: "\n")
+
+        if(node.getParents().count > 0)
+        {
+            formated_string.append(contentsOf: indents_for_name)
+            formated_string.append("Parents\n")
+            //indents_for_name += "     "
+
+            for parent in node.getParents()
+            {
+                formated_string.append(contentsOf: indents_for_name + "    ")
+                for part_of_parent in parent
+                {
+                    formated_string.append(contentsOf: part_of_parent)
+
+                }
+                formated_string.append(contentsOf: "\n")
+
+            }
+            //formated_string.append(contentsOf: "\n")
+        }
+
+        return formated_string
+        //if()
+
+    }
+
+    func visitStates(start_state: ContextState/*, end_state: ContextState*/, parser: inout Parser, function_name_to_function: [String: ([String], inout Parser) -> Bool])
     {
         // the user will have to make a map from state to function
         // set current state to start_state
         // keep going untill an end state is reached (error), or end_state is reached (success)
-        
+        print("entered visit function")
         self.current_state_name = start_state.getName()
         //self.end_state_name = end_state.getName()
         // https://useyourloaf.com/blog/swift-hashable/
@@ -220,7 +376,7 @@ class Visit {
         //print(end_state.getNexts())
         //exit(1)
         self.bottom_tracker = self.bottom
-        self.name_state_table[self.dummy_node.name] = ContextState.init(name: [], function: returnTrue)
+        self.name_state_table[self.dummy_node.name] = ContextState.init(name: [], function: returnTrue(current_state_name: parser:))
         var end_of_input: Bool = false
         while(self.next_states != [])//(self.next_states != end_states_nexts)
         {
@@ -229,8 +385,9 @@ class Visit {
             // if index == input.count
                 // exit machine
             
-            print("at", self.ii)
-            if(ii == 330)
+            //print("at", self.ii)
+            /*
+            if(ii == 380)
             {
                 print("too many states run\n")
                 
@@ -244,8 +401,9 @@ class Visit {
                     print()
                     print()
                 }
+
                 exit(1)
-            }
+            }*/
             var state_changed: Bool = false
             var j: Int = Int()
             //print("current state")
@@ -258,24 +416,36 @@ class Visit {
             while(j < self.next_states.count)
             {
                 // assume these points already exist
+                /*
                 let i: Int = (self.name_state_table[["i"]]?.getData().getInt())!
                 let length: Int = (self.name_state_table[["input"]]?.getData().getInt())!
+                print(i, length)
+                // why does i go from large to -1?
+                // why is the length stuck at -123?
+                // why is the last round being visited 2 times?
+                // the input is currently past the last valid point and it is being chedked by visitor as the states
+                // get visited
+                // this is unsafe, cause it may get caught by i == -1 check and then the entire visitor goes into end mode
                 if(i == length)
                 {
                     print("end of input")
                     break
                 }
-                
+                */
                 // how to let it run multiple true states?
                 self.current_state_name = self.next_states[j]
                 //print("trying state")
                 //print(self.current_state_name)
                 // there should always be an entry in the table that is gettin indexed
                 //let point: ContextState = self.name_state_table[self.current_state_name]!
-                
+                //print(self.current_state_name)
                 let maybe_parent: Int = (self.name_state_table[self.current_state_name]?.getStartChildren().count)!
                 //print("running", levels[point]?.function_name)
-                let did_function_pass: Bool = (self.name_state_table[self.current_state_name]?.callFunction(current_state_name: self.current_state_name))!
+                let function_call_name : String = (self.name_state_table[self.current_state_name]?.getFunctionName())!
+                //print(function_call_name)
+                let function : ([String], inout Parser) -> Bool = function_name_to_function[function_call_name]!
+                //print(function)
+                let did_function_pass: Bool = function(self.current_state_name, &parser)
                 
                 if(did_function_pass)
                 {
@@ -316,6 +486,7 @@ class Visit {
                     state_changed = true
                     break
                 }
+                /*
                 else
                 {
                     let i: Int = (self.name_state_table[["i"]]?.getData().getInt())!
@@ -330,6 +501,7 @@ class Visit {
                         var index = points.startIndex
                         // all states but the end state were here
                         // It was replased
+                        /*
                         for _ in (0..<points.count)
                         {
 
@@ -338,11 +510,11 @@ class Visit {
                             index = points.index(index, offsetBy: 1)
                             print()
                             print()
-                        }
+                        }*/
                         end_of_input = true
                         break
                     }
-                }
+                }*/
                 j += 1
             }
             //print("state changed?", state_changed)
@@ -350,8 +522,7 @@ class Visit {
             //print("winning state1 ", self.current_state_name)
             //print("next states")
             //print(self.next_states)
-            printStack2(bottom_tracker: self.bottom_tracker)
-            
+            //printStack2(bottom_tracker: self.bottom_tracker)
             if(self.next_states.count == 0)
             {
             
@@ -365,14 +536,19 @@ class Visit {
                 self.indents = tracker_continuing_next_states_indents.indents
                 self.bottom = tracker_continuing_next_states_indents.bottom_of_shortened_stack
                 self.bottom_tracker = self.bottom
+                //print(self.next_states)
                 //print("shortened stack")
                 //printStack2(bottom_tracker: self.bottom_tracker)
                 //print(self.next_states)
             }
-            if(!state_changed && self.next_states.count > 0 && end_of_input == false)
+            if(!state_changed && self.next_states.count > 0)
             {
                 print("error at ")
-                print(self.next_states)
+                for next_state in self.next_states
+                {
+                    print(next_state, parser.getState(state_name: next_state).getFunctionName())
+                }
+                //print(self.next_states)
                 break
                 /*
                             //printf(getIndents(indents), next_states, "on");
@@ -392,12 +568,39 @@ class Visit {
 
             print("winning state", self.current_state_name, "f=", point2.function_name)
             print("next states", self.next_states)
+            //printStack2(bottom_tracker: self.bottom_tracker)
+
             //print("end condition")
             //print(end_states_nexts)
             
             self.ii += 1
         }
         print("state machine is done\n")
+        print(self.ii)
+    
+        let matrix = name_state_table[["sparse_matrix"]]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+        let point_table = name_state_table[["point_table"]]!.getData().data["[[String]: Point]"] as! [[String]: Point]
+        //print(matrix.count)
+        let start_node = matrix[Point.init(l: 0, s: 0)]!
+        /*
+        let points = matrix.keys
+        var index = points.startIndex
+        for i in (0..<points.count)
+        {
+            matrix[index].value.Print(indent_level: 0)
+            index = points.index(index, offsetBy: 1)
+            print()
+            print()
+        }*/
+                      //  let matrix = name_state_table[["sparse_matrix"]]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
+       
+        let format_string = prettyFormat(node: start_node,
+                                         indents: "",
+                                         start_child: false,
+                                         matrix: matrix,
+                                         point_table: point_table)
+        
+        print(format_string)
         exit(1)
         // while not at end_state's nexts
     }

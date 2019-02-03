@@ -441,18 +441,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         func myFunction() {
         logFunctionName() // Prints "myFunction()".
         }
-        func testing(current_state_name: [String]) -> Bool
+    
+        func testing2(current_state_name: [String], parser: inout Parser) -> Bool
         {
             // if parsing the input then call this only
             // make into a macro
             logFunctionName()
             return true
         }
-        func returnTrue(current_state_name: [String]) -> Bool
+        func returnTrue2(current_state_name: [String]) -> Bool
         {
             return true
         }
-        func returnFalse(current_state_name: [String]) -> Bool
+        func returnFalse2(current_state_name: [String]) -> Bool
         {
             return false
         }
@@ -493,7 +494,112 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             return text2
         }
-    
+        func readjson(fileName: String) -> NSData
+        {
+
+            let path = Bundle.main.path(forResource: fileName, ofType: "json")
+            let jsonData = NSData(contentsOf: URL(fileURLWithPath: path!))//NSData(contentsOfMappedFile: path!)
+
+            return jsonData!
+        }
+        let function_name_to_function: [String: ([String], inout Parser) -> Bool] = [
+            "returnTrue"                    : returnTrue,
+            "returnFalse"                   : returnFalse,
+            "advanceInit"                   : advanceInit,
+            "collectName"                   : collectName,
+            "advanceLoop"                   : advanceLoop,
+            "endOfInput"                    : endOfInput,
+            "isData"                        : isData,
+            "tlo"                           : tlo,
+            "isDeadState"                   : isDeadState,
+            "isChildren"                    : isChildren,
+            "isNext"                        : isNext,
+            "isCurrentWordFunction"         : isCurrentWordFunction,
+            "saveState"                     : saveState,
+            "saveNewState"                  : saveNewState,
+            "advanceLevel"                  : advanceLevel,
+            "saveNextStateLink"             : saveNextStateLink,
+            "initJ"                         : initJ,
+            "initI"                         : initI,
+            "charNotBackSlashNotWhiteSpace" : charNotBackSlashNotWhiteSpace,
+            "backSlash"                     : backSlash,
+            "whiteSpace0"                   : whiteSpace0,
+            "collectLastSpace"              : collectLastSpace,
+            "forwardSlash0"                 : forwardSlash0,
+            "inputHasBeenReadIn0"           : inputHasBeenReadIn0,
+            "forwardSlash"                  : forwardSlash,
+            "whiteSpace1"                   : whiteSpace1,
+            "inputHasBeenReadIn2"           : inputHasBeenReadIn2,
+            "addLinkToState"                : addLinkToState,
+            "isCurrentWordASiblingOfPrevWord" : isCurrentWordASiblingOfPrevWord,
+            "initK"                         : initK,
+            "isFirstCharS"                  : isFirstCharS,
+            "letter"                        : letter,
+            "letterUnderscoreNumber"        : letterUnderscoreNumber,
+            "leftParens"                    : leftParens,
+            "colon"                         : colon,
+            "rightParens"                   : rightParens,
+            "collectLetter"                 : collectLetter,
+            "collectLetterUnderscoreNumber" : collectLetterUnderscoreNumber,
+            "inputEmpty"                    : inputEmpty,
+            "runs"                          : runs,
+            "saveFunctionName"              : saveFunctionName,
+            "isCurrentWordADifferentParentOfPrevWord" : isCurrentWordADifferentParentOfPrevWord,
+            "windBackStateNameFromEnd"      : windBackStateNameFromEnd,
+            "isAStateName"                  : isAStateName,
+            "isCurrentIndentSameAsIndentForLevel" : isCurrentIndentSameAsIndentForLevel,
+            "deleteCurrentStateName"        : deleteCurrentStateName,
+            "isCurrentIndentGreaterThanAsIndentForLevel" : isCurrentIndentGreaterThanAsIndentForLevel,
+            "deleteTheLastContext"          : deleteTheLastContext,
+            "incrementTheStateId"           : incrementTheStateId,
+            "decreaseMaxStackIndex"         : decreaseMaxStackIndex,
+        ]
+        func makeDataObject(value: [String: String]) -> Data
+        {
+            var data_item : Data = Data.init(new_data: [:])
+            //print(value)
+
+            if(value["nothing"] != nil)
+            {
+                if(value["nothing"] == "null")
+                {
+                    data_item.data = [:]
+                }
+            }
+            else if (value["Int"] != nil)
+            {
+                data_item.data = ["Int": Int()]
+                if(value["Int"] == "nil")
+                {
+                    data_item.data["Int"] = 0
+                }
+                else
+                {
+                    data_item.data["Int"] = Int(value["Int"]!)
+
+                }
+                
+            }
+            else if(value["String"] != nil)
+            {
+                data_item.data = ["String" : String()]
+
+                data_item.data["String"] = value["String"]
+            }
+            else if(value["[Point: ContextState]"] != nil)
+            {
+                data_item.data = ["[Point: ContextState]": [Point: ContextState]()]
+            }
+            else if(value["[[String]: Point]"] != nil)
+            {
+                data_item.data = ["[[String]: Point]" : [[String]: Point]()]
+            }
+            else if(value["[String]"] != nil)
+            {
+                data_item.data = ["[String]" : [String]()]
+            }
+            return data_item
+        }
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
             // Override point for customization after application launch.
             //
@@ -504,17 +610,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let new_context: ContextState = ContextState.init(name: ["ss"],
                                                               nexts: [["ss"]],
                                                               start_children: [["ss"]],
-                                                              function: testing,
+                                                              function: testing2,
                                                               function_name: "test",
                                                               data: Data.init(new_data: [:]),
                                                               parents: [["ss"]])
+            var parser: Parser = Parser.init()
+
             print(new_context.getName(),
                   new_context.getStartChildren(),
                   new_context.getParents(),
                   new_context.getNexts(),
                   new_context.getFunctionName())
             //debugLog(functionName: #testing)
-            testing(current_state_name: [])
+            testing2(current_state_name: [], parser: &parser)
             print(self.function_name.count)
         
 
@@ -529,12 +637,92 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                data: <#T##[String : Any]#>)
 
                 */
-            let parser: Parser = Parser.init()
+            //let parser: Parser = Parser.init()
             /*parser.testing(levels: parser.levels,
                            state_point_table: parser.state_point_table,
                            current_state_name: ["input"])
             */
-            parser.runParser()
+            var name_state_table = [[String]: ContextState]()
+            var data: String = readFile(file: "parsing_tree.json")
+            /*
+            let json_parser = JSONParser.init()
+            var stream: [Character] = [Character]()
+            for item in data
+            {
+                stream.append(item)
+            }*/
+            /*
+            let result = json_parser.jsonObject(json_string: &stream)
+            //print(result)
+            
+            for i in result
+            {
+                print(i.key)
+            }*/
+            var my_struct: [x] = [x]()
+            do
+            {
+                my_struct = try JSONDecoder().decode([x].self, from: data.data(using: .utf8)!) // decoding our data
+            }
+            catch
+            {
+                print(error)
+            }
+            for item in my_struct
+            {
+                //print(item.name, item.data)
+                //print()
+                /*
+                name:                  [String],
+             nexts:                 [[String]],
+             start_children:        [[String]],
+             children
+             function_name:         String,
+             data:                  Data,
+             parents:
+                */
+                name_state_table[item.name] = ContextState.init()
+                name_state_table[item.name]?.name = item.name
+                name_state_table[item.name]?.nexts = item.nexts
+                name_state_table[item.name]?.start_children = item.start_children
+                name_state_table[item.name]?.children = item.children
+                name_state_table[item.name]?.function_name = item.function_name
+                name_state_table[item.name]?.data = makeDataObject(value: item.data)
+                name_state_table[item.name]?.parents = item.parents
+                //name_state_table[item.name]?.Print(indent_level: 0)
+                //print()
+            }
+            name_state_table[["input"]]?.getData().setString(value: readFile(file: "data_and_dead_state_parsing_only_input.txt") )
+            //print((name_state_table[["input"]]?.getData().getString())!)
+            let visitor_class: Visit = Visit.init(next_states: [["states", "state"]],
+                                              current_state_name:    ["states", "state"],
+                                              bottom:                ChildParent.init(child: ["root", "0"],
+                                                                                      parent: nil),
+                                              dummy_node:            ContextState.init(name:["root", "0"],
+                                                                                       nexts: [],
+                                                                                       start_children: [],
+                                                                                       function: returnTrue(current_state_name:parser:),
+                                                                                       function_name: "returnTrue",
+                                                                                       data: Data.init(new_data: [:]),
+                                                                                       parents: []),
+                                              name_state_table:     name_state_table)
+            // need to get the states into name_state_table
+            //parser.runParser()
+            // read in the json file
+            // make the ContextState objects and store them into parser
+            
+            
+            var parsing_object = Parser.init()
+            parsing_object.name_state_table = name_state_table
+            visitor_class.visitStates(start_state: name_state_table[["states", "state"]]!, parser: &parsing_object, function_name_to_function: function_name_to_function)
+            //var json_data = data.data(using: .utf8)!
+            //print(json_data)
+            //let jsonDecoder = JSONDecoder()
+            //let person = try? jsonDecoder.decode(ContextState.self, from: json_data)
+            //dump(person)
+
+            //visitor_class.visitStates(start_state: name_state_table[["states", "state"]]!, parser: &parser)
+
             
                 //print(new_context.callFunction(a: 1, b: 2))
                 //hierarchial_state_machine = inita()

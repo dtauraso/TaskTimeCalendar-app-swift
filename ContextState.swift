@@ -7,10 +7,101 @@
 //
 
 import Foundation
+// https://medium.com/swiftly-swift/swift-4-decodable-beyond-the-basics-990cc48b7375
+struct x{
+    let name:           [String]
+    
+    let start_children: [[String]]
+    let children:       [[String]]
+    let parents:        [[String]]
+    let nexts:          [[String]]
+    let function_name:  String
+    let data:           [String: String]
+    
+    init(name:                  [String],
+         nexts:                 [[String]],
+         start_children:        [[String]],
+         children:              [[String]],
+
+         function_name:         String,
+         data:                  [String: String],
+         parents:               [[String]])
+    {
+        self.name           =   name
+        self.nexts          =   nexts
+        self.start_children =   start_children
+        self.children       =   children
+        self.function_name  =   function_name
+        self.data           =   data
+        self.parents        =   parents
+
+    }
+    init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: MyStructKeys.self) // defining our (keyed) container
+    let name: [String] = try container.decode([String].self, forKey: .name) // extracting the data
+    let start_children: [[String]] = try container.decode([[String]].self, forKey: .start_children) // extracting the data
+    let children: [[String]] = try container.decode([[String]].self, forKey: .children) // extracting the data
+    let parents: [[String]] = try container.decode([[String]].self, forKey: .parents) // extracting the data
+    let nexts: [[String]] = try container.decode([[String]].self, forKey: .nexts) // extracting the data
+    let function_name: String = try container.decode(String.self, forKey: .function_name) // extracting the data
+    let data: [String: String] = try container.decode([String: String].self, forKey: .data) // extracting the data
+
+    //self.init(fullName: fullName, id: id, twitter: twitter) // initializing our struct
+    self.init(name:                  name,
+         nexts:                 nexts,
+         start_children:        start_children,
+         children:              children,
+
+         function_name:         function_name,
+         data:                  data,
+         parents:               parents)
+  }
+    
+}
+extension x: Decodable {
+  enum MyStructKeys: String, CodingKey { // declaring our keys
+    case name =           "name"
+    case start_children = "start_children"
+    case children =       "children"
+    case parents =        "parents"
+    case nexts =          "nexts"
+    case function_name =  "function_name"
+    case data =           "data"
+  }
+}
 
 class Data {
     
     var data:           [String: Any]
+    func Print()
+    {
+        //print(data)
+        if(getBool())
+        {
+            print("Bool", self.data["Bool"]!)
+        }
+        else if(getInt() != -123)
+        {
+            print("Int", self.data["Int"]!)
+        }
+        else if(getString() != "no String type is here")
+        {
+            print("String", self.data["String"]!)
+        }
+        else if(getStringList() != ["no [String] type is here"])
+        {
+            print("[String]", self.data["[String]"]!)
+        }
+        else if(Point.init(l: -1, s: -1) != Point.init(l: -1, s: -1))
+        {
+            print("Point", self.data["Point"]!)
+        }
+        else
+        {
+            print("[:]")
+        }
+        
+    }
     func returnTrue(current_state_name: [String]) -> Bool
     {
         return true
@@ -97,7 +188,7 @@ class Data {
 
             }
         }
-        return ContextState.init(name: ["nil"], function: returnTrue(current_state_name:))
+        return ContextState.init(name: ["nil"], function: returnTrue(current_state_name: parser:))
     }
     func setBool(value: Bool)
     {
@@ -145,6 +236,7 @@ class Data {
     }
 }
 
+
 class ContextState {
 
     var name:           [String]
@@ -155,8 +247,8 @@ class ContextState {
     
     
     var nexts:          [[String]]
-    
-    var function:       ([String]) -> Bool
+    //name_state_table:
+    var function:       ([String], inout Parser) -> Bool
     
     var function_name:  String
     
@@ -164,11 +256,34 @@ class ContextState {
     var data:           Data
     
     var iteration_number: Int
-
+    /*required init(from decoder: Decoder) throws {
+        //let container = try decoder.container(keyedBy: CodingKey.self)
+          //  self.alcohol_content = try container.decode(String.self, forKey: .alcohol_content)
+            //try super.init(from: decoder)
+        let name:                  [String]
+         let nexts:                 [[String]]
+         let start_children:        [[String]]
+         let function_name:         String
+         let data:                  [String: Any]
+         let parents:               [[String]]
+        }
+    */
+    init()
+    {
+        self.name           =   [String]()
+        self.nexts          =   [[String]]()
+        self.start_children =   [[String]]()
+        self.children       =   [[String]]()
+        self.function       =   returnTrue(current_state_name:parser:)
+        self.function_name  =   String()
+        self.data           =   Data.init(new_data:[:])
+        self.parents        =   [[String]]()
+        self.iteration_number = Int()
+    }
     init(name:                  [String],
          nexts:                 [[String]],
          start_children:        [[String]],
-         function: @escaping    ([String]) -> Bool,
+         function: @escaping    ([String], inout Parser) -> Bool,
          function_name:         String,
          data:                  Data,
          parents:               [[String]])
@@ -188,7 +303,7 @@ class ContextState {
          nexts:                 [[String]],
          start_children:        [[String]],
          children:              [[String]],
-         function: @escaping    ([String]) -> Bool,
+         function: @escaping    ([String], inout Parser) -> Bool,
          function_name:         String,
          data:                  Data,
          parents:               [[String]])
@@ -204,7 +319,26 @@ class ContextState {
         self.iteration_number = Int()
 
     }
-    init(name: [String], function: @escaping ([String]) -> Bool)
+    init(name:                  [String],
+         nexts:                 [[String]],
+         start_children:        [[String]],
+         children:              [[String]],
+         function_name:         String,
+         data:                  Data,
+         parents:               [[String]])
+    {
+        self.name           =   name
+        self.nexts          =   nexts
+        self.start_children =   start_children
+        self.children       =   children
+        self.function       =   returnTrue
+        self.function_name  =   function_name
+        self.data           =   data
+        self.parents        =   parents
+        self.iteration_number = Int()
+
+    }
+    init(name: [String], function: @escaping ([String], inout Parser) -> Bool)
     {
         self.name = name
         self.nexts          =   []
@@ -266,7 +400,8 @@ class ContextState {
         print(indent_string, "function name:")
         print(indent_string, self.function_name)
         print(indent_string, "data:")
-        print(indent_string, self.data)
+        print(indent_string)
+        self.data.Print()
 
         print(indent_string, "iteration number:")
         print(indent_string, self.iteration_number)
@@ -283,6 +418,10 @@ class ContextState {
     {
         return self.start_children
     }
+    func getChildren() -> [[String]]
+    {
+        return self.children
+    }
     func getParents() -> [[String]]
     {
         return self.parents
@@ -291,9 +430,9 @@ class ContextState {
     {
         return self.nexts
     }
-    func callFunction(current_state_name: [String]) -> Bool
+    func callFunction(current_state_name: [String], parser: inout Parser) -> Bool
     {
-        return self.function(current_state_name)
+        return self.function(current_state_name, &parser)
     }
     func getFunctionName() -> String
     {
@@ -333,3 +472,5 @@ extension ContextState: Equatable {
     
     }
 }
+
+
