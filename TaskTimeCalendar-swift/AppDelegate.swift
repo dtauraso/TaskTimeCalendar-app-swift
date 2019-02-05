@@ -510,6 +510,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "advanceLoop"                   : advanceLoop,
             "endOfInput"                    : endOfInput,
             "isData"                        : isData,
+            "printData"                     : printData,
             "tlo"                           : tlo,
             "isDeadState"                   : isDeadState,
             "isChildren"                    : isChildren,

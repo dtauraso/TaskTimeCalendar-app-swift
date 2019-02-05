@@ -73,6 +73,8 @@ extension x: Decodable {
 class Data {
     
     var data:           [String: Any]
+    var is_dict:        Bool
+    var is_array:       Bool
     func Print()
     {
         //print(data)
@@ -96,6 +98,14 @@ class Data {
         {
             print("Point", self.data["Point"]!)
         }
+        else if(is_dict)
+        {
+            print("Dictionary", self.data["Dictionary"]!)
+        }
+        else if(is_array)
+        {
+            print("Array", self.data["Array"]!)
+        }
         else
         {
             print("[:]")
@@ -109,6 +119,23 @@ class Data {
     init(new_data: [String: Any])
     {
         self.data = new_data
+        self.is_dict = false
+        self.is_array = false
+    }
+    init(new_data: [String: Any], container_type: String)
+    {
+        self.data = new_data
+        self.is_array = false
+        self.is_dict = false
+
+        if(container_type == "Array")
+        {
+            self.is_array = true
+        }
+        else if(container_type == "Dictionary")
+        {
+            self.is_dict = true
+        }
     }
     func getBool() -> Bool
     {

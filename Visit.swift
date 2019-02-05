@@ -349,9 +349,14 @@ class Visit {
             for parent in node.getParents()
             {
                 formated_string.append(contentsOf: indents_for_name + "    ")
-                for part_of_parent in parent
+                for i in (0..<parent.count)
                 {
-                    formated_string.append(contentsOf: part_of_parent)
+                    formated_string.append(contentsOf: parent[i])
+                    if(i < parent.count - 1)
+                    {
+                        formated_string.append(", ")
+
+                    }
 
                 }
                 formated_string.append(contentsOf: "\n")
@@ -371,6 +376,7 @@ class Visit {
         // the user will have to make a map from state to function
         // set current state to start_state
         // keep going untill an end state is reached (error), or end_state is reached (success)
+        
         print("entered visit function")
         self.current_state_name = start_state.getName()
         //self.end_state_name = end_state.getName()
