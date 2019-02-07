@@ -215,7 +215,7 @@ class Data {
 
             }
         }
-        return ContextState.init(name: ["nil"], function: returnTrue(current_state_name: parser:))
+        return ContextState.init(name: ["nil"], function: returnTrue(current_state_name: parser: stack:))
     }
     func setBool(value: Bool)
     {
@@ -275,7 +275,7 @@ class ContextState {
     
     var nexts:          [[String]]
     //name_state_table:
-    var function:       ([String], inout Parser) -> Bool
+    var function:       ([String], inout Parser, ChildParent) -> Bool
     
     var function_name:  String
     
@@ -301,7 +301,7 @@ class ContextState {
         self.nexts          =   [[String]]()
         self.start_children =   [[String]]()
         self.children       =   [[String]]()
-        self.function       =   returnTrue(current_state_name:parser:)
+        self.function       =   returnTrue(current_state_name:parser:stack:)
         self.function_name  =   String()
         self.data           =   Data.init(new_data:[:])
         self.parents        =   [[String]]()
@@ -310,7 +310,7 @@ class ContextState {
     init(name:                  [String],
          nexts:                 [[String]],
          start_children:        [[String]],
-         function: @escaping    ([String], inout Parser) -> Bool,
+         function: @escaping    ([String], inout Parser, ChildParent) -> Bool,
          function_name:         String,
          data:                  Data,
          parents:               [[String]])
@@ -330,7 +330,7 @@ class ContextState {
          nexts:                 [[String]],
          start_children:        [[String]],
          children:              [[String]],
-         function: @escaping    ([String], inout Parser) -> Bool,
+         function: @escaping    ([String], inout Parser, ChildParent) -> Bool,
          function_name:         String,
          data:                  Data,
          parents:               [[String]])
@@ -365,7 +365,7 @@ class ContextState {
         self.iteration_number = Int()
 
     }
-    init(name: [String], function: @escaping ([String], inout Parser) -> Bool)
+    init(name: [String], function: @escaping ([String], inout Parser, ChildParent) -> Bool)
     {
         self.name = name
         self.nexts          =   []
@@ -457,9 +457,9 @@ class ContextState {
     {
         return self.nexts
     }
-    func callFunction(current_state_name: [String], parser: inout Parser) -> Bool
+    func callFunction(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
     {
-        return self.function(current_state_name, &parser)
+        return self.function(current_state_name, &parser, stack)
     }
     func getFunctionName() -> String
     {

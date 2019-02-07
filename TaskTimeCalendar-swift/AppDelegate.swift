@@ -442,7 +442,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logFunctionName() // Prints "myFunction()".
         }
     
-        func testing2(current_state_name: [String], parser: inout Parser) -> Bool
+        func testing2(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
         {
             // if parsing the input then call this only
             // make into a macro
@@ -502,7 +502,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             return jsonData!
         }
-        let function_name_to_function: [String: ([String], inout Parser) -> Bool] = [
+        let function_name_to_function: [String: ([String], inout Parser, ChildParent) -> Bool] = [
             "returnTrue"                    : returnTrue,
             "returnFalse"                   : returnFalse,
             "advanceInit"                   : advanceInit,
@@ -623,7 +623,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                   new_context.getNexts(),
                   new_context.getFunctionName())
             //debugLog(functionName: #testing)
-            testing2(current_state_name: [], parser: &parser)
+            //testing2(current_state_name: [], parser: &parser, stack: )
             print(self.function_name.count)
         
 
@@ -702,7 +702,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                               dummy_node:            ContextState.init(name:["root", "0"],
                                                                                        nexts: [],
                                                                                        start_children: [],
-                                                                                       function: returnTrue(current_state_name:parser:),
+                                                                                       function: returnTrue(current_state_name:parser:stack:),
                                                                                        function_name: "returnTrue",
                                                                                        data: Data.init(new_data: [:]),
                                                                                        parents: []),

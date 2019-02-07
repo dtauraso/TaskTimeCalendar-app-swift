@@ -7,11 +7,11 @@
 //
 
 import Foundation
-func returnTrue(current_state_name: [String], parser: inout Parser) -> Bool
+func returnTrue(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     return true
 }
-func returnFalse(current_state_name: [String], parser: inout Parser) -> Bool
+func returnFalse(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     return false
 }
@@ -371,7 +371,7 @@ class Visit {
 
     }
 
-    func visitStates(start_state: ContextState/*, end_state: ContextState*/, parser: inout Parser, function_name_to_function: [String: ([String], inout Parser) -> Bool])
+    func visitStates(start_state: ContextState/*, end_state: ContextState*/, parser: inout Parser, function_name_to_function: [String: ([String], inout Parser, ChildParent) -> Bool])
     {
         // the user will have to make a map from state to function
         // set current state to start_state
@@ -386,7 +386,7 @@ class Visit {
         //print(end_state.getNexts())
         //exit(1)
         self.bottom_tracker = self.bottom
-        self.name_state_table[self.dummy_node.name] = ContextState.init(name: [], function: returnTrue(current_state_name: parser:))
+        self.name_state_table[self.dummy_node.name] = ContextState.init(name: [], function: returnTrue(current_state_name: parser: stack:))
         var end_of_input: Bool = false
         while(self.next_states != [])//(self.next_states != end_states_nexts)
         {
@@ -453,9 +453,9 @@ class Visit {
                 //print("running", levels[point]?.function_name)
                 let function_call_name : String = (self.name_state_table[self.current_state_name]?.getFunctionName())!
                 //print(function_call_name)
-                let function : ([String], inout Parser) -> Bool = function_name_to_function[function_call_name]!
+                let function : ([String], inout Parser, ChildParent) -> Bool = function_name_to_function[function_call_name]!
                 //print(function)
-                let did_function_pass: Bool = function(self.current_state_name, &parser)
+                let did_function_pass: Bool = function(self.current_state_name, &parser, self.bottom_tracker)
                 
                 if(did_function_pass)
                 {
