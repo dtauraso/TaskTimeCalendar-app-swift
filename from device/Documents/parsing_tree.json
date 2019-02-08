@@ -223,7 +223,7 @@
   },
           {
             "name":           ["is_dead_state"],
-            "nexts":          [["TLO", "2"], ["save dead state"]],
+            "nexts":          [["is link"], ["TLO", "2"], ["save dead state"]],
             "start_children": [],
             "children":       [],
             "function_name":  "isDeadState",
@@ -231,6 +231,16 @@
             "parents":        []
           },
 
+
+          {
+            "name":           ["is link"],
+            "nexts":          [["advance to next state"]],
+            "start_children": [["get the next link"]],
+            "children":       [],
+            "function_name":  "isLink",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
 
           {
             "name":           ["TLO", "2"],
@@ -425,19 +435,30 @@
                 "name":           ["make structure"],
                 "nexts":          [],
                 "start_children": [],
-                "children":       [["structure type"], ["structure container kind"], ["structure"]],
+                "children":       [["x"], ["structure type"], ["structure container kind"], ["structure"]],
                 "function_name":  "printData",
                 "data":           {"nothing": "null"},
                 "parents":        [["get data"]]
               }, 
 
+
+                  {
+                    "name":           ["x"],
+                    "nexts":          [],
+                    "start_children": [],
+                    "children":       [],
+                    "function_name":  "returnTrue",
+                    "data":           {"Int": "0"},
+                    "parents":        [["make structure"]]
+                  }, 
+                  
                   {
                     "name":           ["structure type"],
                     "nexts":          [],
                     "start_children": [],
                     "children":       [],
                     "function_name":  "returnTrue",
-                    "data":           {"nothing": "null"},
+                    "data":           {"String": ""},
                     "parents":        [["make structure"]]
                   }, 
 
@@ -447,7 +468,7 @@
                     "start_children": [],
                     "children":       [],
                     "function_name":  "returnTrue",
-                    "data":           {"nothing": "null"},
+                    "data":           {"String": ""},
                     "parents":        [["make structure"]]
                   }, 
 
@@ -467,7 +488,7 @@
                                 "nexts":          [["#"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "negative",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -477,7 +498,7 @@
                                 "nexts":          [["."], ["int"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "digit",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -487,7 +508,7 @@
                                 "nexts":          [["#", "1"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "dot",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -507,7 +528,7 @@
                                 "nexts":          [["#", "1"], ["float"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "digit",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -528,7 +549,7 @@
                                 "nexts":          [["not \" not \\"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "doubleQuote",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -538,7 +559,7 @@
                                 "nexts":          [["not \" not \\"], ["\\"], ["\"", "2"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "notDoubleQuoteNotBackSlash",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -548,7 +569,7 @@
                                 "nexts":          [["any"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "backSlash",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -558,7 +579,7 @@
                                 "nexts":          [["\\"], ["not \" not \\"], ["\"", "2"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "any",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -568,7 +589,7 @@
                                 "nexts":          [["string"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "doubleQuote",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -589,7 +610,7 @@
                                 "nexts":          [["bool"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "isTrue",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -599,7 +620,7 @@
                                 "nexts":          [["bool"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "isFalse",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -619,7 +640,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "isNil",
+                                "function_name":  "characterDispatch",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -1253,13 +1274,55 @@
           },
           { 
             "name":           ["get the next link"],
-            "nexts":          [["add link to state"]],
-            "start_children": [["name_i"]],
+            "nexts":          [["add child link to state"], ["add start child link to state"], ["add link to state"]],
+            "start_children": [["-", "2"], ["&"], ["name_i"]],
             "children":       [["names", "next state links"], ["i"]],
             "function_name":  "initJ",
             "data":           {"nothing": "null"},
-            "parents":        [["save", "next state link"]]
+            "parents":        [["is link"], ["save", "next state link"]]
           },
+
+            { 
+              "name":           ["-", "2"],
+              "nexts":          [["&"]],
+              "start_children": [],
+              "children":       [],
+              "function_name":  "dash",
+              "data":           {"nothing": "null"},
+              "parents":        [["get the next link"]]
+            },
+
+            { 
+              "name":           ["&"],
+              "nexts":          [["name_i"]],
+              "start_children": [],
+              "children":       [],
+              "function_name":  "ampersand",
+              "data":           {"nothing": "null"},
+              "parents":        [["get the next link"]]
+            },
+          { 
+            "name":           ["add child link to state"],
+            "nexts":          [],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "saveChildLink",
+            "data":           {"nothing": "null"},
+            "parents":        [["is link"]]
+          },
+
+
+          { 
+            "name":           ["add start child link to state"],
+            "nexts":          [],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "saveStartChildLink",
+            "data":           {"nothing": "null"},
+            "parents":        [["is link"]]
+          },
+
+
   {
     "name":           ["names", "next state links"],
     "nexts":          [],
@@ -1377,15 +1440,15 @@
     "data":           {"nothing": "null"},
     "parents":        []
   },
-  {
-    "name":           ["add link to state"],
-    "nexts":          [],
-    "start_children": [],
-    "children":       [],
-    "function_name":  "addLinkToState",
-    "data":           {"nothing": "null"},
-    "parents":        []
-  },
+        {
+          "name":           ["add link to state"],
+          "nexts":          [],
+          "start_children": [],
+          "children":       [],
+          "function_name":  "addLinkToState",
+          "data":           {"nothing": "null"},
+          "parents":        []
+        },
   {
     "name":           ["advance", "to maybe next state link"],
     "nexts":          [["is current word a sibling of prev word"], ["advance past", "function"]],
