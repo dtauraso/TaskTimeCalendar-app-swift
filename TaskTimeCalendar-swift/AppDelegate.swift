@@ -513,6 +513,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "printData"                     : printData,
             "tlo"                           : tlo,
             "isDeadState"                   : isDeadState,
+            "isLink"                        : isLink,
+            "dash"                          : dash,
+            "ampersand"                     : ampersand,
+            "saveChildLink"                 : saveChildLink,
+            "saveStartChildLink"            : saveStartChildLink,
             "isChildren"                    : isChildren,
             "isNext"                        : isNext,
             "isCurrentWordFunction"         : isCurrentWordFunction,
@@ -554,7 +559,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "deleteTheLastContext"          : deleteTheLastContext,
             "incrementTheStateId"           : incrementTheStateId,
             "decreaseMaxStackIndex"         : decreaseMaxStackIndex,
-        ]
+            
+            "characterDispatch"             : characterDispatch,
+                    ]
         func makeDataObject(value: [String: String]) -> Data
         {
             var data_item : Data = Data.init(new_data: [:])

@@ -248,6 +248,7 @@ class Visit {
             
         }
         //print("|" + indents_for_name + "|")
+       
         if(node.getStartChildren().count + node.getChildren().count > 0)
         {
             //indents_for_name += "  "
@@ -262,7 +263,6 @@ class Visit {
             //formated_string.append(contentsOf: indents)
             //formated_string.append("    ")
             //var indents_for_name = indents + "    " + "    "
-            
             for start_child in node.getStartChildren()
             {
                 let point = point_table[start_child]!
@@ -611,6 +611,20 @@ class Visit {
                                          point_table: point_table)
         
         print(format_string)
+        for i in parser.unresolved_list
+        {
+                print(i.key)
+                for j in i.value
+                {
+                    j.Print()
+                    let parent = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: j)
+                    print(parent.getName())
+                    print()
+                    print()
+
+                }
+
+        }
         exit(1)
         // while not at end_state's nexts
     }

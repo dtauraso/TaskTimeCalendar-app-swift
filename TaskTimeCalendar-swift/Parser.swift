@@ -7,9 +7,10 @@
 //
 
 import Foundation
+
 class Parser {
     
-    
+    var unresolved_list: [[String]: [Point]] = [[String]: [Point]]()
     var name_state_table: [[String]: ContextState] = [[String]: ContextState]()
     func getState(state_name: [String]) -> ContextState
     {
@@ -234,6 +235,7 @@ func collectName(current_state_name: [String], parser: inout Parser, stack: Chil
     //print(state_name_progress)
     //print( getState(current_state_name: ["name", "state_name"]).getStringList())
     parser.getVariable(state_name: ["name", "state_name"]).appendString(value: state_name_progress)
+    //print(parser.getVariable(state_name: ["name", "state_name"]).getStringList())
     //getState(current_state_name: ["name", "state_name"], name_state_table: &name_state_table).getData().appendString(value: state_name_progress)
     //print(parser.getVariable(state_name: ["name", "state_name"]).getStringList())
     //exit(0)
@@ -421,7 +423,7 @@ func isDeadState(current_state_name: [String], parser: inout Parser, stack: Chil
     let prev_word = parser.getVariable(state_name: ["prev_word"]).getString()
     //print("prev word, current word")
     //print("|", prev_word, "|", "|", current_word, "|")
-    
+    print(current_word)
     if(current_word == "")
     {
         print("end of input")
@@ -431,6 +433,269 @@ func isDeadState(current_state_name: [String], parser: inout Parser, stack: Chil
     }
     return next_indent == prev_indent
 }
+func isLink(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+
+    let current_word = parser.getVariable(state_name: ["current_word"]).getString()
+    //print("the link")
+    //print(current_word)
+    if(current_word.count >= 2)
+    {
+        let child_index = current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(0))
+
+        let start_child_index = current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(1))
+        if(current_word[child_index] == "&")
+        {
+            return true
+        }
+        else if(current_word[start_child_index] == "&")
+        {
+            return true
+        }
+
+    }
+    return false
+}
+func dash(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+
+    let current_word = parser.getVariable(state_name: ["current_word"]).getString()
+    var j = parser.getVariable(state_name: ["j"]).getInt()
+    if(outOfBounds(i: j, size: current_word.count))
+    {
+        return false
+    }
+    // in case there are extra spaces
+    j = skipSpaces(input: current_word, i: j)
+    if(outOfBounds(i: j, size: current_word.count))
+    {
+        return false
+    }
+    let char = current_word[current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(j))]
+    if(char == "-")
+    {
+        parser.getVariable(state_name: ["j"]).setInt(value: j + 1)
+
+        return true
+    }
+    return false
+}
+func ampersand(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+
+    let current_word = parser.getVariable(state_name: ["current_word"]).getString()
+    var j = parser.getVariable(state_name: ["j"]).getInt()
+    if(outOfBounds(i: j, size: current_word.count))
+    {
+        return false
+    }
+    // in case there are extra spaces
+    j = skipSpaces(input: current_word, i: j)
+    if(outOfBounds(i: j, size: current_word.count))
+    {
+        return false
+    }
+    let char = current_word[current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(j))]
+    print(char)
+    if(char == "&")
+    {
+        j = skipSpaces(input: current_word, i: j)
+        parser.getVariable(state_name: ["j"]).setInt(value: j)
+
+        return true
+    }
+    return false
+}
+func detectLink(link: String) -> Bool
+{
+    if(link.count > 1)
+    {
+        let child_index = link.index(link.startIndex, offsetBy: String.IndexDistance(0))
+
+        let start_child_index = link.index(link.startIndex, offsetBy: String.IndexDistance(1))
+        if(link[child_index] == "&")
+        {
+            return true
+        }
+        else if(link[start_child_index] == "&")
+        {
+            return true
+        }
+    }
+    
+    return false
+}
+func detectStartChild(link: String) -> Bool
+{
+    let start_child_index = link.startIndex
+    if(link.count > 0)
+    {
+        return link[start_child_index] == "-"
+
+    }
+    return false
+}
+func saveChildLink(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var link = parser.getVariable(state_name: ["names", "next state links"]).getStringList()
+
+    // increment the state id anyways cause there is expected to be a place for the link being collected
+    if(detectLink(link: link[0]))
+    {
+        if(!detectStartChild(link: link[0]))
+        {
+            link[0] = String(link[0].dropFirst().dropFirst())
+            let max_stack_index = parser.getVariable(state_name: ["max_stack_index"]).getInt()
+            //var current_state_number = parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt()
+
+            //let current_word = parser.getVariable(state_name: ["function name"]).getString()
+            //print(current_word)
+            let current_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
+            //print("level id")
+            //print(parser.getVariable(state_name: ["level_number", String(max_stack_index)]).getInt())
+            //print(current_level)
+
+            let current_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
+            
+            //print("state id")
+            //print(parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt())
+            //print(current_state)
+            // append link to parent, and append parent to child if it can be found
+            // when saving the state, just append the child -> parent links that haven't been accounted for here
+
+            let point = parser.getVariable(state_name: ["point_table"]).getPointFromStringListToPointEntry(key: link)
+            if(point != Point.init(l: -1, s: -1))
+            {
+                let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+                state.appendNextChild(next_child: link)
+                //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+                parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+                return true
+            }
+            else
+            {
+                print(parser.unresolved_list[link])
+
+                if(parser.unresolved_list[link] != nil)
+                {
+                    if((parser.unresolved_list[link]?.count)! > 0)
+                    {
+                        parser.unresolved_list[link]?.append(Point.init(l: current_level, s: current_state))
+                        //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+                        //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+
+                        //state.appendNextChild(next_child: link)
+
+                        parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+                        return true
+                    }
+                    
+                }
+                else// if((parser.unresolved_list[link]?.count)! == 0)
+                {
+
+                    parser.unresolved_list[link] = [Point.init(l: current_level, s: current_state)]
+                    print(link)
+                    parser.unresolved_list[link]![0].Print()
+                    //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+
+                    parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+                    return true
+                }
+                
+            }
+        }
+        
+    }
+
+    
+    
+    //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: current_level,
+      //                                                                                                                   s: current_state))
+    //state.setFunctionName(function_name: current_word)
+    //getState(current_state_name: ["sparse_matrix"]).getData().getContextStateFromPointToContextState(key: Point.init(l: current_level, s: current_state)).Print(indent_level: 1)
+    
+    
+    //if( Point(l: -1, s: -1)
+    return false
+}
+func saveStartChildLink(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var link = parser.getVariable(state_name: ["names", "next state links"]).getStringList()
+    if(detectLink(link: link[0]))
+    {
+        if(detectStartChild(link: link[0]))
+        {
+            link[0] = String(link[0].dropFirst().dropFirst())
+            print("link:")
+            print(link)
+ 
+            //exit(0)
+            let max_stack_index = parser.getVariable(state_name: ["max_stack_index"]).getInt()
+            //var current_state_number = parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt()
+
+            //let current_word = parser.getVariable(state_name: ["function name"]).getString()
+            //print(current_word)
+            let current_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
+            print("level id")
+            print(parser.getVariable(state_name: ["level_number", String(max_stack_index)]).getInt())
+
+            print(current_level)
+
+            let current_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
+            print("state id")
+            print(parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt())
+
+            print(current_state)
+
+            let point = parser.getVariable(state_name: ["point_table"]).getPointFromStringListToPointEntry(key: link)
+            if(point != Point.init(l: -1, s: -1))
+            {
+                let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+                //print(state.getName())
+                state.appendStartChild(start_child: link)
+                parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+                //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+
+                return true
+            }
+            else
+            {
+                print(parser.unresolved_list[link])
+                if(parser.unresolved_list[link] != nil)
+                {
+                    if((parser.unresolved_list[link]?.count)! > 0)
+                    {
+                        parser.unresolved_list[link]?.append(Point.init(l: current_level, s: current_state))
+                        parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+                        //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+
+                        return true
+                    }
+                
+                }
+                else// if((parser.unresolved_list[link]?.count)! == 0)
+                {
+                    parser.unresolved_list[link] = [Point.init(l: current_level, s: current_state)]
+                    print(link)
+                    parser.unresolved_list[link]![0].Print()
+                    parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+                    //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+    
+                    return true
+                }
+                
+            }
+        }
+        
+    }
+    
+    return false
+}
+
 func isData(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     return parser.getVariable(state_name: ["current_word"]).getString() == "Data"
@@ -488,6 +753,7 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
     //print(getState(current_state_name: ["child"]).getData().getBool())
 
     let new_state = ContextState.init(name: collected_state_name2, function: returnTrue(current_state_name: parser:stack:))
+
     if(current_state_name == ["save dead state"] || current_state_name == ["save dead state", "2"])
     {
         new_state.setFunctionName(function_name: "returnTrue")
@@ -540,11 +806,50 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
         {
             collected_state_name[last_item] = String(collected_state_name[last_item].dropFirst())
             parent_state.appendStartChild(start_child: collected_state_name)
+            
+            // add in any unresolved parent links
+            if(parser.unresolved_list[collected_state_name2] != nil)
+            {
+                
+                
+                for parent_point in parser.unresolved_list[collected_state_name2]!
+                {
+                    
+                    //let secondary_parent_point = Point.init
+                    var secondary_parent_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: parent_point)
+                    secondary_parent_state.appendStartChild(start_child: collected_state_name2)
+                    //var saved_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: level, s: state))
+                    //saved_state.
+
+
+                }
+                //let secondary_parent_state_point = parser.unresolved_list[current_state_name]
+                //let secondary_parent_state =
+            }
         }
         else
         {
             
             parent_state.appendChild(child: collected_state_name)
+
+            // add in any unresolved parent links
+            if(parser.unresolved_list[collected_state_name2] != nil)
+            {
+                for parent_point in parser.unresolved_list[collected_state_name2]!
+                {
+                    
+                    //let secondary_parent_point = Point.init
+                    var secondary_parent_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: parent_point)
+                    secondary_parent_state.appendChild(child: collected_state_name2)
+                    //var saved_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: level, s: state))
+                    //saved_state.
+
+
+                }
+                //let secondary_parent_state_point = parser.unresolved_list[current_state_name]
+                //let secondary_parent_state =
+            }
+
         }
         //parent_state.setStartChildren(start_children: [collected_state_name])
         // when the other children are being added to the parent's list the last one is replaced with the next one
@@ -557,11 +862,24 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
 
         //print("child location", level, state)
         //print()
+        // could mess what I'm setting up above up
         let location_of_child = Point.init(l: level, s: state)
         let child_state: ContextState = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: location_of_child)
         //print(child_state.getName())
         child_state.setParents(parents: [parent_state.getName()])
-
+        print(collected_state_name2)
+        print(parser.unresolved_list)
+        if(parser.unresolved_list[collected_state_name2] != nil)
+        {
+            for parent_point in parser.unresolved_list[collected_state_name2]!
+            {
+                var secondary_parent_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: parent_point)
+                print(secondary_parent_state.getName())
+                // saving it in the wrong place because the states original locaiton has not been saved
+                child_state.parents.append(secondary_parent_state.getName())
+            }
+                
+        }
 
         //var current_state = getState(current_state_name: ["state_id"]).getData().getInt()
         
@@ -1485,8 +1803,9 @@ isInt
 isFloat
 isString
 parens
-leftSquareBraketrightSquareBraket
-
+leftSquareBraket
+rightSquareBraket
+characterDispatch
 */
 func doubleQuote(char: Character) -> Bool
 {
@@ -1497,7 +1816,7 @@ func notDoubleQuoteNotBackSlash(char: Character) -> Bool
 {
     return !(char == "\"" || char == "\\")
 }
-func backSlash(char: Character) -> Bool
+func backSlash2(char: Character) -> Bool
 {
     return char == "\\"
 }
@@ -1635,15 +1954,54 @@ func rightSquareBraket(input: String, i: Int) -> Bool
     }
     return false
 }
+func collect(parser: inout Parser, i: Int, container_name: [String], char: Character)
+{
+    parser.getVariable(state_name: ["x"]).setInt(value: i + 1)
+    let current_number = parser.getVariable(state_name: container_name).getString()
+    parser.getVariable(state_name: container_name).setString(value: current_number + String(char))
+}
+func check(parser: inout Parser, x: Int, char: Character, stack: ChildParent) -> Bool
+{
+     if(stack.child == ["make structure"])
+    {
+        //print(stack.child)
+        //exit(0)
+        collect(parser: &parser, i: x, container_name: ["structure"], char: char)
+        return true
+
+    }
+    else if(stack.child == ["key"])
+    {
+        collect(parser: &parser, i: x, container_name: ["value", "key"], char: char)
+        return true
+
+    }
+    else if(stack.child == ["value", "1"])
+    {
+        collect(parser: &parser, i: x, container_name: ["value", "value"], char: char)
+        return true
+
+
+    }
+    else if(stack.child == ["value"])
+    {
+        collect(parser: &parser, i: x, container_name: ["value", "element"], char: char)
+        return true
+
+
+    }
+    return false
+
+}
 func characterDispatch(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     let current_word = parser.getVariable(state_name: ["current_word"]).getString()
-    let k = parser.getVariable(state_name: ["k"]).getInt()
+    let x = parser.getVariable(state_name: ["x"]).getInt()
     //let spaces = collectSpaces(input: current_word, i: j)
-    if(!outOfBounds(i: k, size: current_word.count))
+    if(!outOfBounds(i: x, size: current_word.count))
     {
-        let char = current_word[current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(k))]
-        //print(char)
+        let char = current_word[current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(x))]
+        print(char, digit(char: char))
         if(doubleQuote(char: char))
         {
             //parser.getVariable(state_name: ["k"]).setInt(value: k + 1)
@@ -1651,123 +2009,69 @@ func characterDispatch(current_state_name: [String], parser: inout Parser, stack
             /*
                 bottom of stack is a certain state
             */
-            if(stack.child == ["make structure"])
-            {
-            
-            }
-            else if(stack.child == ["key"])
-            {
-            
-            }
-            else if(stack.child == ["value", "1"])
-            {
-            
-            }
-            else if(stack.child == ["value"])
-            {
-            
-            }
-            return true
+            return check(parser: &parser, x: x, char: char, stack: stack)
+
 
         }
-        else if(notDoubleQuoteNotBackSlash(char: char))
+        else if(backSlash2(char: char))
         {
-            return true
-        }
-        else if(backSlash(char: char))
-        {
-            return true
-        }
-        else if(any(char: char))
-        {
-            return true
+            return check(parser: &parser, x: x, char: char, stack: stack)
+
         }
         else if(negative(char: char))
         {
-            if(stack.child == ["make structure"])
-            {
-            
-            }
-            else if(stack.child == ["key"])
-            {
-            
-            }
-            else if(stack.child == ["value", "1"])
-            {
-            
-            }
-            else if(stack.child == ["value"])
-            {
-            
-            }
-            return true
+           return check(parser: &parser, x: x, char: char, stack: stack)
+
         }
         else if(dot(char: char))
         {
             
-            return true
+           return check(parser: &parser, x: x, char: char, stack: stack)
         }
         else if(digit(char: char))
         {
+            print("here")
+            //exit(0)
             if(stack.child == ["make structure"])
             {
-            
+                print(stack.child)
+                exit(0)
+                collect(parser: &parser, i: x, container_name: ["structure"], char: char)
+                return true
+
             }
             else if(stack.child == ["key"])
             {
-            
+                collect(parser: &parser, i: x, container_name: ["value", "key"], char: char)
+                return true
+
             }
             else if(stack.child == ["value", "1"])
             {
-            
+                collect(parser: &parser, i: x, container_name: ["value", "value"], char: char)
+                return true
+
+
             }
             else if(stack.child == ["value"])
             {
-            
+                collect(parser: &parser, i: x, container_name: ["value", "element"], char: char)
+                return true
+
+
             }
-            return true
         }
-        else if(isTrue(input: String(char), i: k))
+        else if(isTrue(input: String(char), i: x))
         {
-            if(stack.child == ["make structure"])
-            {
-            
-            }
-            else if(stack.child == ["key"])
-            {
-            
-            }
-            else if(stack.child == ["value", "1"])
-            {
-            
-            }
-            else if(stack.child == ["value"])
-            {
-            
-            }
-            return true
+           return check(parser: &parser, x: x, char: char, stack: stack)
+
         }
-        else if(isFalse(input: String(char), i: k))
+        else if(isFalse(input: String(char), i: x))
         {
-            if(stack.child == ["make structure"])
-            {
-            
-            }
-            else if(stack.child == ["key"])
-            {
-            
-            }
-            else if(stack.child == ["value", "1"])
-            {
-            
-            }
-            else if(stack.child == ["value"])
-            {
-            
-            }
-            return true
+           return check(parser: &parser, x: x, char: char, stack: stack)
+
         }
-        else if(isNil(input: String(char), i: k))
+        else if(isNil(input: String(char), i: x))
         {
             if(stack.child == ["make structure"])
             {
@@ -1781,35 +2085,45 @@ func characterDispatch(current_state_name: [String], parser: inout Parser, stack
             {
             
             }
-            return true
         }
-        else if(isBool(input: String(char), i: k))
+        else if(isBool(input: String(char), i: x))
         {
             return true
         }
-        else if(isInt(input: String(char), i: k))
+        else if(isInt(input: String(char), i: x))
         {
             return true
         }
-        else if(isFloat(input: String(char), i: k))
+        else if(isFloat(input: String(char), i: x))
         {
             return true
         }
-        else if(isString(input: String(char), i: k))
+        else if(isString(input: String(char), i: x))
         {
             return true
         }
-        else if(parens(input: String(char), i: k))
+        else if(parens(input: String(char), i: x))
         {
             return true
         }
-        else if(leftSquareBraket(input: String(char), i: k))
+        else if(leftSquareBraket(input: String(char), i: x))
         {
             return true
         }
-        else if(rightSquareBraket(input: String(char), i: k))
+        else if(rightSquareBraket(input: String(char), i: x))
         {
             return true
+        }
+        // may need to check the actual state to separate these
+        else if(notDoubleQuoteNotBackSlash(char: char))
+        {
+           return check(parser: &parser, x: x, char: char, stack: stack)
+
+        }
+        else if(any(char: char))
+        {
+          return check(parser: &parser, x: x, char: char, stack: stack)
+
         }
         
     }
