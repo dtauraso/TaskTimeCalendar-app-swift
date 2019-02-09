@@ -437,8 +437,8 @@ func isLink(current_state_name: [String], parser: inout Parser, stack: ChildPare
 {
 
     let current_word = parser.getVariable(state_name: ["current_word"]).getString()
-    //print("the link")
-    //print(current_word)
+    print("the link")
+    print(current_word)
     if(current_word.count >= 2)
     {
         let child_index = current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(0))
@@ -755,6 +755,11 @@ func isNext(current_state_name: [String], parser: inout Parser, stack: ChildPare
     return parser.getVariable(state_name: ["current_word"]).getString() == "Next"
 
 }
+func notIsCurrentWordFunction(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    return !(parser.getVariable(state_name: ["current_word"]).getString() == "Function")
+
+}
 func isCurrentWordFunction(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     return parser.getVariable(state_name: ["current_word"]).getString() == "Function"
@@ -847,6 +852,7 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
             parent_state.appendStartChild(start_child: collected_state_name)
             
             // add in any unresolved parent links
+            /*
             if(parser.unresolved_list[collected_state_name2] != nil)
             {
                 
@@ -864,7 +870,7 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
                 }
                 //let secondary_parent_state_point = parser.unresolved_list[current_state_name]
                 //let secondary_parent_state =
-            }
+            }*/
         }
         else
         {

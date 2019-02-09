@@ -520,6 +520,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "saveStartChildLink"            : saveStartChildLink,
             "isChildren"                    : isChildren,
             "isNext"                        : isNext,
+            "notIsCurrentWordFunction"      : notIsCurrentWordFunction,
             "isCurrentWordFunction"         : isCurrentWordFunction,
             "saveState"                     : saveState,
             "saveNewState"                  : saveNewState,
