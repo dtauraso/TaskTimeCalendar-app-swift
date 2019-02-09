@@ -475,7 +475,7 @@ func dash(current_state_name: [String], parser: inout Parser, stack: ChildParent
     if(char == "-")
     {
         parser.getVariable(state_name: ["j"]).setInt(value: j + 1)
-
+        parser.getVariable(state_name: ["is_start_child"]).setBool(value: true)
         return true
     }
     return false
@@ -525,13 +525,70 @@ func detectLink(link: String) -> Bool
     
     return false
 }
-func detectStartChild(link: String) -> Bool
+func detectStartChild(link: String, parser: inout Parser) -> Bool
 {
     let start_child_index = link.startIndex
     if(link.count > 0)
     {
-        return link[start_child_index] == "-"
+        return parser.getVariable(state_name: ["is_start_child"]).getBool() == true//link[start_child_index] == "-"
 
+    }
+    return false
+}
+func addToUnresolvedLinks(  current_state_name: [String],
+                            parser: inout Parser,
+                            stack: ChildParent,
+                            parent: inout ContextState,
+                            link: [String],
+                            parent_level: Int,
+                            parent_state: Int) -> Bool
+{
+    let point = parser.getVariable(state_name: ["point_table"]).getPointFromStringListToPointEntry(key: link)
+    if(point != Point.init(l: -1, s: -1))
+    {
+        //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+        //state.appendNextChild(next_child: link)
+        //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+        parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+        return true
+    }
+    else
+    {
+        print(parser.unresolved_list[link])
+
+        if(parser.unresolved_list[link] != nil)
+        {
+            if((parser.unresolved_list[link]?.count)! > 0)
+            {
+                parser.unresolved_list[link]?.append(Point.init(l: parent_level, s: parent_state))
+                //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+                //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+
+                //state.appendNextChild(next_child: link)
+
+                parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+                return true
+            }
+            
+        }
+        else// if((parser.unresolved_list[link]?.count)! == 0)
+        {
+
+            parser.unresolved_list[link] = [Point.init(l: parent_level, s: parent_state)]
+            print(link)
+            parser.unresolved_list[link]![0].Print()
+            //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
+            //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
+            //print(state.getName())
+            //state.appendNextChild(next_child: link)
+
+            parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
+
+            return true
+        }
+        
     }
     return false
 }
@@ -542,71 +599,42 @@ func saveChildLink(current_state_name: [String], parser: inout Parser, stack: Ch
     // increment the state id anyways cause there is expected to be a place for the link being collected
     if(detectLink(link: link[0]))
     {
-        if(!detectStartChild(link: link[0]))
+        if(!detectStartChild(link: link[0], parser: &parser))
         {
+            //print("here")
+            //exit(0)
             link[0] = String(link[0].dropFirst().dropFirst())
             let max_stack_index = parser.getVariable(state_name: ["max_stack_index"]).getInt()
             //var current_state_number = parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt()
 
             //let current_word = parser.getVariable(state_name: ["function name"]).getString()
             //print(current_word)
-            let current_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
+            let parent_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
             //print("level id")
             //print(parser.getVariable(state_name: ["level_number", String(max_stack_index)]).getInt())
             //print(current_level)
 
-            let current_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
+            let parent_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
+            
+            var parent = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: parent_level, s: parent_state))
             
             //print("state id")
             //print(parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt())
             //print(current_state)
             // append link to parent, and append parent to child if it can be found
-            // when saving the state, just append the child -> parent links that haven't been accounted for here
-
-            let point = parser.getVariable(state_name: ["point_table"]).getPointFromStringListToPointEntry(key: link)
-            if(point != Point.init(l: -1, s: -1))
-            {
-                let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
-                state.appendNextChild(next_child: link)
-                //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
-                parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
-
-                return true
-            }
-            else
-            {
-                print(parser.unresolved_list[link])
-
-                if(parser.unresolved_list[link] != nil)
-                {
-                    if((parser.unresolved_list[link]?.count)! > 0)
-                    {
-                        parser.unresolved_list[link]?.append(Point.init(l: current_level, s: current_state))
-                        //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
-                        //let state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: point)
-
-                        //state.appendNextChild(next_child: link)
-
-                        parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
-
-                        return true
-                    }
-                    
-                }
-                else// if((parser.unresolved_list[link]?.count)! == 0)
-                {
-
-                    parser.unresolved_list[link] = [Point.init(l: current_level, s: current_state)]
-                    print(link)
-                    parser.unresolved_list[link]![0].Print()
-                    //parser.getVariable(state_name: ["state_number", String(max_stack_index)]).setInt(value: current_state_number + 1)
-
-                    parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: [])
-
-                    return true
-                }
-                
-            }
+            // when saving the state, just append the child -> parent links that haven't been accounted for here(get rid of the extra parent to child unaccounted for links code)
+            parent.appendChild(child: link)
+            
+            
+            
+            print(parent.getName())
+            addToUnresolvedLinks(   current_state_name: current_state_name,
+                                    parser: &parser,
+                                    stack: stack,
+                                    parent: &parent,
+                                    link: link,
+                                    parent_level: parent_level,
+                                    parent_state: parent_state)
         }
         
     }
@@ -627,7 +655,7 @@ func saveStartChildLink(current_state_name: [String], parser: inout Parser, stac
     var link = parser.getVariable(state_name: ["names", "next state links"]).getStringList()
     if(detectLink(link: link[0]))
     {
-        if(detectStartChild(link: link[0]))
+        if(detectStartChild(link: link[0], parser: &parser))
         {
             link[0] = String(link[0].dropFirst().dropFirst())
             print("link:")
@@ -639,18 +667,29 @@ func saveStartChildLink(current_state_name: [String], parser: inout Parser, stac
 
             //let current_word = parser.getVariable(state_name: ["function name"]).getString()
             //print(current_word)
-            let current_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
-            print("level id")
-            print(parser.getVariable(state_name: ["level_number", String(max_stack_index)]).getInt())
+            let parent_level = parser.getVariable(state_name: ["level_number", String(max_stack_index - 1)]).getInt()
+            //print("level id")
+            //print(parser.getVariable(state_name: ["level_number", String(max_stack_index)]).getInt())
 
-            print(current_level)
+            //print(current_level)
 
-            let current_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
-            print("state id")
-            print(parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt())
+            let parent_state = parser.getVariable(state_name: ["state_number", String(max_stack_index - 1)]).getInt()
+            //print("state id")
+            //print(parser.getVariable(state_name: ["state_number", String(max_stack_index)]).getInt())
 
-            print(current_state)
-
+            //print(current_state)
+            var parent = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: parent_level, s: parent_state))
+            parent.appendStartChild(start_child: link)
+            print("start child")
+            print(parent.getName())
+            addToUnresolvedLinks(   current_state_name: current_state_name,
+                                    parser: &parser,
+                                    stack: stack,
+                                    parent: &parent,
+                                    link: link,
+                                    parent_level: parent_level,
+                                    parent_state: parent_state)
+            /*
             let point = parser.getVariable(state_name: ["point_table"]).getPointFromStringListToPointEntry(key: link)
             if(point != Point.init(l: -1, s: -1))
             {
@@ -688,7 +727,7 @@ func saveStartChildLink(current_state_name: [String], parser: inout Parser, stac
                     return true
                 }
                 
-            }
+            }*/
         }
         
     }
@@ -832,23 +871,7 @@ func saveState(current_state_name: [String], parser: inout Parser, stack: ChildP
             
             parent_state.appendChild(child: collected_state_name)
 
-            // add in any unresolved parent links
-            if(parser.unresolved_list[collected_state_name2] != nil)
-            {
-                for parent_point in parser.unresolved_list[collected_state_name2]!
-                {
-                    
-                    //let secondary_parent_point = Point.init
-                    var secondary_parent_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: parent_point)
-                    secondary_parent_state.appendChild(child: collected_state_name2)
-                    //var saved_state = parser.getVariable(state_name: ["sparse_matrix"]).getContextStateFromPointToContextState(key: Point.init(l: level, s: state))
-                    //saved_state.
-
-
-                }
-                //let secondary_parent_state_point = parser.unresolved_list[current_state_name]
-                //let secondary_parent_state =
-            }
+            
 
         }
         //parent_state.setStartChildren(start_children: [collected_state_name])
@@ -1687,6 +1710,7 @@ func isCurrentWordADifferentParentOfPrevWord(current_state_name: [String], parse
     //, getState(current_state_name: ["new_parent"]).getData().getBool())
     return parser.getVariable(state_name: ["new_parent"]).getBool()
 }
+
 func windBackStateNameFromEnd(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {
     let prev_prev_indent = parser.getVariable(state_name: ["prev_prev_indent"]).getInt()
@@ -1744,10 +1768,57 @@ func isCurrentIndentGreaterThanAsIndentForLevel(current_state_name: [String], pa
     // already incremented to the state name, so the next indent is pointing to the Children word(the next indent is past the current word of consideration)
     let prev_indent = parser.getVariable(state_name: ["prev_indent"]).getInt()
     let max_stack_index = parser.getVariable(state_name: ["max_stack_index"]).getInt()
-    
+    var state_name = parser.getVariable(state_name: ["name", "state_name"]).getStringList()
+    print(state_name)
     let current_level_indent_number = parser.getVariable(state_name: ["indent_number", String(max_stack_index)]).getInt()
     //print(prev_indent, current_level_indent_number)
     return prev_indent > current_level_indent_number
+}
+func isTheDataStateOuter(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    let prev_prev_indent = parser.getVariable(state_name: ["prev_prev_indent"]).getInt()
+
+    let prev_indent = parser.getVariable(state_name: ["prev_indent"]).getInt()
+    let max_stack_index = parser.getVariable(state_name: ["max_stack_index"]).getInt()
+    var state_name = parser.getVariable(state_name: ["name", "state_name"]).getStringList()
+    print(state_name)
+    let current_level_indent_number = parser.getVariable(state_name: ["indent_number", String(max_stack_index)]).getInt()
+    print(prev_prev_indent, prev_indent, prev_prev_indent - prev_indent)
+    return (prev_prev_indent - prev_indent) > 2
+}
+func windBackDataStateName(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    //let prev_prev_indent = parser.getVariable(state_name: ["prev_prev_indent"]).getInt()
+    let prev_prev_indent = parser.getVariable(state_name: ["prev_prev_indent"]).getInt()
+
+    let prev_indent = parser.getVariable(state_name: ["prev_indent"]).getInt()
+    let current_indent = parser.getVariable(state_name: ["next_indent"]).getInt()
+    var last_state_name = parser.getVariable(state_name: ["name", "state_name"]).getStringList()
+    
+    // very not intuitive, because the incrementing numbers and strings are set up in a certain way
+    // the second +1 is so the value is positive cause saveNewState deletes the last item off(throwing off this equation cause
+    // we are assuming no state name parts are deleted off after the dead state is saved)
+    let names_to_delete_from_the_end = (prev_prev_indent - 2) - prev_indent
+    print(names_to_delete_from_the_end, last_state_name)
+    // 7 and 6
+    // 2
+    // len(state name) = 3
+    // total items to add from indent count of 5
+    // [0, len(state name) -2) = [0, 1) range of how many items to copy from the last state name(by ignoring the name parts that are supposed to be deleted)
+    //print( parser.getVariable(state_name: ["prev_word"]).getString(), parser.getVariable(state_name: ["current_word"]).getString())
+    
+    //print(prev_prev_indent, prev_indent, current_indent)
+    var cleaned_state_name = [String]()
+    //print(0, last_state_name.count - names_to_delete_from_the_end)
+    //print(last_state_name)
+    for i in (0..<(last_state_name.count - names_to_delete_from_the_end))
+    {
+        cleaned_state_name.append(last_state_name[i])
+    }
+    parser.getVariable(state_name: ["name", "state_name"]).setStringList(value: cleaned_state_name)
+    print(parser.getVariable(state_name: ["name", "state_name"]).getStringList())
+    return true
+
 }
 func deleteTheLastContext(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
 {

@@ -265,6 +265,11 @@ class Visit {
             //var indents_for_name = indents + "    " + "    "
             for start_child in node.getStartChildren()
             {
+                if(point_table[start_child] == nil)
+                {
+                    print(start_child, "does not exist")
+                    exit(0)
+                }
                 let point = point_table[start_child]!
                 
                 let child_node = matrix[point]!
@@ -611,6 +616,7 @@ class Visit {
                                          point_table: point_table)
         
         print(format_string)
+        
         for i in parser.unresolved_list
         {
                 print(i.key)

@@ -551,6 +551,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "runs"                          : runs,
             "saveFunctionName"              : saveFunctionName,
             "isCurrentWordADifferentParentOfPrevWord" : isCurrentWordADifferentParentOfPrevWord,
+            "isTheDataStateOuter"           : isTheDataStateOuter,
+            "windBackDataStateName"         : windBackDataStateName,
             "windBackStateNameFromEnd"      : windBackStateNameFromEnd,
             "isAStateName"                  : isAStateName,
             "isCurrentIndentSameAsIndentForLevel" : isCurrentIndentSameAsIndentForLevel,
@@ -607,6 +609,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 data_item.data = ["[String]" : [String]()]
             }
             return data_item
+        }
+        func deleteSecondToNNewLines(input: String) -> String
+        {
+            var new_input = String()
+            let input_list = input.components(separatedBy: "\n")
+            //print(input_list)
+            var new_input_list = [String]()
+            for input_line in input_list
+            {
+                var add = false
+                for char in input_line
+                {
+                    // all non whitespace characters
+                    if(char >= "!" && char <= "~")
+                    {
+                        add = true
+                        break
+                    }
+                }
+                if(add)
+                {
+                    new_input_list.append(input_line)
+                }
+            }
+            new_input = new_input_list.joined(separator: "\n")
+            
+            return new_input
         }
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
             // Override point for customization after application launch.
@@ -700,7 +729,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //name_state_table[item.name]?.Print(indent_level: 0)
                 //print()
             }
-            name_state_table[["input"]]?.getData().setString(value: readFile(file: "data_and_dead_state_parsing_only_input.txt") )
+            // "data_and_dead_state_parsing_only_input.txt"
+            name_state_table[["input"]]?.getData().setString(value: deleteSecondToNNewLines(input: readFile(file: "data_and_dead_state_parsing_only_input.txt")) )
             //print((name_state_table[["input"]]?.getData().getString())!)
             let visitor_class: Visit = Visit.init(next_states: [["states", "state"]],
                                               current_state_name:    ["states", "state"],
