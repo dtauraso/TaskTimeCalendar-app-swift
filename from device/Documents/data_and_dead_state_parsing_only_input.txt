@@ -15,8 +15,12 @@ data and dead states
 								Data
 									345678
 							negative
-								Data
-									-876543
+								x
+									Data
+										-876543
+								y
+									Data
+										1234567
 
 						float
 							positive
@@ -43,8 +47,8 @@ data and dead states
 								Data
 									""
 
-
 					init
+						
 						int
 							Data
 								Int()
@@ -79,6 +83,7 @@ data and dead states
 					axt4
 			string
 				Children
+				
 					literal
 						9
 							Data
@@ -95,6 +100,8 @@ data and dead states
 							Data
 									
 								[String]()
+					& literal / integer / positive
+					& init / int
 
 				Function
 					dddddd

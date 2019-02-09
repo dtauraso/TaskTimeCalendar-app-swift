@@ -205,13 +205,94 @@
       },
           {
             "name":           ["name", "0"],
-            "nexts":          [["is_dead_state"], ["advance", "loop"]],
+            "nexts":          [["is link", "2"], ["is_dead_state"], ["advance", "loop"]],
             "start_children": [],
             "children":       [],
             "function_name":  "collectName",
             "data":           {"nothing": "null"},
             "parents":        [["names", "0"]]
           },
+          {
+            "name":           ["is link", "2"],
+            "nexts":          [["advance", "loop", "link"]],
+            "start_children": [["get the next link"]],
+            "children":       [],
+            "function_name":  "isLink",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+
+
+
+
+
+          {
+            "name":           ["advance", "loop", "link"],
+            "nexts":          [["name", "0", "link"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "advanceLoop",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+          {
+            "name":           ["name", "0", "link"],
+            "nexts":          [["is link", "2"], ["not function"], ["is current word \"Function\"", "2"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "collectName",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+          {
+            "name":           ["not function"],
+            "nexts":          [["is_dead_state"],["advance", "loop"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "notIsCurrentWordFunction",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+          {
+            "name":           ["is current word \"Function\"", "2"],
+            "nexts":          [["is current word a different parent of prev word", "2"], ["advance past", "function"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "isCurrentWordFunction",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+
+
+          {
+            "name":           ["is current word a different parent of prev word", "2"],
+            "nexts":          [["decrease max stack index", "2"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "isCurrentWordADifferentParentOfPrevWord",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+
+          {
+            "name":           ["decrease max stack index", "2"],
+            "nexts":          [["advance past", "function"]],
+            "start_children": [],
+            "children":       [],
+            "function_name":  "decreaseMaxStackIndex",
+            "data":           {"nothing": "null"},
+            "parents":        [["names", "0"]]
+          },
+
+
+
+
+
+
+
+
+
+
   {
     "name":           ["name", "state_name"],
     "nexts":          [],
@@ -429,7 +510,7 @@
             "data":           {"nothing": "null"},
             "parents":        []
           }, 
-
+          
 
               {
                 "name":           ["make structure"],
@@ -1276,12 +1357,22 @@
             "name":           ["get the next link"],
             "nexts":          [["add child link to state"], ["add start child link to state"], ["add link to state"]],
             "start_children": [["-", "2"], ["&"], ["name_i"]],
-            "children":       [["names", "next state links"], ["i"]],
+            "children":       [["names", "next state links"], ["i"], ["is_start_child"]],
             "function_name":  "initJ",
             "data":           {"nothing": "null"},
-            "parents":        [["is link"], ["save", "next state link"]]
+            "parents":        [["is link", "2"], ["is link"], ["save", "next state link"]]
           },
 
+
+            { 
+              "name":           ["is_start_child"],
+              "nexts":          [],
+              "start_children": [],
+              "children":       [],
+              "function_name":  "returnTrue",
+              "data":           {"Bool": "false"},
+              "parents":        [["get the next link"]]
+            },
             { 
               "name":           ["-", "2"],
               "nexts":          [["&"]],
@@ -1747,13 +1838,41 @@
   },
   {
     "name":           ["is current indent > indent for level"],
-    "nexts":          [["increment state_id for the current level"]],
+    "nexts":          [["if prev_indent - current_indent_number > 2"], ["increment state_id for the current level"]],
     "start_children": [],
     "children":       [],
     "function_name":  "isCurrentIndentGreaterThanAsIndentForLevel",
     "data":           {"nothing": "null"},
     "parents":        []
   },
+
+
+  {
+    "name":           ["if prev_indent - current_indent_number > 2"],
+    "nexts":          [["wind back data state name"]],
+    "start_children": [],
+    "children":       [],
+    "function_name":  "isTheDataStateOuter",
+    "data":           {"nothing": "null"},
+    "parents":        []
+  },
+  {
+    "name":           ["wind back data state name"],
+    "nexts":          [["increment state_id for the current level"]],
+    "start_children": [],
+    "children":       [],
+    "function_name":  "windBackDataStateName",
+    "data":           {"nothing": "null"},
+    "parents":        []
+  },
+
+
+
+
+
+
+
+
   {
     "name":           ["increment state_id for the current level"],
     "nexts":          [["name", "0"]],
