@@ -502,6 +502,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             return jsonData!
         }
+        // ([String], inout Parser, ChildParent) -> Bool
         let function_name_to_function: [String: ([String], inout Parser, ChildParent) -> Bool] = [
             "returnTrue"                    : returnTrue,
             "returnFalse"                   : returnFalse,
@@ -562,8 +563,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "deleteTheLastContext"          : deleteTheLastContext,
             "incrementTheStateId"           : incrementTheStateId,
             "decreaseMaxStackIndex"         : decreaseMaxStackIndex,
-            
-            "characterDispatch"             : characterDispatch,
+
+            "doubleQuote"                   : doubleQuote,
+            "notDoubleQuoteNotBackSlash"    : notDoubleQuoteNotBackSlash,
+            "backSlash2"                    : backSlash2,
+            "any"                           : any,
+            "negative"                      : negative,
+            "dot"                           : dot,
+            "digit"                         : digit,
+            "isTrue"                        : isTrue,
+            "isFalse"                       : isFalse,
+            "isNil"                         : isNil,
+            "isBool"                        : isBool,
+            "isInt"                         : isInt,
+            "isFloat"                       : isFloat,
+            "isString"                      : isString,
+            "parens"                        : parens,
+            "leftSquareBraket"              : leftSquareBraket,
+            "rightSquareBraket"             : rightSquareBraket,
+            "isKOutOfBounds"                : isKOutOfBounds,
+            "saveInitFalse"                 : saveInitFalse,
+            "saveInit0"                     : saveInit0,
+            "saveInitFloat0"                : saveInitFloat0,
+            "saveInitString"                : saveInitString,
+            "saveInitArrayFalse"            : saveInitArrayFalse,
+            "saveInitArray0"                : saveInitArray0,
+            "saveInitArrayFloat0"           : saveInitArrayFloat0,
+            "saveInitArrayString"           : saveInitArrayString
                     ]
         func makeDataObject(value: [String: String]) -> Data
         {
@@ -608,6 +634,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             else if(value["[String]"] != nil)
             {
                 data_item.data = ["[String]" : [String]()]
+            }
+            else if(value["Any"] != nil)
+            {
+                data_item.data = ["Any" : String()]
             }
             return data_item
         }

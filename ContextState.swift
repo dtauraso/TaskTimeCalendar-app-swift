@@ -78,7 +78,7 @@ class Data {
     func Print()
     {
         //print(data)
-        if(getBool())
+        if(getBool2() != "no bool value")
         {
             print("Bool", self.data["Bool"]!)
         }
@@ -86,9 +86,20 @@ class Data {
         {
             print("Int", self.data["Int"]!)
         }
+        else if(getFloat() != -87654321.876543)
+        {
+            print("Float", self.data["Float"]!)
+        }
         else if(getString() != "no String type is here")
         {
-            print("String", self.data["String"]!)
+            if(self.data["String"]! as? String == "")
+            {
+                print("String", "\"\"")
+            }
+            else
+            {
+                print("String", self.data["String"]!)
+            }
         }
         else if(getStringList() != ["no [String] type is here"])
         {
@@ -98,6 +109,27 @@ class Data {
         {
             print("Point", self.data["Point"]!)
         }
+        else if(self.data["[Bool]"] != nil)
+        {
+            print("[Bool]", self.data["[Bool]"]!)
+        }
+        else if(self.data["[String]"] != nil)
+        {
+            print("[String]", self.data["[String]"]!)
+        }
+        else if(self.data["[Int]"] != nil)
+        {
+            print("[Int]", self.data["[Int]"]!)
+        }
+        else if(self.data["[Float]"] != nil)
+        {
+            print("[Float]", self.data["[Float]"]!)
+        }
+       //["[String]"]
+//self.data["[Bool]"]// = value
+//["[Int]"]// = value
+//["[Float]"]
+        /*
         else if(is_dict)
         {
             print("Dictionary", self.data["Dictionary"]!)
@@ -105,7 +137,7 @@ class Data {
         else if(is_array)
         {
             print("Array", self.data["Array"]!)
-        }
+        }*/
         else
         {
             print("[:]")
@@ -137,6 +169,17 @@ class Data {
             self.is_dict = true
         }
     }
+    func getBool2() -> String
+    {
+        let bool = self.data["Bool"] as? Bool
+        if(bool != nil)
+        {
+            return String(bool!)
+        }
+
+        return "no bool value"
+
+    }
     func getBool() -> Bool
     {
         let bool = self.data["Bool"] as? Bool
@@ -148,6 +191,7 @@ class Data {
         return false
 
     }
+
     func getInt() -> Int
     {
         let int = self.data["Int"] as? Int
@@ -158,6 +202,15 @@ class Data {
 
         return -123
         
+    }
+    func getFloat() -> Float
+    {
+        let float = self.data["Float"] as? Float
+        if(float != nil)
+        {
+            return float!
+        }
+        return -87654321.876543
     }
     // there should only be 1 value in [String: Any] per state
     func getString() -> String
@@ -225,7 +278,10 @@ class Data {
     {
         self.data["Int"] = value
     }
-    
+    func setFloat(value: Float)
+    {
+        self.data["Float"] = value
+    }
     func setString(value: String)
     {
         self.data["String"] = value
@@ -234,7 +290,22 @@ class Data {
     {
         self.data["[String]"] = value
     }
-    
+    func setBoolList(value: [Bool])
+    {
+        self.data["[Bool]"] = value
+    }
+    func setIntList(value: [Int])
+    {
+        self.data["[Int]"] = value
+    }
+    func setFloatList(value: [Float])
+    {
+        self.data["[Float]"] = value
+    }
+    func setNil()
+    {
+        self.data["Nil"] = nil
+    }
     func appendString(value: String)
     {
         var string_list = self.data["[String]"] as! [String]

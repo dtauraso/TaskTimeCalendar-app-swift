@@ -339,7 +339,6 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     @objc func edit(gestureRecognizer: UIGestureRecognizer){}
     @objc func add(gestureRecognizer: UIGestureRecognizer){}
 
-
     // previous_state = current_action_state
     func TasksFSTActions(previous_state: String, found_in_api_call: String) -> Bool
     {

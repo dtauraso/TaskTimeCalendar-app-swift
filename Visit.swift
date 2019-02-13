@@ -584,6 +584,8 @@ class Visit {
             print("winning state", self.current_state_name, "f=", point2.function_name)
             print("next states", self.next_states)
             //printStack2(bottom_tracker: self.bottom_tracker)
+            print()
+
 
             //print("end condition")
             //print(end_states_nexts)
@@ -608,7 +610,7 @@ class Visit {
             print()
         }*/
                       //  let matrix = name_state_table[["sparse_matrix"]]!.getData().data["[Point: ContextState]"] as! [Point: ContextState]
-       
+       /*
         let format_string = prettyFormat(node: start_node,
                                          indents: "",
                                          start_child: false,
@@ -616,7 +618,7 @@ class Visit {
                                          point_table: point_table)
         
         print(format_string)
-        
+        */
         for i in parser.unresolved_list
         {
                 print(i.key)
