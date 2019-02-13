@@ -5,7 +5,7 @@ entry class
 				view did load regular
 			Function
 				SviewDidLoad(param1:param2:) runs start
-		-& view did load regular
+		&view did load regular
 		task fst
 			Children
 				-view did load regular

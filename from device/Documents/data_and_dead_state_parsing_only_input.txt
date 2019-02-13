@@ -161,6 +161,41 @@ data and dead states
 			no value
 				Data
 					nil
+			
+			Dictionaries
+				init
+					String -> Int
+						Data
+							[String: Int]()
+					String -> Float
+						Data
+							[String: Float]()
+					Int -> Bool
+						Data
+							[Int: Bool]()
+					float -> Bool
+						Data
+							[Float: Bool]()
+					bool -> String
+						Data
+							[Bool: String]()
+
+				regular
+					String -> Int
+						Data
+							["1" : 1, "2" : 2, "3", 3]
+					String -> Float
+						Data
+							["one" : 1.0, "two" : 2.0, "three", 3.0]
+					Int -> Bool
+						Data
+							[1 : true, 2 : false, 3: nil]
+					float -> Bool
+						Data
+							[1.0 : true, 2.3 : false, 3.9: nil]
+					bool -> String
+						Data
+							[true: "1.0", "false": 2.3]
 			list
 				Children
 					Ints
@@ -177,13 +212,3 @@ data and dead states
 							["1", "2", "3\\\""]
 				Function
 					fdssss
-			Dictionaries
-				String -> Int
-					Data
-						["1" : 1, "2" : 2, "3", 3]
-				String -> Float
-					Data
-						["one" : 1.0, "two" : 2.0, "three", 3.0]
-				Int -> Bool
-					Data
-						[1 : true, 2 : false, 3: nil]

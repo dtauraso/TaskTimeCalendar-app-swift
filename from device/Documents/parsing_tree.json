@@ -515,7 +515,15 @@
               {
                 "name":           ["make structure"],
                 "nexts":          [],
-                "start_children": [],
+                "start_children": [["-"], ["#"],
+                                   ["true"], ["false"],
+                                   ["nil"],
+                                   ["\""],
+                                   ["Int"], ["Float"],
+                                   ["Bool"], ["String"],
+                                   ["Int", "2"], ["Float", "2"],
+                                   ["Bool", "2"], ["String", "2"],
+                                   ["["]],
                 "children":       [["x"], ["structure type"], ["structure container kind"], ["structure"]],
                 "function_name":  "printData",
                 "data":           {"nothing": "null"},
@@ -560,7 +568,7 @@
                     "start_children": [],
                     "children":       [],
                     "function_name":  "returnTrue",
-                    "data":           {"nothing": "null"},
+                    "data":           {"String": ""},
                     "parents":        [["make structure"]]
                   }, 
 
@@ -569,17 +577,17 @@
                                 "nexts":          [["#"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "negative",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
 
                               {
                                 "name":           ["#"],
-                                "nexts":          [["."], ["int"]],
+                                "nexts":          [["int"], ["#"], ["."]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "digit",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -589,7 +597,7 @@
                                 "nexts":          [["#", "1"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "dot",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -599,17 +607,17 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "isKOutOfBounds",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
 
                               {
                                 "name":           ["#", "1"],
-                                "nexts":          [["#", "1"], ["float"]],
+                                "nexts":          [["float"], ["#", "1"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "digit",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -619,7 +627,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "isKOutOfBounds",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               }, 
@@ -627,40 +635,40 @@
 
                               {
                                 "name":           ["\""],
-                                "nexts":          [["not \" not \\"]],
+                                "nexts":          [["not \" not \\"], ["\"", "2"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "doubleQuote",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
 
                               {
                                 "name":           ["not \" not \\"],
-                                "nexts":          [["not \" not \\"], ["\\"], ["\"", "2"]],
+                                "nexts":          [["not \" not \\"], ["\\", "2"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "notDoubleQuoteNotBackSlash",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
 
                               {
-                                "name":           ["\\"],
+                                "name":           ["\\", "2"],
                                 "nexts":          [["any"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "backSlash2",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
 
                               {
                                 "name":           ["any"],
-                                "nexts":          [["\\"], ["not \" not \\"], ["\"", "2"]],
+                                "nexts":          [["\\", "2"], ["not \" not \\"], ["\"", "2"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "any",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -670,7 +678,7 @@
                                 "nexts":          [["string"]],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "doubleQuote",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -680,7 +688,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "isKOutOfBounds",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -688,40 +696,32 @@
 
                               {
                                 "name":           ["true"],
-                                "nexts":          [["bool"]],
+                                "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "isTrue",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
 
                               {
                                 "name":           ["false"],
-                                "nexts":          [["bool"]],
+                                "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "isFalse",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
                               
-                              {
-                                "name":           ["bool"],
-                                "nexts":          [],
-                                "start_children": [],
-                                "children":       [],
-                                "function_name":  "returnTrue",
-                                "data":           {"nothing": "null"},
-                                "parents":        [["make structure"]]
-                              },
+
 
                               {
                                 "name":           ["nil"],
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "characterDispatch",
+                                "function_name":  "isNil",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -741,7 +741,7 @@
 
                               {
                                 "name":           ["()", "1"],
-                                "nexts":          [],
+                                "nexts":          [ ["save as false"]],
                                 "start_children": [],
                                 "children":       [],
                                 "function_name":  "parens",
@@ -754,7 +754,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "saveInitFalse",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -785,7 +785,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "saveInit0",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -816,7 +816,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "saveInitFloat0",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -847,7 +847,7 @@
                                 "nexts":          [],
                                 "start_children": [],
                                 "children":       [],
-                                "function_name":  "returnTrue",
+                                "function_name":  "saveInitString",
                                 "data":           {"nothing": "null"},
                                 "parents":        [["make structure"]]
                               },
@@ -897,7 +897,7 @@
                                     "nexts":          [],
                                     "start_children": [],
                                     "children":       [],
-                                    "function_name":  "returnTrue",
+                                    "function_name":  "saveInitArrayFalse",
                                     "data":           {"nothing": "null"},
                                     "parents":        [["["]]
                                   },
@@ -939,7 +939,7 @@
                                     "nexts":          [],
                                     "start_children": [],
                                     "children":       [],
-                                    "function_name":  "returnTrue",
+                                    "function_name":  "saveInitArray0",
                                     "data":           {"nothing": "null"},
                                     "parents":        [["["]]
                                   },
@@ -979,7 +979,7 @@
                                     "nexts":          [],
                                     "start_children": [],
                                     "children":       [],
-                                    "function_name":  "returnTrue",
+                                    "function_name":  "saveInitArrayFloat0",
                                     "data":           {"nothing": "null"},
                                     "parents":        [["["]]
                                   },
@@ -1020,7 +1020,7 @@
                                     "nexts":          [],
                                     "start_children": [],
                                     "children":       [],
-                                    "function_name":  "returnTrue",
+                                    "function_name":  "saveInitArrayString",
                                     "data":           {"nothing": "null"},
                                     "parents":        [["["]]
                                   },
