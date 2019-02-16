@@ -125,6 +125,13 @@ class Data {
         {
             print("[Float]", self.data["[Float]"]!)
         }
+        // printing all dicts
+        else if(self.data.keys.count > 0)
+        {
+            let x: String = self.data.keys[self.data.keys.startIndex]
+            print(x, self.data[x]!)
+
+        }
        //["[String]"]
 //self.data["[Bool]"]// = value
 //["[Int]"]// = value
@@ -302,6 +309,70 @@ class Data {
     {
         self.data["[Float]"] = value
     }
+    func setDict(key_0: String, key_1: String, value: [Bool: Bool])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Bool: Int])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Bool: Float])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Bool: String])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Int: Bool])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Int: Int])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [Int: Float])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [Int: String])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [Float: Bool])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [Float: Int])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [Float: Float])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [Float: String])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [String: Bool])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [String: Int])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+    func setDict(key_0: String, key_1: String, value: [String: Float])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
+     func setDict(key_0: String, key_1: String, value: [String: String])
+    {
+        self.data["[" + key_0 + ": " + key_1 + "]"] = value
+    }
     func setNil()
     {
         self.data["Nil"] = nil
@@ -318,7 +389,7 @@ class Data {
     {
         self.data["Point"] = value
     }
-    
+
     func setStringListToPointEntry(key: [String], value: Point)
     {
         var dict = (self.data["[[String]: Point]"] as! [[String]: Point])

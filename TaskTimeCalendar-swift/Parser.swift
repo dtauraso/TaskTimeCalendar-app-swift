@@ -764,6 +764,9 @@ func printData(current_state_name: [String], parser: inout Parser, stack: ChildP
     print(parser.getVariable(state_name: ["current_word"]).getString())
     parser.getVariable(state_name: ["x"]).setInt(value: 0)
     parser.getVariable(state_name: ["structure"]).setString(value: "")
+    parser.getVariable(state_name: ["dict init key type"]).setString(value: "")
+    parser.getVariable(state_name: ["dict init value type"]).setString(value: "")
+
     return true
 }
 func isChildren(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
@@ -2152,6 +2155,7 @@ func isBool(current_state_name: [String], parser: inout Parser, stack: ChildPare
                 input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 3))] == "l")
         {
             parser.getVariable(state_name: ["x"]).setInt(value: x + 4)
+            parser.getVariable(state_name: ["dict init key type"]).setString(value: "Bool")
             return true//check(parser: &parser, x: x, char: char, stack: stack)
         }
     }
@@ -2172,6 +2176,8 @@ func isInt(current_state_name: [String], parser: inout Parser, stack: ChildParen
         {
             // move x past Int
             parser.getVariable(state_name: ["x"]).setInt(value: x + 3)
+            parser.getVariable(state_name: ["dict init key type"]).setString(value: "Int")
+
             return true//check(parser: &parser, x: x, char: char, stack: stack)
         }
     }
@@ -2193,6 +2199,7 @@ func isFloat(current_state_name: [String], parser: inout Parser, stack: ChildPar
                 input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 4))] == "t")
         {
             parser.getVariable(state_name: ["x"]).setInt(value: x + 5)
+            parser.getVariable(state_name: ["dict init key type"]).setString(value: "Float")
             return true//check(parser: &parser, x: x, char: char, stack: stack)
         }
 
@@ -2216,6 +2223,7 @@ func isString(current_state_name: [String], parser: inout Parser, stack: ChildPa
                 input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 5))] == "g")
         {
             parser.getVariable(state_name: ["x"]).setInt(value: x + 6)
+            parser.getVariable(state_name: ["dict init key type"]).setString(value: "String")
             return true//check(parser: &parser, x: x, char: char, stack: stack)
         }
 
@@ -2265,6 +2273,7 @@ func rightSquareBraket(current_state_name: [String], parser: inout Parser, stack
     let input = parser.getVariable(state_name: ["current_word"]).getString()
     let i = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
     let char = input[i]
+    //print(char)
     if(x < input.count)
     {
         if(  input[input.index(input.startIndex, offsetBy: String.IndexDistance(x))]  == "]")
@@ -2430,6 +2439,275 @@ func saveInitArrayString(current_state_name: [String], parser: inout Parser, sta
     state.getData().setStringList(value: [String]())
     state.Print(indent_level: 0)
     return true
+
+}
+
+func colon3(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    
+    let current_word = parser.getVariable(state_name: ["current_word"]).getString()
+    var k = parser.getVariable(state_name: ["x"]).getInt()
+    k = skipSpaces(input: current_word, i: k)
+    if(!outOfBounds(i: k, size: current_word.count))
+    {
+        let char = current_word[current_word.index(current_word.startIndex, offsetBy: String.IndexDistance(k))]
+        //print(char)
+        if(char == ":")
+        {
+            parser.getVariable(state_name: ["x"]).setInt(value: k + 1)
+            return true
+
+        }
+        
+        
+    }
+    return false
+}
+func boolSaveValueType(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var x = parser.getVariable(state_name: ["x"]).getInt()
+    let input = parser.getVariable(state_name: ["current_word"]).getString()
+    x = skipSpaces(input: input, i: x)
+
+    let i = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
+    let char = input[i]
+    if(x + 3 < input.count)
+    {
+        if(  input[input.index(input.startIndex, offsetBy: String.IndexDistance(x))]  == "B"     &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 1))] == "o"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 2))] == "o"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 3))] == "l")
+        {
+            parser.getVariable(state_name: ["x"]).setInt(value: x + 4)
+            parser.getVariable(state_name: ["dict init value type"]).setString(value: "Bool")
+            return true//check(parser: &parser, x: x, char: char, stack: stack)
+        }
+    }
+    return false
+    
+    //return true
+
+}
+func intSaveValueType(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var x = parser.getVariable(state_name: ["x"]).getInt()
+    let input = parser.getVariable(state_name: ["current_word"]).getString()
+    x = skipSpaces(input: input, i: x)
+
+    let i = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
+    let char = input[i]
+    print(char)
+    if(x + 2 < input.count)
+    {
+        if(  input[input.index(input.startIndex, offsetBy: String.IndexDistance(x))]  == "I"     &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 1))] == "n"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 2))] == "t")
+        {
+            parser.getVariable(state_name: ["x"]).setInt(value: x + 3)
+            parser.getVariable(state_name: ["dict init value type"]).setString(value: "Int")
+            return true//check(parser: &parser, x: x, char: char, stack: stack)
+        }
+    }
+    return false
+
+}
+func floatSaveValueType(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var x = parser.getVariable(state_name: ["x"]).getInt()
+    let input = parser.getVariable(state_name: ["current_word"]).getString()
+    x = skipSpaces(input: input, i: x)
+
+    let i = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
+    let char = input[i]
+    if(x + 4 < input.count)
+    {
+        if(  input[input.index(input.startIndex, offsetBy: String.IndexDistance(x))]  == "F"     &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 1))] == "l"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 2))] == "o"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 3))] == "a"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 4))] == "t")
+        {
+            parser.getVariable(state_name: ["x"]).setInt(value: x + 5)
+            parser.getVariable(state_name: ["dict init value type"]).setString(value: "Float")
+            return true//check(parser: &parser, x: x, char: char, stack: stack)
+        }
+    }
+    return false
+
+}
+func stringSaveValueType(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    var x = parser.getVariable(state_name: ["x"]).getInt()
+    let input = parser.getVariable(state_name: ["current_word"]).getString()
+    x = skipSpaces(input: input, i: x)
+
+    let i = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
+    let char = input[i]
+     if(x + 5 < input.count)
+    {
+        if(  input[input.index(input.startIndex, offsetBy: String.IndexDistance(x))]  == "S"     &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 1))] == "t"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 2))] == "r"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 3))] == "i"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 4))] == "n"  &&
+                input[input.index(input.startIndex, offsetBy: String.IndexDistance(x + 5))] == "g")
+        {
+            parser.getVariable(state_name: ["x"]).setInt(value: x + 6)
+            parser.getVariable(state_name: ["dict init value type"]).setString(value: "String")
+            return true//check(parser: &parser, x: x, char: char, stack: stack)
+        }
+    }
+    return false
+
+}
+func saveInitDictEntry(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+
+    return true
+}
+func saveInitDict(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+    /*
+    for each type in "dict init key type", "dict init value type"
+        save the correct dict init into the last state
+    */
+    print("Save dict")
+    print(parser.getVariable(state_name: ["dict init key type"]).getString(), parser.getVariable(state_name: ["dict init value type"]).getString())
+    let key = parser.getVariable(state_name: ["dict init key type"]).getString()
+    let value = parser.getVariable(state_name: ["dict init value type"]).getString()
+    let state = getLastStateSaved(parser: &parser)
+
+    if(key == "Bool")
+    {
+        if(value == "Bool")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Bool: Bool]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Int")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Bool: Int]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Float")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Bool: Float]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "String")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Bool: String]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        
+    }
+    if(key == "Int")
+    {
+        if(value == "Bool")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Int: Bool]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Int")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Int: Int]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Float")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Int: Float]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "String")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Int: String]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        
+    }
+    if(key == "Float")
+    {
+        if(value == "Bool")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Float: Bool]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Int")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Float: Int]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Float")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Float: Float]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "String")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [Float: String]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        
+    }
+    if(key == "String")
+    {
+        if(value == "Bool")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [String: Bool]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Int")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [String: Int]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "Float")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [String: Float]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        if(value == "String")
+        {
+            state.getData().setDict(key_0: key, key_1: value, value: [String: String]())
+            state.Print(indent_level: 0)
+            return true
+        }
+        
+    }
+    /*
+    Bool Bool
+    Bool Int
+    Bool Float
+    Bool String
+    Int Bool
+    Int Int
+    Int Float
+    Int String
+    Float Bool
+    Float Int
+    Float Float
+    Float String
+    String Bool
+    String Int
+    String Float
+    String String
+    */
+    return false
 
 }
 func check(parser: inout Parser, x: Int, char: Character, stack: ChildParent) -> Bool

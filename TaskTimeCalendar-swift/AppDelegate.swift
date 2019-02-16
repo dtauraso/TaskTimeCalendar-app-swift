@@ -589,7 +589,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "saveInitArrayFalse"            : saveInitArrayFalse,
             "saveInitArray0"                : saveInitArray0,
             "saveInitArrayFloat0"           : saveInitArrayFloat0,
-            "saveInitArrayString"           : saveInitArrayString
+            "saveInitArrayString"           : saveInitArrayString,
+            
+            "colon3"                        : colon3,
+            "boolSaveValueType"             : boolSaveValueType,
+            "intSaveValueType"              : intSaveValueType,
+            "floatSaveValueType"            : floatSaveValueType,
+            "stringSaveValueType"           : stringSaveValueType,
+            "saveInitDict"                  : saveInitDict
+
                     ]
         func makeDataObject(value: [String: String]) -> Data
         {
