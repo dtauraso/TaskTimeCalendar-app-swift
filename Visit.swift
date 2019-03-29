@@ -583,7 +583,7 @@ class Visit {
 
             print("winning state", self.current_state_name, "f=", point2.function_name)
             print("next states", self.next_states)
-            //printStack2(bottom_tracker: self.bottom_tracker)
+            printStack2(bottom_tracker: self.bottom_tracker)
             print()
 
 

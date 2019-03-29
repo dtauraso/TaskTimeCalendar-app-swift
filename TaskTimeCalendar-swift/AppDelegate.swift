@@ -275,15 +275,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ]
 
 
-            // don't do any of this
-            // cell state machine doesn't rely on a window to load, so it can act as a data structure(dict)
-            // make a debug function that adds start_of_sub_graph: true to the nodes being used for debugging
-            // if the state machines are on the same level, make a sequence of them
-            // store only the state graph as a dict(don't put any variables into it)
-
-
-        // use htm network for the tasks, and the button id's in the dict
-
+        // when in the cal view don't press parent
+        // the app will stop operating properly
         func allowedtoPrintChildrenStateNames(previous_state: String) -> Bool
         {
             // prove what class tracers's class is being used right know
@@ -337,6 +330,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
         }
+        // fix so the api sets the current state and then we run that state and find neighbors untill the end bound
+        
         func test( previous_state: inout String, action: ((String, String) -> Bool), found_in_api_call: String, options: [String])
         {
             // assume that either the options or the next states has only 1 item in it or intersection fails to find only 1 state
@@ -596,7 +591,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "intSaveValueType"              : intSaveValueType,
             "floatSaveValueType"            : floatSaveValueType,
             "stringSaveValueType"           : stringSaveValueType,
-            "saveInitDict"                  : saveInitDict
+            "saveInitDict"                  : saveInitDict,
+            "noInitStateChar"               : noInitStateChar
 
                     ]
         func makeDataObject(value: [String: String]) -> Data
@@ -791,7 +787,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             var parsing_object = Parser.init()
             parsing_object.name_state_table = name_state_table
-            visitor_class.visitStates(start_state: name_state_table[["states", "state"]]!, parser: &parsing_object, function_name_to_function: function_name_to_function)
+            //visitor_class.visitStates(start_state: name_state_table[["states", "state"]]!, parser: &parsing_object, function_name_to_function: function_name_to_function)
             //var json_data = data.data(using: .utf8)!
             //print(json_data)
             //let jsonDecoder = JSONDecoder()

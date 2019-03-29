@@ -793,6 +793,14 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
        
+        // Main idea.  api calls my state machine with the TasksFSTActions dispatch function using the previous state
+        // my state machine runs the dispatch function to pick the next state to be run
+        // dispatch function runs the code associated with the state chosen to run
+        // control returns to the user
+        // yes the state machine implementation is confusing.  I made it over a year and a half ago, long before I had better ideas for how to do this.  The whole notion of the options variable is outdated
+        
+        // also, the display looks better on iphone 5 using ios version 8.5
+        
         
         let function_name = "TasksFST tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)"
         if let my_delegate = UIApplication.shared.delegate as? AppDelegate

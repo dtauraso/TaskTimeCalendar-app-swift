@@ -1948,13 +1948,18 @@ func notDoubleQuoteNotBackSlash(current_state_name: [String], parser: inout Pars
     
     if(!(char == "\"" || char == "\\"))
     {
-        print(stack.getParent()?.getChild(), stack.getParent()?.getChild() == ["make structure"])
+        print(stack.getChild(),stack.getParent()?.getChild(), stack.getParent()?.getChild() == ["make structure"])
         if(stack.getParent()?.getChild() == ["make structure"])
         {
             collectAndAdvance(parser: &parser, x: x, container_name: ["structure"], char: char)
             return true
             //return check(parser: &parser, x: x, char: char, stack: stack)
 
+        }
+        if(stack.getChild() == ["key"])
+        {
+            print("here")
+            exit(0)
         }
 
     }
@@ -2709,6 +2714,19 @@ func saveInitDict(current_state_name: [String], parser: inout Parser, stack: Chi
     */
     return false
 
+}
+
+func noInitStateChar(current_state_name: [String], parser: inout Parser, stack: ChildParent) -> Bool
+{
+
+    var x = parser.getVariable(state_name: ["x"]).getInt()
+    let input = parser.getVariable(state_name: ["current_word"]).getString()
+    let index = input.index(input.startIndex, offsetBy: String.IndexDistance(x))
+    return  !(input[index] == "B" ||
+            input[index] == "I" ||
+            input[index] ==  "F" ||
+            input[index] ==  "S")
+    
 }
 func check(parser: inout Parser, x: Int, char: Character, stack: ChildParent) -> Bool
 {
