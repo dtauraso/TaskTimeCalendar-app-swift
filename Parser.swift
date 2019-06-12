@@ -179,14 +179,14 @@ func advanceInit(current_state_name: [String], parser: inout Parser, stack: Chil
 
     //print(input)
     var word: String = String()
-    if(outOfBounds(i: index.encodedOffset, size: input.count))
+    if(outOfBounds(i: index.utf16Offset(in: input), size: input.count))
     {
         return false
     }
-    while(!outOfBounds(i: index.encodedOffset, size: input.count) &&  input[index] != "\n")
+    while(!outOfBounds(i: index.utf16Offset(in: input), size: input.count) &&  input[index] != "\n")
     {
         word.append(input[index])
-        index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.encodedOffset + 1) )
+        index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.utf16Offset(in: input) + 1) )
     }
 
 
@@ -194,21 +194,21 @@ func advanceInit(current_state_name: [String], parser: inout Parser, stack: Chil
     //print(getState(current_state_name: ["i"]).getInt())
     //print(getState(current_state_name: ["current_word"]).getString())
     //print("|" + String(input[index]) + "|")
-    index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.encodedOffset + 1))
+    index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.utf16Offset(in: input) + 1))
     handleBlankLines(index: &index, input: input)
 
     
     var indent_count: Int = Int()
-    while(!outOfBounds(i: index.encodedOffset, size: input.count) && input[index] == "\t")
+    while(!outOfBounds(i: index.utf16Offset(in: input), size: input.count) && input[index] == "\t")
     {
         
         indent_count += 1
-        index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.encodedOffset + 1))
+        index = input.index(input.startIndex, offsetBy: String.IndexDistance(index.utf16Offset(in: input) + 1))
         
     }
     //print(indent_count)
     //print(input[index])
-    i = index.encodedOffset
+    i = index.utf16Offset(in: input)
     //setData(current_state_name: ["i"], data: i)
     parser.getVariable(state_name: ["i"]).setInt(value: i)
     //parser.saveState(state: )

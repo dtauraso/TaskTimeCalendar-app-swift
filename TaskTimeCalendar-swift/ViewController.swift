@@ -298,7 +298,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
         let string : String = (cell.textLabel?.text)!
         var text : [Character] = [Character]()
-        for char in string.characters
+        for char in string
         {
             text.append(char)
         }
@@ -336,8 +336,14 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         return true
     }
     
-    @objc func edit(gestureRecognizer: UIGestureRecognizer){}
-    @objc func add(gestureRecognizer: UIGestureRecognizer){}
+    @objc func edit(gestureRecognizer: UIGestureRecognizer)
+    {
+        print("edit")
+    }
+    @objc func add(gestureRecognizer: UIGestureRecognizer)
+    {
+        print("add")
+    }
 
     // previous_state = current_action_state
     func TasksFSTActions(previous_state: String, found_in_api_call: String) -> Bool
@@ -351,7 +357,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             {
                 //print("load up interface")
                 // can't move the code loading the view from TasksFST's view_did_load_regular to here
-                table.frame = CGRect(x:0, y:0, width:320, height:560)
+                table.frame = CGRect(x:0, y:0, width:415, height:560)
                 table.delegate = self
                 table.dataSource = self
                 table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -390,7 +396,7 @@ class TasksFST: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             
             else if previous_state == "view_did_load_for_nested"
             {
-                table.frame = CGRect(x:0, y:0, width:320, height:560)
+                table.frame = CGRect(x:0, y:0, width:415, height:560)
                 table.delegate = self
                 table.dataSource = self
                 table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -969,7 +975,7 @@ class EntryClass: UINavigationController//, UITableViewDelegate, UITableViewData
                 {
                     var array_of_chars = [Character]()
                     
-                    for char in element.characters
+                    for char in element
                     {
                         array_of_chars.append(char)
                     }

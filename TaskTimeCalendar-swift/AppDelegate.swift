@@ -731,6 +731,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             {
                 print(i.key)
             }*/
+            /*
             var my_struct: [x] = [x]()
             do
             {
@@ -833,6 +834,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             are saved and all fragments are concatenated together with a delimiter
                     // if all items have the sync status
                         // return to state that was send to sync
+                */
                 */
                 return true
         }

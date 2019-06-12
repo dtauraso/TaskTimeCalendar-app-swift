@@ -12,9 +12,6 @@
 		631F56A221CE5A5B008469C7 /* input copy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 631F56A121CE5A5B008469C7 /* input copy.txt */; };
 		631F56A321CE5A5B008469C7 /* input copy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 631F56A121CE5A5B008469C7 /* input copy.txt */; };
 		631F56A421CE5A5B008469C7 /* input copy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 631F56A121CE5A5B008469C7 /* input copy.txt */; };
-		631F56A621CF8E87008469C7 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631F56A521CF8E87008469C7 /* Parser.swift */; };
-		631F56A721CF8E87008469C7 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631F56A521CF8E87008469C7 /* Parser.swift */; };
-		631F56A821CF8E87008469C7 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631F56A521CF8E87008469C7 /* Parser.swift */; };
 		63236C7A21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
 		63236C7B21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
 		63236C7C21C83E0300DE6C1A /* ContextState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C7921C83E0300DE6C1A /* ContextState.swift */; };
@@ -27,6 +24,7 @@
 		63236C8A21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
 		63236C8B21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
 		63236C8C21C93D6B00DE6C1A /* Visit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63236C8921C93D6B00DE6C1A /* Visit.swift */; };
+		63BFE9F8224E24800094CF62 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BFE9F7224E24800094CF62 /* Parser.swift */; };
 		63DADC9A1CC976E400621FD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADC991CC976E400621FD7 /* AppDelegate.swift */; };
 		63DADC9C1CC976E400621FD7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63DADC9B1CC976E400621FD7 /* ViewController.swift */; };
 		63DADC9F1CC976E400621FD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63DADC9D1CC976E400621FD7 /* Main.storyboard */; };
@@ -59,11 +57,11 @@
 		631057051DD07B95004922DF /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		631057071DD23D3E004922DF /* other_functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = other_functions.swift; sourceTree = "<group>"; };
 		631F56A121CE5A5B008469C7 /* input copy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "input copy.txt"; sourceTree = "<group>"; };
-		631F56A521CF8E87008469C7 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		63236C7921C83E0300DE6C1A /* ContextState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextState.swift; sourceTree = "<group>"; };
 		63236C8121C93B6F00DE6C1A /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		63236C8521C93BD000DE6C1A /* SparseMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparseMatrix.swift; sourceTree = "<group>"; };
 		63236C8921C93D6B00DE6C1A /* Visit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visit.swift; sourceTree = "<group>"; };
+		63BFE9F7224E24800094CF62 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		63DADC961CC976E400621FD7 /* TaskTimeCalendar-swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TaskTimeCalendar-swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63DADC991CC976E400621FD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63DADC9B1CC976E400621FD7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +110,7 @@
 				63236C8521C93BD000DE6C1A /* SparseMatrix.swift */,
 				63236C7921C83E0300DE6C1A /* ContextState.swift */,
 				631057071DD23D3E004922DF /* other_functions.swift */,
+				63BFE9F7224E24800094CF62 /* Parser.swift */,
 				631057051DD07B95004922DF /* Task.swift */,
 				63236C8921C93D6B00DE6C1A /* Visit.swift */,
 				63DADC981CC976E400621FD7 /* TaskTimeCalendar-swift */,
@@ -135,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				63DB51261CE60B340007E969 /* Column.swift */,
-				631F56A521CF8E87008469C7 /* Parser.swift */,
 				63DADC991CC976E400621FD7 /* AppDelegate.swift */,
 				63DADC9B1CC976E400621FD7 /* ViewController.swift */,
 				631057031DD07AF1004922DF /* JSON.swift */,
@@ -256,6 +254,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -308,7 +307,7 @@
 			files = (
 				63236C8621C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
 				63236C8221C93B6F00DE6C1A /* Point.swift in Sources */,
-				631F56A621CF8E87008469C7 /* Parser.swift in Sources */,
+				63BFE9F8224E24800094CF62 /* Parser.swift in Sources */,
 				63DADC9C1CC976E400621FD7 /* ViewController.swift in Sources */,
 				63DADC9A1CC976E400621FD7 /* AppDelegate.swift in Sources */,
 				631057061DD07B95004922DF /* Task.swift in Sources */,
@@ -325,7 +324,6 @@
 			files = (
 				63236C8721C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
 				63DADCAF1CC976E400621FD7 /* TaskTimeCalendar_swiftTests.swift in Sources */,
-				631F56A721CF8E87008469C7 /* Parser.swift in Sources */,
 				63236C7B21C83E0300DE6C1A /* ContextState.swift in Sources */,
 				63236C8B21C93D6B00DE6C1A /* Visit.swift in Sources */,
 				63236C8321C93B6F00DE6C1A /* Point.swift in Sources */,
@@ -338,7 +336,6 @@
 			files = (
 				63236C8821C93BD000DE6C1A /* SparseMatrix.swift in Sources */,
 				63DADCBA1CC976E400621FD7 /* TaskTimeCalendar_swiftUITests.swift in Sources */,
-				631F56A821CF8E87008469C7 /* Parser.swift in Sources */,
 				63236C7C21C83E0300DE6C1A /* ContextState.swift in Sources */,
 				63236C8C21C93D6B00DE6C1A /* Visit.swift in Sources */,
 				63236C8421C93B6F00DE6C1A /* Point.swift in Sources */,
