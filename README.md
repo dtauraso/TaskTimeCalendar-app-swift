@@ -14,8 +14,7 @@ The app works although there is a bug on the calender view to go back to the par
 screenshots
 iphone 8 ios 12.2
 
-![image]
-(https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.33.52%20PM.png)
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.33.52%20PM.png">
 
 iphone XR 12.2
 
