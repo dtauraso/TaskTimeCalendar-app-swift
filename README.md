@@ -4,7 +4,7 @@ has a line drawn in it.  The current state machine implementation is a precurser
 
 This program is designed to link 3 concepts together: Tasks, Calendars, and Timers.  It will use a Contexual State Chart.  That is a state chart where each state has options for what behavior it executes over time.  The Contexual State Chart will be used to store data as well as behavior.
 
-The contexual state chart will be ready soon.  The api, from the swift version mentioned in the link above, works quite well, but the language is still buggy.  Once the contextual state chart language is completed, app developement will continue.
+The contexual state chart will be ready soon.  The api, from the swift version mentioned in the link above works quite well, but the language needs more work.  I'm currently making a more completely version of the language in C over in https://github.com/dtauraso/Contextual-State-Chart-Language-C.  It's platform independent and will output the state chart data as JSON and evaluator code in the language you use for easy integration. 
 
 
 It works on Xcode 10 with Swift version 4 and ios simulator XR.
