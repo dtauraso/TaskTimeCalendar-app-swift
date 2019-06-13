@@ -16,6 +16,17 @@ iphone 8 ios 12.2
 
 <img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.33.52%20PM.png">
 
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.33.55%20PM.png">
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.33.58%20PM.png">
+
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%208%20using%20ios%208/Screen%20Shot%202019-06-12%20at%201.34.06%20PM.png">
+
+
 iphone XR 12.2
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.42.31%20PM.png">
+
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.42.34%20PM.png">
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.42.39%20PM.png">
+<img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.44.05%20PM.png">
 
 for each of these versions the table view had to be adjusted
