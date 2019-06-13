@@ -29,4 +29,4 @@ iphone XR 12.2
 <img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.42.39%20PM.png">
 <img src="https://github.com/dtauraso/TaskTimeCalendar-app-swift/blob/master/iphone%20XR%20using%20ios%2012/Screen%20Shot%202019-06-12%20at%201.44.05%20PM.png">
 
-for each of these versions the table view had to be adjusted
+For each of these versions the table view had to be adjusted.
