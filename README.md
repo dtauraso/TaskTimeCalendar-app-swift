@@ -4,7 +4,7 @@ This program is designed to link 3 concepts together: Tasks, Calendars, and Time
 
 This project is a work in progress and still in the planning phase.  The most complete part is showing the different kinds of items(task, calendar event, note, default time for timer) in the task view.  The buttons are mainly drivers and the calendar view has a line drawn in it.  
 
-The current state machine implementation is a precurser to the contextual state chart I've been working on for some time over in https://github.com/dtauraso/Contexual-State-Chart-Language.  The contextual state chart will be ready soon.  The api, from the swift version mentioned in the link above works quite well, but the language needs more work.  I'm currently making a more completely version of the language in C over in https://github.com/dtauraso/Contextual-State-Chart-Language-C.  It's platform independent and will output the state chart data as JSON and evaluator code in the language you use for easy integration. 
+The current state machine implementation is a precurser to the contextual state chart I've been working on for some time over in https://github.com/dtauraso/Contextual-State-Chart-Language.  The contextual state chart will be ready soon.  The api, from the swift version mentioned in the link above works quite well, but the language needs more work.  I'm currently making a more completely version of the language in C over in https://github.com/dtauraso/Contextual-State-Chart-Language-C.  It's platform independent and will output the state chart data as JSON and evaluator code in the language you use for easy integration. 
 
 
 It works on Xcode 10 with Swift version 4 and ios simulator XR.
